@@ -12,7 +12,8 @@ services:
       - NODE_ENV=production
       - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/nextjs_prod
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     restart: always
 
   db:
@@ -26,8 +27,26 @@ services:
     volumes:
       - postgres_data_prod:/var/lib/postgresql/data
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-  # Vous pouvez ajouter un service nginx comme reverse proxy en production
+  # Prisma service for migrations
+  prisma-migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: deps
+    environment:
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/nextjs_prod
+    depends_on:
+      db:
+        condition: service_healthy
+    command: npx prisma migrate deploy
+
+  # Nginx reverse proxy for production
   nginx:
     image: nginx:alpine
     ports:

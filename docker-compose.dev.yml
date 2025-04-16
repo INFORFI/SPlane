@@ -33,5 +33,35 @@ services:
       timeout: 5s
       retries: 5
 
+  # Prisma service for migrations
+  prisma-migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: deps
+    volumes:
+      - .:/app
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/nextjs_dev
+    depends_on:
+      db:
+        condition: service_healthy
+    command: npx prisma migrate dev --name init --skip-seed
+
+  # Prisma service for seeding
+  prisma-seed:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: deps
+    volumes:
+      - .:/app
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/nextjs_dev
+    depends_on:
+      prisma-migrate:
+        condition: service_completed_successfully
+    command: npx prisma db seed
+
 volumes:
   postgres_data_dev:
