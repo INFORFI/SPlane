@@ -1,0 +1,77 @@
+// This is your Prisma schema file
+// Learn more about it at https://pris.ly/docs/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int          @id @default(autoincrement())
+  email        String       @unique
+  username     String       @unique
+  passwordHash String       @map("password_hash")
+  fullName     String       @map("full_name")
+  createdAt    DateTime     @default(now()) @map("created_at")
+  updatedAt    DateTime     @updatedAt @map("updated_at")
+  projects     Project[]
+  userTasks    UserTask[]
+
+  @@map("users")
+}
+
+model Project {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  startDate   DateTime? @map("start_date")
+  endDate     DateTime? @map("end_date")
+  ownerId     Int       @map("owner_id")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  owner       User      @relation(fields: [ownerId], references: [id])
+  tasks       Task[]
+
+  @@map("projects")
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  COMPLETED
+  CANCELED
+
+  @@map("task_status")
+}
+
+model Task {
+  id          Int         @id @default(autoincrement())
+  title       String
+  description String?
+  deadline    DateTime?
+  status      TaskStatus  @default(TODO)
+  priority    Int         @default(1)
+  projectId   Int         @map("project_id")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  updatedAt   DateTime    @updatedAt @map("updated_at")
+  project     Project     @relation(fields: [projectId], references: [id])
+  userTasks   UserTask[]
+
+  @@map("tasks")
+}
+
+model UserTask {
+  id         Int      @id @default(autoincrement())
+  userId     Int      @map("user_id")
+  taskId     Int      @map("task_id")
+  assignedAt DateTime @default(now()) @map("assigned_at")
+  user       User     @relation(fields: [userId], references: [id])
+  task       Task     @relation(fields: [taskId], references: [id])
+
+  @@unique([userId, taskId])
+  @@map("user_tasks")
+}
