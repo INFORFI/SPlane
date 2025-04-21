@@ -180,17 +180,7 @@ export default function LoginPage() {
                 )}
               </motion.button>
             </div>
-          </form>
-           
-          {/* Footer */}
-          <div className="mt-8 text-center">
-            <p className="text-sm text-zinc-400">
-              Vous n'avez pas de compte?{' '}
-              <Link href="/register" className="font-medium text-indigo-400 hover:text-indigo-300">
-                S'inscrire
-              </Link>
-            </p>
-          </div>
+          </form>   
         </motion.div>
       </div>
     </div>
