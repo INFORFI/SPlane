@@ -44,7 +44,11 @@ export default function DashboardLayout({
         </header>
         
         {/* Main content */}
-        <main className="flex-1 overflow-auto p-6 bg-zinc-950">
+        <main className="flex-1 overflow-auto p-6 bg-zinc-950 
+          [&::-webkit-scrollbar]:w-2 
+          [&::-webkit-scrollbar-track]:bg-zinc-900 
+          [&::-webkit-scrollbar-thumb]:bg-zinc-700 
+          [&::-webkit-scrollbar-thumb:hover]:bg-indigo-600">
           {children}
         </main>
       </div>
