@@ -25,8 +25,6 @@ export default function LoginPage() {
     try {
       setIsLoading(true);
       
-      //const response = {error: "Une erreur est survenue lors de la connexion"};
-
       const response = await login(email, password);
 
       if (response.success) {
