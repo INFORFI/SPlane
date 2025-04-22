@@ -3,9 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Calendar, 
   Clock, 
-  Filter, 
   CheckCircle2, 
   AlertCircle, 
   Search, 
@@ -393,7 +391,7 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                 <Search className="h-12 w-12 text-zinc-700 mb-4" />
                 <h3 className="text-xl font-medium text-zinc-400 mb-2">No matching tasks found</h3>
                 <p className="text-zinc-500 max-w-md mb-4">
-                  We couldn't find any tasks matching your search "{searchQuery}".
+                  Nous n&apos;avons pas trouvé de tâches correspondant à votre recherche &quot;{searchQuery}&quot;.
                 </p>
                 <button
                   onClick={() => setSearchQuery('')}
@@ -424,7 +422,7 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                 <CheckCircle2 className="h-12 w-12 text-zinc-700 mb-4" />
                 <h3 className="text-xl font-medium text-zinc-400 mb-2">No tasks assigned to you</h3>
                 <p className="text-zinc-500 max-w-md mb-4">
-                  You don't have any tasks assigned to you yet. Create a new task or ask your team to assign you tasks.
+                  Vous n&apos;avez pas de tâches assignées à vous. Créez une nouvelle tâche ou demandez à votre équipe de vous assigner des tâches.
                 </p>
                 <Link
                   href="/dashboard/tasks/add"

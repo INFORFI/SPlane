@@ -1,6 +1,4 @@
-import { NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
-import { prisma } from './prisma';
 import { SignJWT, jwtVerify } from 'jose';
 import { nanoid } from 'nanoid';
 

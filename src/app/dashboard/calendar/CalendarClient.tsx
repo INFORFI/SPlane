@@ -11,8 +11,6 @@ import {
   Clock, 
   User, 
   CheckCircle2, 
-  AlertCircle,
-  Layers
 } from 'lucide-react';
 import { TaskWithProject } from '@/action/tasks/getTasks';
 import { TaskStatus } from '@prisma/client';
@@ -234,7 +232,7 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                 onClick={goToToday}
                 className="px-3 py-1 text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-md transition-colors"
               >
-                Aujourd'hui
+                Aujourd&apos;hui
               </button>
               
               <div className="flex">
@@ -327,7 +325,7 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                     
                     {taskCount > 0 && (
                       <div className="mt-1 space-y-1 overflow-hidden">
-                        {dateTasksMap.get(dateKey)?.slice(0, 2).map((task, index) => (
+                        {dateTasksMap.get(dateKey)?.slice(0, 2).map((task) => (
                           <div 
                             key={task.id} 
                             className={`text-xs px-1.5 py-0.5 rounded truncate ${getStatusInfo(task.status).bg} ${getStatusInfo(task.status).textColor}`}

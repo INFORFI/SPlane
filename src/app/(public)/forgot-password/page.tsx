@@ -87,7 +87,7 @@ export default function ForgotPasswordPage() {
               <div className="text-center">
                 <h3 className="font-medium text-lg mb-1">Email envoyé!</h3>
                 <p className="text-sm text-zinc-400">
-                  Si un compte existe avec l'adresse {email}, 
+                  Si un compte existe avec l&apos;adresse {email}, 
                   vous recevrez un email avec les instructions pour réinitialiser votre mot de passe.
                 </p>
               </div>

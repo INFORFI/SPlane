@@ -58,7 +58,7 @@ const NewTaskPage = ({
   // UI state
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showSuccessMessage] = useState(false);
   const [isAssigneesOpen, setIsAssigneesOpen] = useState(false);
   
   // Handle input changes

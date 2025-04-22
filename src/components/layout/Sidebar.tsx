@@ -13,7 +13,6 @@ import {
   Settings, 
   ChevronLeft, 
   ChevronRight, 
-  Bell,
   Plus
 } from 'lucide-react';
 
