@@ -31,6 +31,9 @@ export default function TasksClient({ tasks }: TasksClientProps) {
   const [selectedTask, setSelectedTask] = useState<TaskWithDetails | null>(null);
   const [filteredTasks, setFilteredTasks] = useState<TaskWithDetails[]>(tasks);
   
+  // Force re-render for animation key
+  const [filterKey, setFilterKey] = useState(0);
+  
   // Update filtered tasks when search or filter changes
   useEffect(() => {
     let filtered = [...tasks];
@@ -72,7 +75,15 @@ export default function TasksClient({ tasks }: TasksClientProps) {
     }
     
     setFilteredTasks(filtered);
+    setFilterKey(prev => prev + 1); // Force re-render animation
   }, [tasks, searchQuery, activeFilter]);
+  
+  // Helper function for filter changes
+  const handleFilterChange = (filter: TaskFilter) => {
+    if (activeFilter !== filter) {
+      setActiveFilter(filter);
+    }
+  };
   
   // Get stats for the filter tabs
   const getTaskCounts = () => {
@@ -208,7 +219,7 @@ export default function TasksClient({ tasks }: TasksClientProps) {
         
         <div className="flex overflow-x-auto pb-2 gap-1 border-b border-zinc-800">
           <button
-            onClick={() => setActiveFilter('all')}
+            onClick={() => handleFilterChange('all')}
             className={`px-4 py-2 whitespace-nowrap text-sm font-medium rounded-md transition-colors ${
               activeFilter === 'all' 
                 ? 'bg-zinc-800 text-white' 
@@ -218,7 +229,7 @@ export default function TasksClient({ tasks }: TasksClientProps) {
             All Tasks
           </button>
           <button
-            onClick={() => setActiveFilter('todo')}
+            onClick={() => handleFilterChange('todo')}
             className={`px-4 py-2 whitespace-nowrap text-sm font-medium rounded-md transition-colors flex items-center gap-2 ${
               activeFilter === 'todo' 
                 ? 'bg-zinc-800 text-white' 
@@ -233,7 +244,7 @@ export default function TasksClient({ tasks }: TasksClientProps) {
             )}
           </button>
           <button
-            onClick={() => setActiveFilter('in-progress')}
+            onClick={() => handleFilterChange('in-progress')}
             className={`px-4 py-2 whitespace-nowrap text-sm font-medium rounded-md transition-colors flex items-center gap-2 ${
               activeFilter === 'in-progress' 
                 ? 'bg-zinc-800 text-white' 
@@ -248,7 +259,7 @@ export default function TasksClient({ tasks }: TasksClientProps) {
             )}
           </button>
           <button
-            onClick={() => setActiveFilter('completed')}
+            onClick={() => handleFilterChange('completed')}
             className={`px-4 py-2 whitespace-nowrap text-sm font-medium rounded-md transition-colors flex items-center gap-2 ${
               activeFilter === 'completed' 
                 ? 'bg-zinc-800 text-white' 
@@ -263,7 +274,7 @@ export default function TasksClient({ tasks }: TasksClientProps) {
             )}
           </button>
           <button
-            onClick={() => setActiveFilter('upcoming')}
+            onClick={() => handleFilterChange('upcoming')}
             className={`px-4 py-2 whitespace-nowrap text-sm font-medium rounded-md transition-colors flex items-center gap-2 ${
               activeFilter === 'upcoming' 
                 ? 'bg-zinc-800 text-white' 
@@ -284,17 +295,20 @@ export default function TasksClient({ tasks }: TasksClientProps) {
       <AnimatePresence mode="wait">
         {filteredTasks.length > 0 ? (
           <motion.div 
-            key="task-list"
+            key={`task-list-${filterKey}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             className="space-y-3"
           >
             {filteredTasks.map((task) => (
               <motion.div
-                key={task.id}
-                variants={itemVariants}
-                layoutId={`task-${task.id}`}
+                key={`task-${task.id}`}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.2 }}
                 className="bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-lg p-4 transition-colors"
                 onClick={() => setSelectedTask(task)}
               >
@@ -364,10 +378,11 @@ export default function TasksClient({ tasks }: TasksClientProps) {
           </motion.div>
         ) : (
           <motion.div
-            key="empty-state"
+            key={`empty-state-${filterKey}`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
             className="flex flex-col items-center justify-center py-12 text-center"
           >
             {searchQuery ? (
@@ -395,7 +410,7 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                   {activeFilter === 'upcoming' && "You don't have any upcoming tasks due in the next 7 days."}
                 </p>
                 <button
-                  onClick={() => setActiveFilter('all')}
+                  onClick={() => handleFilterChange('all')}
                   className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg text-sm transition-colors"
                 >
                   View all tasks
