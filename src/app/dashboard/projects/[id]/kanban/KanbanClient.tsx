@@ -12,7 +12,7 @@ import {
 import Link from 'next/link';
 import { TaskStatus, Task, User as UserType, UserTask } from '@prisma/client';
 import { getProjectById, ProjectWithDetails } from '@/action/projects/getProjectById';
-import changeTaskStatus from '@/action/task/changeTaskStatus';
+import changeTaskStatus from '@/action/tasks/changeTaskStatus';
 
 // Define types based on the data model
 type KanbanTask = Task & {
