@@ -3,12 +3,16 @@ import { getProjects } from '@/action/projects/getProjects';
 import ProjectsPage from './ProjectPageClient';
 import ProjectsLoading from './ProjectLoading';
 
-export default async function Page() {
-    const projects = await getProjects();
-
+export default function Page() {
     return (
         <Suspense fallback={<ProjectsLoading />}>
-            <ProjectsPage projects={projects} />
+            <ProjectPage />
         </Suspense>
     )
+}
+
+async function ProjectPage() {
+    const projects = await getProjects();
+
+    return <ProjectsPage projects={projects} />;
 }

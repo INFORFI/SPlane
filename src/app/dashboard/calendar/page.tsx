@@ -3,12 +3,16 @@ import CalendarClient from './CalendarClient';
 import CalendarLoading from './CalendarLoading';
 import { getTasks } from '@/action/tasks/getTasks';
 
-export default async function CalendarPage() {
-  const tasks = await getTasks();
-  
+export default function Page() {
   return (
     <Suspense fallback={<CalendarLoading />}>
-      <CalendarClient tasks={tasks} />
+      <CalendarPage />
     </Suspense>
-  );
+  )
+}
+
+async function CalendarPage() {
+  const tasks = await getTasks();
+  
+  return <CalendarClient tasks={tasks} />
 }
