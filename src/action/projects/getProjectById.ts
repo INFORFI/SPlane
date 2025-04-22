@@ -1,6 +1,6 @@
 "use server";
 
-import { PrismaClient, Project, Task, User, UserTask } from "@prisma/client";
+import { Project, Task, User, UserTask } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 export type ProjectWithDetails = Project & {

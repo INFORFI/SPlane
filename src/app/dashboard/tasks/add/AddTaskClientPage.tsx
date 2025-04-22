@@ -19,6 +19,7 @@ import { TaskStatus } from '@prisma/client';
 
 import { containerVariants, itemVariants } from '@/utils/ItemVariants';
 import { createTask } from '@/action/tasks/createTask';
+import { toast } from 'react-toastify';
 
 // Define types based on your Prisma schema
 type User = {
@@ -115,8 +116,13 @@ const NewTaskPage = ({
     try {
       setIsSubmitting(true);
 
-      await createTask(formData);
-      
+      const response = await createTask(formData);
+
+      if (!response) {
+        toast.error('Une erreur est survenue lors de la création de la tâche');
+      } else {
+        toast.success('La tâche a été créée avec succès');
+      }
     } catch (error) {
       setErrors({ submit: 'Une erreur est survenue lors de la création de la tâche' });
       console.error(error);
