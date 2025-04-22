@@ -15,6 +15,7 @@ import {
   CalendarClock,
   MoreHorizontal,
 } from 'lucide-react';
+import Link from 'next/link';
 import { TaskWithDetails } from '@/action/tasks/getAssignedTasks';
 import { TaskStatus } from '@prisma/client';
 import { itemVariants, containerVariants } from '@/utils/ItemVariants';
@@ -191,15 +192,17 @@ export default function TasksClient({ tasks }: TasksClientProps) {
           <p className="text-zinc-400">Manage and track your assigned tasks</p>
         </motion.div>
         
-        <motion.button
-          variants={itemVariants}
-          whileHover={{ scale: 1.05 }}
+        <Link href="/dashboard/tasks/add">
+          <motion.button
+            variants={itemVariants}
+            whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors"
         >
           <Plus className="h-4 w-4" />
-          Create Task
-        </motion.button>
+            Create Task
+          </motion.button>
+        </Link>
       </div>
       
       {/* Search and filters */}
@@ -423,12 +426,13 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                 <p className="text-zinc-500 max-w-md mb-4">
                   You don't have any tasks assigned to you yet. Create a new task or ask your team to assign you tasks.
                 </p>
-                <button
+                <Link
+                  href="/dashboard/tasks/add"
                   className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm transition-colors flex items-center gap-2"
                 >
                   <Plus className="h-4 w-4" />
                   Create new task
-                </button>
+                </Link>
               </>
             )}
           </motion.div>
