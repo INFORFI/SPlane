@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Eye, EyeOff, Lock, Mail, AlertCircle, ArrowRight } from 'lucide-react';
+import { login } from '@/action/auth/login';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -24,15 +25,14 @@ export default function LoginPage() {
     try {
       setIsLoading(true);
       
-      // Simulate API call - Replace with actual auth in production
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // For demo purposes - just navigate to dashboard for admin@splane.com
-      if (email === 'admin@splane.com' && password === 'admin123') {
+      const response = await login(email, password);
+
+      if (response.success) {
         window.location.href = '/dashboard';
       } else {
-        setError('Email ou mot de passe incorrect');
+        setError(response.error || 'Une erreur est survenue lors de la connexion');
       }
+       
     } catch (err) {
       setError('Une erreur est survenue lors de la connexion');
       console.error(err);
