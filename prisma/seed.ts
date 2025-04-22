@@ -13,22 +13,20 @@ async function main() {
   console.log('Seeding the database...');
 
   // Create users
-  const adminPassword = await bcrypt.hash('admin123', 10);
+  const adminPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD as string, 10);
   const userPassword = await bcrypt.hash('user123', 10);
 
   const admin = await prisma.user.create({
     data: {
-      email: 'admin@splane.com',
-      username: 'admin',
+      email: process.env.ADMIN_EMAIL as string,
       passwordHash: adminPassword,
-      fullName: 'Admin User',
+      fullName: process.env.ADMIN_FULL_NAME as string,
     },
   });
 
   const user1 = await prisma.user.create({
     data: {
       email: 'john@splane.com',
-      username: 'john',
       passwordHash: userPassword,
       fullName: 'John Doe',
     },
@@ -37,7 +35,6 @@ async function main() {
   const user2 = await prisma.user.create({
     data: {
       email: 'jane@splane.com',
-      username: 'jane',
       passwordHash: userPassword,
       fullName: 'Jane Smith',
     },
