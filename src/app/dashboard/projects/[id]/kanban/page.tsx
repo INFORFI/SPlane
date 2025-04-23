@@ -4,14 +4,9 @@ import { getProjectById } from '@/action/projects/getProjectById';
 import KanbanPage from './KanbanClient';
 import KanbanLoading from './KanbanLoading';
 
-interface KanbanPageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function KanbanPageWrapper({ params }: KanbanPageProps) {
-  const projectId = parseInt((await params).id);
+export default async function KanbanPageWrapper({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const projectId = parseInt(id);
   
   if (isNaN(projectId)) {
     return notFound();

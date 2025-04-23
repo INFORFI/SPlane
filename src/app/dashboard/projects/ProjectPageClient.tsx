@@ -13,7 +13,6 @@ import {
   Edit, 
   MoreHorizontal,
   Users,
-  CheckCircle2,
   XCircle,
   CalendarClock,
   Layers

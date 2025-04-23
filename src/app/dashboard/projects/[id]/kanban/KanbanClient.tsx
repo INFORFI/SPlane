@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence, Reorder, useDragControls } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
   Plus, 
   MoreHorizontal, 
@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { TaskStatus, Task, User as UserType, UserTask } from '@prisma/client';
-import { getProjectById, ProjectWithDetails } from '@/action/projects/getProjectById';
+import { ProjectWithDetails } from '@/action/projects/getProjectById';
 import changeTaskStatus from '@/action/tasks/changeTaskStatus';
 
 // Define types based on the data model
@@ -295,8 +295,7 @@ function KanbanTaskCard({
   task, 
   formatDate, 
   getPriorityColor,
-  onDragStart,
-  columnId
+  onDragStart
 }: KanbanTaskCardProps) {
   const assignedUser = task.userTasks?.[0]?.user;
   

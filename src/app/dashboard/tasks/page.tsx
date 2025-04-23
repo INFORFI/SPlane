@@ -4,7 +4,15 @@ import TasksLoading from './TasksLoading';
 import { getAssignedTasks } from '@/action/tasks/getAssignedTasks';
 import { requireAuth } from '@/lib/auth';
 
-export default async function TasksPage() {
+export default function Page() {
+  return (
+    <Suspense fallback={<TasksLoading />}>
+      <TasksPage />
+    </Suspense>
+  )
+}
+
+async function TasksPage() {
   // Get the authenticated user ID
   const userId = await requireAuth();
   
@@ -15,9 +23,5 @@ export default async function TasksPage() {
   // Get tasks assigned to the current user
   const tasks = await getAssignedTasks(userId);
   
-  return (
-    <Suspense fallback={<TasksLoading />}>
-      <TasksClient tasks={tasks} />
-    </Suspense>
-  );
+  return <TasksClient tasks={tasks} />;
 }

@@ -4,14 +4,9 @@ import { getProjectById } from '@/action/projects/getProjectById';
 import ProjectDetailsClient from './ProjectDetailsClient';
 import ProjectDetailsLoading from './ProjectDetailsLoading';
 
-interface ProjectDetailsPageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default async function ProjectDetailsPage({ params }: ProjectDetailsPageProps) {
-  const projectId = parseInt(params.id);
+export default async function ProjectDetailsPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const projectId = parseInt(id);
   
   if (isNaN(projectId)) {
     return notFound();

@@ -3,12 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   XCircle, 
   Clock, 
-  User, 
   Calendar,
   CheckCircle2,
   Edit,
   Trash2,
-  MessageSquare,
   Plus
 } from 'lucide-react';
 import { TaskStatus, Task, User as UserType, UserTask } from '@prisma/client';
@@ -282,7 +280,7 @@ export default function TaskDetailsModal({
                         </div>
                         <div className="flex-1 p-3 bg-zinc-800 rounded-lg">
                           <p className="text-sm text-white">
-                            J'ai commencé à travailler sur cette tâche. Je pense pouvoir la terminer d'ici demain.
+                            J&apos;ai commencé à travailler sur cette tâche. Je pense pouvoir la terminer d&apos;ici demain.
                           </p>
                           <p className="text-xs text-zinc-500 mt-1">Il y a 2 jours</p>
                         </div>

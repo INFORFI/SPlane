@@ -12,11 +12,8 @@ import {
   Users, 
   User, 
   CheckCircle2, 
-  AlertCircle,
   MessageSquare,
   Plus,
-  ChevronRight,
-  XCircle,
   Filter,
   MoreHorizontal
 } from 'lucide-react';
@@ -26,6 +23,7 @@ import {
 import { TaskStatus } from '@prisma/client';
 import { containerVariants, itemVariants } from '@/utils/ItemVariants';
 import TaskDetailsModal from '@/components/projects/TasskDetailsModal';
+import { TaskWithProject } from '@/action/tasks/getTasks';
 
 interface ProjectDetailsClientProps {
   project: ProjectWithDetails;
@@ -34,7 +32,7 @@ interface ProjectDetailsClientProps {
 export default function ProjectDetailsClient({ project }: ProjectDetailsClientProps) {
   const [activeTab, setActiveTab] = useState<'all' | 'todo' | 'in-progress' | 'completed'>('all');
   const [showAddTask, setShowAddTask] = useState(false);
-  const [selectedTask, setSelectedTask] = useState<any | null>(null);
+  const [selectedTask, setSelectedTask] = useState<TaskWithProject | null>(null);
   
   // Format dates for display
   const formatDate = (date: Date | null) => {
@@ -335,9 +333,9 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                   {filteredTasks.map(task => (
                     <TaskItem 
                       key={task.id} 
-                      task={task} 
+                      task={task as TaskWithProject} 
                       formatDate={formatDate}
-                      onClick={() => setSelectedTask(task)}
+                      onClick={() => setSelectedTask(task as TaskWithProject)}
                     />
                   ))}
                 </motion.div>
@@ -534,7 +532,7 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
 
 // Task item component to display individual tasks
 interface TaskItemProps {
-  task: any;
+  task: TaskWithProject;
   formatDate: (date: Date | null) => string;
   onClick: () => void;
 }
