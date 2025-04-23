@@ -3,6 +3,8 @@ import CalendarClient from './CalendarClient';
 import CalendarLoading from './CalendarLoading';
 import { getTasks } from '@/action/tasks/getTasks';
 
+export const dynamic = 'force-dynamic';
+
 export default function Page() {
   return (
     <Suspense fallback={<CalendarLoading />}>
