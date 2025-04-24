@@ -1,245 +1,199 @@
-"use client"
-import React from 'react';
-import { motion } from 'framer-motion';
-import { 
-  Users, 
-  Layers, 
-  CheckCircle, 
-  AlertCircle,
-  Plus,
-  Filter,
-  ArrowRight
-} from 'lucide-react';
+import { Suspense } from 'react';
+import HomepageClient from './HomepageClient';
+import { prisma } from '@/lib/prisma';
+import { TaskStatus } from '@prisma/client';
+import { getCalendarData } from './CalendarEvents';
+export const dynamic = 'force-dynamic';
 
-import StatCard from '@/components/dashboard/StatCard';
-import ProjectCard from '@/components/dashboard/ProjectCard';
-import TaskItem from '@/components/dashboard/TaskItem';
-import MiniCalendar from '@/components/dashboard/MiniCalendar';
-
-import { itemVariants } from '@/utils/ItemVariants';
-
-// Animation variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { 
-    opacity: 1,
-    transition: { 
-      staggerChildren: 0.1
-    }
-  }
+// Définir le type pour les données du tableau de bord
+type DashboardData = {
+  stats: {
+    icon: string;
+    label: string;
+    value: string;
+    trend: string | null;
+    color: string;
+  }[];
+  projects: {
+    id: number;
+    name: string;
+    description: string;
+    progress: number;
+    deadline: string;
+    team: { initials: string }[];
+  }[];
+  tasks: {
+    id: number;
+    title: string;
+    project: string;
+    priority: string;
+    deadline: string;
+    status: string;
+  }[];
 };
 
-export default function Dashboard() {
-  // Sample data
-  const stats = [
-    { 
-      icon: <Layers className="h-5 w-5 text-indigo-500" />, 
+export default function Page() {
+  return (
+    <Suspense fallback={<p>Loading...</p>}>
+      <Homepage />
+    </Suspense>
+  )
+}
+
+async function Homepage() {
+  // Récupérer les données depuis la base de données
+  const activeProjects = await prisma.project.findMany({
+    include: {
+      tasks: true,
+      owner: true,
+    },
+  });
+
+  const tasks = await prisma.task.findMany({
+    include: {
+      project: true,
+      userTasks: {
+        include: {
+          user: true,
+        },
+      },
+    },
+    orderBy: {
+      deadline: 'asc',
+    },
+  });
+
+  // Récupérer les données du calendrier
+  const calendarData = await getCalendarData();
+
+  // Statistiques pour le tableau de bord
+  const projectCount = await prisma.project.count();
+  const completedTasksCount = await prisma.task.count({
+    where: { status: TaskStatus.COMPLETED },
+  });
+  const pendingTasksCount = await prisma.task.count({
+    where: {
+      OR: [
+        { status: TaskStatus.TODO },
+        { status: TaskStatus.IN_PROGRESS },
+      ],
+    },
+  });
+  const userCount = await prisma.user.count();
+
+  // Formater les données pour le client
+  const dashboardData: DashboardData = {
+    stats: [
+      { 
+        icon: 'Layers', 
       label: "Projets actifs", 
-      value: "8", 
-      trend: "12", 
+        value: projectCount.toString(), 
+        trend: null, 
       color: "text-indigo-500"
     },
     { 
-      icon: <CheckCircle className="h-5 w-5 text-emerald-500" />, 
+        icon: 'CheckCircle', 
       label: "Tâches terminées", 
-      value: "32", 
-      trend: "8", 
+        value: completedTasksCount.toString(), 
+        trend: null, 
       color: "text-emerald-500"
     },
     { 
-      icon: <AlertCircle className="h-5 w-5 text-amber-500" />, 
+        icon: 'AlertCircle', 
       label: "Tâches en attente", 
-      value: "12", 
+        value: pendingTasksCount.toString(), 
       trend: null, 
       color: "text-amber-500" 
     },
     { 
-      icon: <Users className="h-5 w-5 text-purple-500" />, 
+        icon: 'Users', 
       label: "Membres d'équipe", 
-      value: "6", 
+        value: userCount.toString(), 
       trend: null, 
       color: "text-purple-500" 
     },
-  ];
-  
-  const projects = [
-    {
-      name: "Website Redesign",
-      description: "Redesign the company website with new branding",
-      progress: 75,
-      deadline: "7 jours restants",
-      team: [
-        { initials: "JD" },
-        { initials: "JS" },
-        { initials: "AU" },
-      ]
-    },
-    {
-      name: "Mobile App Development",
-      description: "Develop a mobile app for iOS and Android",
-      progress: 45,
-      deadline: "2 mois restants",
-      team: [
-        { initials: "JD" },
-        { initials: "AU" },
-      ]
-    }
-  ];
-  
-  const tasks = [
-    {
-      title: "Design homepage mockup",
-      project: "Website Redesign",
-      priority: "high",
-      deadline: "Avril 27",
-      status: "todo"
-    },
-    {
-      title: "Implement responsive layout",
-      project: "Website Redesign",
-      priority: "medium",
-      deadline: "Mai 4",
-      status: "in_progress"
-    },
-    {
-      title: "Design UI/UX for mobile app",
-      project: "Mobile App Development",
-      priority: "high",
-      deadline: "Avril 30",
-      status: "todo"
-    },
-    {
-      title: "Create API endpoints",
-      project: "Mobile App Development",
-      priority: "low",
-      deadline: "Avril 18",
-      status: "completed"
-    }
-  ];
-  
-  return (
-    <motion.div 
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
-      className="space-y-6"
-    >
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Tableau de bord</h1>
-          <p className="text-zinc-400">Bienvenue, Admin User</p>
-        </div>
-        
-        <div className="flex items-center gap-3">
-          <button className="flex items-center gap-2 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors">
-            <Filter className="h-4 w-4" />
-            Filtres
-          </button>
-          
-          <button className="flex items-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors">
-            <Plus className="h-4 w-4" />
-            Nouveau projet
-          </button>
-        </div>
-      </div>
+    ],
+    projects: activeProjects.map(project => {
+      // Get all unique users assigned to tasks in this project
+      const teamMembers = new Set();
+      const teamInitials: {initials: string}[] = [];
       
-      {/* Stats row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat, index) => (
-          <StatCard key={index} {...stat} />
-        ))}
-      </div>
+      project.tasks.forEach(task => {
+        const taskWithUserTasks = tasks.find(t => t.id === task.id);
+        if (taskWithUserTasks && taskWithUserTasks.userTasks) {
+          taskWithUserTasks.userTasks.forEach(userTask => {
+            const userName = userTask.user.fullName;
+            const initials = getInitials(userName);
+            if (!teamMembers.has(initials)) {
+              teamMembers.add(initials);
+              teamInitials.push({ initials });
+            }
+          });
+        }
+      });
       
-      {/* Main content */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Projects and Tasks section */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Projects section */}
-          <motion.div variants={itemVariants} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-white">Projets en cours</h2>
-              <button className="text-indigo-400 hover:text-indigo-300 text-sm font-medium flex items-center gap-1">
-                Voir tous
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {projects.map((project, index) => (
-                <ProjectCard key={index} project={project} />
-              ))}
-            </div>
-          </motion.div>
-          
-          {/* Tasks section */}
-          <motion.div variants={itemVariants} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-white">Tâches à venir</h2>
-              <button className="text-indigo-400 hover:text-indigo-300 text-sm font-medium flex items-center gap-1">
-                Voir toutes
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
-            
-            <div className="space-y-1">
-              {tasks.map((task, index) => (
-                <TaskItem key={index} task={task} />
-              ))}
-            </div>
-          </motion.div>
-        </div>
-        
-        {/* Calendar and Activity section */}
-        <div className="space-y-6">
-          {/* Calendar */}
-          <MiniCalendar />
-          
-          {/* Activity Feed */}
-          <motion.div variants={itemVariants} className="bg-zinc-900 border border-zinc-800 rounded-xl p-5">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-white">Activité récente</h2>
-            </div>
-            
-            <div className="space-y-4">
-              <div className="flex gap-3">
-                <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white text-sm font-medium">
-                  JD
-                </div>
-                <div>
-                  <p className="text-sm text-white">
-                    <span className="font-medium">John Doe</span> a terminé la tâche <span className="font-medium">Create API endpoints</span>
-                  </p>
-                  <p className="text-xs text-zinc-400 mt-1">Il y a 2 heures</p>
-                </div>
-              </div>
-              
-              <div className="flex gap-3">
-                <div className="h-8 w-8 rounded-full bg-purple-600 flex items-center justify-center text-white text-sm font-medium">
-                  JS
-                </div>
-                <div>
-                  <p className="text-sm text-white">
-                    <span className="font-medium">Jane Smith</span> a commencé la tâche <span className="font-medium">Implement responsive layout</span>
-                  </p>
-                  <p className="text-xs text-zinc-400 mt-1">Il y a 5 heures</p>
-                </div>
-              </div>
-              
-              <div className="flex gap-3">
-                <div className="h-8 w-8 rounded-full bg-emerald-600 flex items-center justify-center text-white text-sm font-medium">
-                  AU
-                </div>
-                <div>
-                  <p className="text-sm text-white">
-                    <span className="font-medium">Admin User</span> a créé un nouveau projet <span className="font-medium">Mobile App Development</span>
-                  </p>
-                  <p className="text-xs text-zinc-400 mt-1">Hier</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </div>
-    </motion.div>
-  );
+      return {
+        id: project.id,
+        name: project.name,
+        description: project.description || "",
+        progress: calculateProjectProgress(project.tasks),
+        deadline: project.endDate ? formatDeadline(project.endDate) : "Pas de date limite",
+        team: teamInitials,
+      };
+    }),
+    tasks: tasks.map(task => ({
+      id: task.id,
+      title: task.title,
+      project: task.project.name,
+      priority: getPriorityLabel(task.priority),
+      deadline: task.deadline ? formatDate(task.deadline) : "Pas de date limite",
+      status: task.status.toLowerCase(),
+    })),
+  };
+  
+  return <HomepageClient dashboardData={dashboardData} calendarData={calendarData} />
+}
+
+// Fonctions utilitaires
+function calculateProjectProgress(tasks: any[]): number {
+  if (!tasks || tasks.length === 0) return 0;
+  
+  const completedTasks = tasks.filter(task => task.status === TaskStatus.COMPLETED).length;
+  return Math.round((completedTasks / tasks.length) * 100);
+}
+
+function formatDeadline(date: Date): string {
+  const deadline = new Date(date);
+  const today = new Date();
+  const diffTime = deadline.getTime() - today.getTime();
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  
+  if (diffDays < 0) return "Dépassé";
+  if (diffDays === 0) return "Aujourd'hui";
+  if (diffDays === 1) return "Demain";
+  if (diffDays < 30) return `${diffDays} jours restants`;
+  
+  const diffMonths = Math.ceil(diffDays / 30);
+  return `${diffMonths} mois restants`;
+}
+
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .map(part => part.charAt(0))
+    .join('')
+    .toUpperCase();
+}
+
+function getPriorityLabel(priority: number): string {
+  switch (priority) {
+    case 3: return "high";
+    case 2: return "medium";
+    default: return "low";
+  }
+}
+
+function formatDate(date: Date): string {
+  const options: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric' };
+  return new Date(date).toLocaleDateString('fr-FR', options);
 }
