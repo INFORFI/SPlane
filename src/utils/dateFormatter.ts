@@ -4,10 +4,10 @@
  * @returns La date formatée selon les paramètres locaux (fr-FR)
  */
 export function formatDate(date: Date): string {
-  const options: Intl.DateTimeFormatOptions = { 
-    month: 'long', 
+  const options: Intl.DateTimeFormatOptions = {
+    month: 'long',
     day: 'numeric',
-    year: 'numeric'
+    year: 'numeric',
   };
   return new Date(date).toLocaleDateString('fr-FR', options);
 }
@@ -18,9 +18,9 @@ export function formatDate(date: Date): string {
  * @returns Le jour et le mois formatés
  */
 export function formatShortDate(date: Date): string {
-  const options: Intl.DateTimeFormatOptions = { 
-    month: 'long', 
-    day: 'numeric'
+  const options: Intl.DateTimeFormatOptions = {
+    month: 'long',
+    day: 'numeric',
   };
   return new Date(date).toLocaleDateString('fr-FR', options);
 }
@@ -32,9 +32,11 @@ export function formatShortDate(date: Date): string {
  * @returns true si les deux dates sont le même jour, false sinon
  */
 export function isSameDay(date1: Date, date2: Date): boolean {
-  return date1.getDate() === date2.getDate() && 
-         date1.getMonth() === date2.getMonth() && 
-         date1.getFullYear() === date2.getFullYear();
+  return (
+    date1.getDate() === date2.getDate() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getFullYear() === date2.getFullYear()
+  );
 }
 
 /**
@@ -46,12 +48,12 @@ export function getRelativeDay(date: Date): string {
   const today = new Date();
   const tomorrow = new Date(today);
   tomorrow.setDate(tomorrow.getDate() + 1);
-  
+
   if (isSameDay(date, today)) {
     return "Aujourd'hui";
   } else if (isSameDay(date, tomorrow)) {
-    return "Demain";
+    return 'Demain';
   } else {
     return formatShortDate(date);
   }
-} 
+}

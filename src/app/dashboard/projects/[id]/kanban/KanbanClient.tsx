@@ -1,14 +1,8 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  Plus, 
-  MoreHorizontal, 
-  Clock, 
-  ArrowLeft,
-  Filter
-} from 'lucide-react';
+import { Plus, MoreHorizontal, Clock, ArrowLeft, Filter } from 'lucide-react';
 import Link from 'next/link';
 import { TaskStatus, Task, User as UserType, UserTask } from '@prisma/client';
 import { ProjectWithDetails } from '@/action/projects/getProjectById';
@@ -17,7 +11,7 @@ import changeTaskStatus from '@/action/tasks/changeTaskStatus';
 // Define types based on the data model
 type KanbanTask = Task & {
   userTasks: (UserTask & {
-    user: UserType
+    user: UserType;
   })[];
 };
 
@@ -39,7 +33,7 @@ export default function KanbanPage({ project }: KanbanProps) {
   const [loading, setLoading] = useState(true);
   const [draggingTask, setDraggingTask] = useState<KanbanTask | null>(null);
   const [activeColumn, setActiveColumn] = useState<TaskStatus | null>(null);
-  
+
   // Initialize columns with tasks sorted by status
   useEffect(() => {
     if (project) {
@@ -49,44 +43,44 @@ export default function KanbanPage({ project }: KanbanProps) {
         [TaskStatus.COMPLETED]: [],
         [TaskStatus.CANCELED]: [],
       };
-      
+
       // Group tasks by status
       project.tasks.forEach(task => {
         tasksByStatus[task.status].push(task as KanbanTask);
       });
-      
+
       // Create columns with tasks
       const kanbanColumns: KanbanColumn[] = [
-        { 
-          id: TaskStatus.TODO, 
-          title: 'À faire', 
+        {
+          id: TaskStatus.TODO,
+          title: 'À faire',
           color: 'text-indigo-400',
           bgColor: 'bg-indigo-500/10',
-          tasks: tasksByStatus[TaskStatus.TODO] 
+          tasks: tasksByStatus[TaskStatus.TODO],
         },
-        { 
-          id: TaskStatus.IN_PROGRESS, 
-          title: 'En cours', 
+        {
+          id: TaskStatus.IN_PROGRESS,
+          title: 'En cours',
           color: 'text-amber-400',
           bgColor: 'bg-amber-500/10',
-          tasks: tasksByStatus[TaskStatus.IN_PROGRESS] 
+          tasks: tasksByStatus[TaskStatus.IN_PROGRESS],
         },
-        { 
-          id: TaskStatus.COMPLETED, 
-          title: 'Terminées', 
+        {
+          id: TaskStatus.COMPLETED,
+          title: 'Terminées',
           color: 'text-emerald-400',
           bgColor: 'bg-emerald-500/10',
-          tasks: tasksByStatus[TaskStatus.COMPLETED] 
+          tasks: tasksByStatus[TaskStatus.COMPLETED],
         },
-        { 
-          id: TaskStatus.CANCELED, 
-          title: 'Annulées', 
+        {
+          id: TaskStatus.CANCELED,
+          title: 'Annulées',
           color: 'text-zinc-400',
           bgColor: 'bg-zinc-500/10',
-          tasks: tasksByStatus[TaskStatus.CANCELED] 
-        }
+          tasks: tasksByStatus[TaskStatus.CANCELED],
+        },
       ];
-      
+
       setColumns(kanbanColumns);
       setLoading(false);
     }
@@ -106,41 +100,41 @@ export default function KanbanPage({ project }: KanbanProps) {
       setActiveColumn(null);
       return;
     }
-    
+
     // Optimistic UI update
     setColumns(prevColumns => {
       const newColumns = [...prevColumns];
-      
+
       // Find columns
       const sourceColumn = newColumns.find(col => col.id === activeColumn);
       const destColumn = newColumns.find(col => col.id === destinationStatus);
-      
+
       if (!sourceColumn || !destColumn) return prevColumns;
-      
+
       // Remove task from source column
       sourceColumn.tasks = sourceColumn.tasks.filter(t => t.id !== draggingTask.id);
-      
+
       // Remove task from destination column if it exists there (to avoid duplicates)
       destColumn.tasks = destColumn.tasks.filter(t => t.id !== draggingTask.id);
-      
+
       // Add task to destination column with updated status (at the beginning)
       const updatedTask = { ...draggingTask, status: destinationStatus };
       destColumn.tasks = [updatedTask, ...destColumn.tasks];
-      
+
       return newColumns;
     });
-    
+
     // Call the server action to update task status in the database
     try {
       const result = await changeTaskStatus(draggingTask.id.toString(), destinationStatus);
-      
+
       if (!result.success) {
-        console.error("Failed to update task status:", result.error);
+        console.error('Failed to update task status:', result.error);
       }
     } catch (error) {
-      console.error("Error updating task status:", error);
+      console.error('Error updating task status:', error);
     }
-    
+
     setDraggingTask(null);
     setActiveColumn(null);
   };
@@ -153,16 +147,19 @@ export default function KanbanPage({ project }: KanbanProps) {
       month: 'short',
     });
   };
-  
+
   // Get priority color for a task
   const getPriorityColor = (priority: number) => {
     switch (priority) {
-      case 3: return 'bg-rose-500';
-      case 2: return 'bg-amber-500';
-      default: return 'bg-emerald-500';
+      case 3:
+        return 'bg-rose-500';
+      case 2:
+        return 'bg-amber-500';
+      default:
+        return 'bg-emerald-500';
     }
   };
-  
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -177,21 +174,17 @@ export default function KanbanPage({ project }: KanbanProps) {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <Link 
-              href={`/dashboard/projects/${project.id}`} 
+            <Link
+              href={`/dashboard/projects/${project.id}`}
               className="text-zinc-400 hover:text-white transition-colors"
             >
               <ArrowLeft className="h-5 w-5" />
             </Link>
-            <h1 className="text-2xl font-bold text-white">
-              {project.name} - Tableau Kanban
-            </h1>
+            <h1 className="text-2xl font-bold text-white">{project.name} - Tableau Kanban</h1>
           </div>
-          <p className="text-zinc-400">
-            Faites glisser les tâches pour mettre à jour leur statut
-          </p>
+          <p className="text-zinc-400">Faites glisser les tâches pour mettre à jour leur statut</p>
         </div>
-        
+
         <div className="flex gap-2">
           <motion.button
             whileHover={{ scale: 1.05 }}
@@ -201,7 +194,7 @@ export default function KanbanPage({ project }: KanbanProps) {
             <Filter className="h-4 w-4" />
             <span>Filtrer</span>
           </motion.button>
-          
+
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -212,14 +205,14 @@ export default function KanbanPage({ project }: KanbanProps) {
           </motion.button>
         </div>
       </div>
-      
+
       {/* Kanban Board */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 h-full">
         {columns.map(column => (
-          <div 
-            key={column.id} 
+          <div
+            key={column.id}
             className="flex flex-col h-full"
-            onDragOver={(e) => {
+            onDragOver={e => {
               e.preventDefault();
               e.stopPropagation();
             }}
@@ -233,26 +226,27 @@ export default function KanbanPage({ project }: KanbanProps) {
                   {column.tasks.length}
                 </span>
               </div>
-              
+
               <button className="p-1 rounded-md text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors">
                 <Plus className="h-4 w-4" />
               </button>
             </div>
-            
+
             {/* Task List */}
-            <div 
+            <div
               className={`flex-1 p-3 rounded-lg border border-zinc-800 ${column.bgColor} bg-opacity-5 overflow-hidden flex flex-col min-h-[500px] ${
                 draggingTask && activeColumn !== column.id ? 'border-dashed border-2' : ''
               }`}
             >
-              <div className="overflow-y-auto flex-1 space-y-3 pr-1
+              <div
+                className="overflow-y-auto flex-1 space-y-3 pr-1
                 [&::-webkit-scrollbar]:w-2 
                 [&::-webkit-scrollbar-track]:bg-zinc-900 
                 [&::-webkit-scrollbar-thumb]:bg-zinc-700 
                 [&::-webkit-scrollbar-thumb:hover]:bg-indigo-600"
               >
                 {column.tasks.length === 0 ? (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 0.5 }}
                     className="flex flex-col items-center justify-center h-32 text-zinc-500 text-sm"
@@ -263,7 +257,7 @@ export default function KanbanPage({ project }: KanbanProps) {
                 ) : (
                   <div className="space-y-3">
                     {column.tasks.map(task => (
-                      <KanbanTaskCard 
+                      <KanbanTaskCard
                         key={task.id}
                         task={task}
                         formatDate={formatDate}
@@ -291,14 +285,9 @@ interface KanbanTaskCardProps {
   columnId: TaskStatus;
 }
 
-function KanbanTaskCard({ 
-  task, 
-  formatDate, 
-  getPriorityColor,
-  onDragStart
-}: KanbanTaskCardProps) {
+function KanbanTaskCard({ task, formatDate, getPriorityColor, onDragStart }: KanbanTaskCardProps) {
   const assignedUser = task.userTasks?.[0]?.user;
-  
+
   return (
     <motion.div
       layoutId={`task-${task.id}`}
@@ -320,13 +309,11 @@ function KanbanTaskCard({
           <MoreHorizontal className="h-4 w-4" />
         </button>
       </div>
-      
+
       {task.description && (
-        <p className="text-xs text-zinc-400 line-clamp-2 mb-3 pl-4">
-          {task.description}
-        </p>
+        <p className="text-xs text-zinc-400 line-clamp-2 mb-3 pl-4">{task.description}</p>
       )}
-      
+
       <div className="flex items-center justify-between text-xs">
         <div className="flex gap-2">
           {task.deadline && (
@@ -336,13 +323,16 @@ function KanbanTaskCard({
             </div>
           )}
         </div>
-        
+
         {assignedUser && (
-          <div 
+          <div
             className="h-6 w-6 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs"
             title={assignedUser.fullName}
           >
-            {assignedUser.fullName.split(' ').map(name => name[0]).join('')}
+            {assignedUser.fullName
+              .split(' ')
+              .map(name => name[0])
+              .join('')}
           </div>
         )}
       </div>

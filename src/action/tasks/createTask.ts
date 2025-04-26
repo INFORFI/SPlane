@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { TaskStatus } from "@prisma/client";
-import { prisma } from "@/lib/prisma";
+import { TaskStatus } from '@prisma/client';
+import { prisma } from '@/lib/prisma';
 
 type CreateTaskInput = {
   title: string;
@@ -16,9 +16,8 @@ type CreateTaskInput = {
 export const createTask = async (input: CreateTaskInput) => {
   try {
     // Convert projectId to number if it's a string
-    const projectId = typeof input.projectId === "string" 
-      ? parseInt(input.projectId) 
-      : input.projectId;
+    const projectId =
+      typeof input.projectId === 'string' ? parseInt(input.projectId) : input.projectId;
 
     // Create the task
     const newTask = await prisma.task.create({
@@ -31,20 +30,20 @@ export const createTask = async (input: CreateTaskInput) => {
         projectId: projectId,
       },
     });
-    
+
     // Connect assignees if provided
     if (input.assignees && input.assignees.length > 0) {
       await prisma.userTask.createMany({
         data: input.assignees.map(userId => ({
           taskId: newTask.id,
-          userId
-        }))
+          userId,
+        })),
       });
     }
-    
+
     return newTask;
   } catch (error) {
     console.error(error);
     return null;
   }
-}
+};

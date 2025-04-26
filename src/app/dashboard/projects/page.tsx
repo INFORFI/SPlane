@@ -4,15 +4,15 @@ import ProjectsPage from './ProjectPageClient';
 import ProjectsLoading from './ProjectLoading';
 
 export default function Page() {
-    return (
-        <Suspense fallback={<ProjectsLoading />}>
-            <ProjectPage />
-        </Suspense>
-    )
+  return (
+    <Suspense fallback={<ProjectsLoading />}>
+      <ProjectPage />
+    </Suspense>
+  );
 }
 
 async function ProjectPage() {
-    const projects = await getProjects();
+  const projects = await getProjects();
 
-    return <ProjectsPage projects={projects} />;
+  return <ProjectsPage projects={projects} />;
 }

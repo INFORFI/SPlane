@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { Task, Project, User, UserTask } from "@prisma/client";
+import { prisma } from '@/lib/prisma';
+import { Task, Project, User, UserTask } from '@prisma/client';
 
 // Define type for tasks with their related entities
 export type TaskWithDetails = Task & {
@@ -33,8 +33,8 @@ export async function getAssignedTasks(userId: number): Promise<TaskWithDetails[
         },
       },
       orderBy: [
-        { priority: "desc" }, // Highest priority first
-        { deadline: "asc" },  // Then earliest deadline
+        { priority: 'desc' }, // Highest priority first
+        { deadline: 'asc' }, // Then earliest deadline
       ],
     });
 

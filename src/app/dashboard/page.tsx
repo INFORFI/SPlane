@@ -36,7 +36,7 @@ export default function Page() {
     <Suspense fallback={<p>Loading...</p>}>
       <Homepage />
     </Suspense>
-  )
+  );
 }
 
 async function Homepage() {
@@ -72,10 +72,7 @@ async function Homepage() {
   });
   const pendingTasksCount = await prisma.task.count({
     where: {
-      OR: [
-        { status: TaskStatus.TODO },
-        { status: TaskStatus.IN_PROGRESS },
-      ],
+      OR: [{ status: TaskStatus.TODO }, { status: TaskStatus.IN_PROGRESS }],
     },
   });
   const userCount = await prisma.user.count();
@@ -83,40 +80,40 @@ async function Homepage() {
   // Formater les données pour le client
   const dashboardData: DashboardData = {
     stats: [
-      { 
-        icon: 'Layers', 
-      label: "Projets actifs", 
-        value: projectCount.toString(), 
-        trend: null, 
-      color: "text-indigo-500"
-    },
-    { 
-        icon: 'CheckCircle', 
-      label: "Tâches terminées", 
-        value: completedTasksCount.toString(), 
-        trend: null, 
-      color: "text-emerald-500"
-    },
-    { 
-        icon: 'AlertCircle', 
-      label: "Tâches en attente", 
-        value: pendingTasksCount.toString(), 
-      trend: null, 
-      color: "text-amber-500" 
-    },
-    { 
-        icon: 'Users', 
-      label: "Membres d'équipe", 
-        value: userCount.toString(), 
-      trend: null, 
-      color: "text-purple-500" 
-    },
+      {
+        icon: 'Layers',
+        label: 'Projets actifs',
+        value: projectCount.toString(),
+        trend: null,
+        color: 'text-indigo-500',
+      },
+      {
+        icon: 'CheckCircle',
+        label: 'Tâches terminées',
+        value: completedTasksCount.toString(),
+        trend: null,
+        color: 'text-emerald-500',
+      },
+      {
+        icon: 'AlertCircle',
+        label: 'Tâches en attente',
+        value: pendingTasksCount.toString(),
+        trend: null,
+        color: 'text-amber-500',
+      },
+      {
+        icon: 'Users',
+        label: "Membres d'équipe",
+        value: userCount.toString(),
+        trend: null,
+        color: 'text-purple-500',
+      },
     ],
     projects: activeProjects.map(project => {
       // Get all unique users assigned to tasks in this project
       const teamMembers = new Set();
-      const teamInitials: {initials: string}[] = [];
-      
+      const teamInitials: { initials: string }[] = [];
+
       project.tasks.forEach(task => {
         const taskWithUserTasks = tasks.find(t => t.id === task.id);
         if (taskWithUserTasks && taskWithUserTasks.userTasks) {
@@ -130,13 +127,13 @@ async function Homepage() {
           });
         }
       });
-      
+
       return {
         id: project.id,
         name: project.name,
-        description: project.description || "",
+        description: project.description || '',
         progress: calculateProjectProgress(project.tasks),
-        deadline: project.endDate ? formatDeadline(project.endDate) : "Pas de date limite",
+        deadline: project.endDate ? formatDeadline(project.endDate) : 'Pas de date limite',
         team: teamInitials,
       };
     }),
@@ -145,18 +142,18 @@ async function Homepage() {
       title: task.title,
       project: task.project.name,
       priority: getPriorityLabel(task.priority),
-      deadline: task.deadline ? formatDate(task.deadline) : "Pas de date limite",
+      deadline: task.deadline ? formatDate(task.deadline) : 'Pas de date limite',
       status: task.status.toLowerCase(),
     })),
   };
-  
-  return <HomepageClient dashboardData={dashboardData} calendarData={calendarData} />
+
+  return <HomepageClient dashboardData={dashboardData} calendarData={calendarData} />;
 }
 
 // Fonctions utilitaires
 function calculateProjectProgress(tasks: any[]): number {
   if (!tasks || tasks.length === 0) return 0;
-  
+
   const completedTasks = tasks.filter(task => task.status === TaskStatus.COMPLETED).length;
   return Math.round((completedTasks / tasks.length) * 100);
 }
@@ -166,12 +163,12 @@ function formatDeadline(date: Date): string {
   const today = new Date();
   const diffTime = deadline.getTime() - today.getTime();
   const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  
-  if (diffDays < 0) return "Dépassé";
+
+  if (diffDays < 0) return 'Dépassé';
   if (diffDays === 0) return "Aujourd'hui";
-  if (diffDays === 1) return "Demain";
+  if (diffDays === 1) return 'Demain';
   if (diffDays < 30) return `${diffDays} jours restants`;
-  
+
   const diffMonths = Math.ceil(diffDays / 30);
   return `${diffMonths} mois restants`;
 }
@@ -186,9 +183,12 @@ function getInitials(name: string): string {
 
 function getPriorityLabel(priority: number): string {
   switch (priority) {
-    case 3: return "high";
-    case 2: return "medium";
-    default: return "low";
+    case 3:
+      return 'high';
+    case 2:
+      return 'medium';
+    default:
+      return 'low';
   }
 }
 

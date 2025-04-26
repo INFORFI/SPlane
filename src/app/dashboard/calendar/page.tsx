@@ -8,11 +8,11 @@ export default function Page() {
     <Suspense fallback={<CalendarLoading />}>
       <CalendarPage />
     </Suspense>
-  )
+  );
 }
 
 async function CalendarPage() {
   const tasks = await getTasks();
-  
-  return <CalendarClient tasks={tasks} />
+
+  return <CalendarClient tasks={tasks} />;
 }
