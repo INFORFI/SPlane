@@ -103,7 +103,7 @@ export default function HomepageClient({ dashboardData, calendarData }: Dashboar
           <p className="text-zinc-400">Bienvenue, Admin User</p>
         </div>
         
-        <Link href="/dashboard/projects/" className="flex items-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors">
+        <Link href="/dashboard/projects/create" className="flex items-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors">
           <Plus className="h-4 w-4" />
           Nouveau projet
         </Link>

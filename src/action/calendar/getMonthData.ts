@@ -4,6 +4,15 @@ import { prisma } from '@/lib/prisma';
 import { formatDate } from '@/utils/dateFormatter';
 import { CalendarData, CalendarEvent } from '@/app/dashboard/CalendarEvents';
 import { requireAuth } from '@/lib/auth';
+import { Prisma, Task, UserTask, User, Project } from '@prisma/client';
+
+// Define type for tasks with relations
+type TaskWithRelations = Task & {
+  project: Project;
+  userTasks: (UserTask & {
+    user: User;
+  })[];
+};
 
 export async function getMonthData(month: number, year: number, filterByUser: boolean = false): Promise<CalendarData> {
   // Get days in month
@@ -20,7 +29,7 @@ export async function getMonthData(month: number, year: number, filterByUser: bo
   const userId = filterByUser ? await requireAuth() : null;
   
   // Construire la requête de base
-  let tasksQuery: any = {
+  const tasksQuery: Prisma.TaskFindManyArgs = {
     where: {
       deadline: {
         gte: monthStart,
@@ -41,7 +50,7 @@ export async function getMonthData(month: number, year: number, filterByUser: bo
   };
   
   // Si on filtre par utilisateur, ajouter une condition pour récupérer uniquement ses tâches
-  if (filterByUser && userId) {
+  if (filterByUser && userId && tasksQuery.where) {
     tasksQuery.where.userTasks = {
       some: {
         userId: userId,
@@ -49,7 +58,7 @@ export async function getMonthData(month: number, year: number, filterByUser: bo
     };
   }
   
-  const tasks = await prisma.task.findMany(tasksQuery);
+  const tasks = await prisma.task.findMany(tasksQuery) as TaskWithRelations[];
   
   // Transformer les tâches en événements
   const events: CalendarEvent[] = tasks.map(task => {
