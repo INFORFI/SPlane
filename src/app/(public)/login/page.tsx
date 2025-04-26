@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -16,15 +16,15 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    
+
     if (!email || !password) {
       setError('Veuillez remplir tous les champs');
       return;
     }
-    
+
     try {
       setIsLoading(true);
-      
+
       const response = await login(email, password);
 
       if (response.success) {
@@ -32,7 +32,6 @@ export default function LoginPage() {
       } else {
         setError(response.error || 'Une erreur est survenue lors de la connexion');
       }
-       
     } catch (err) {
       setError('Une erreur est survenue lors de la connexion');
       console.error(err);
@@ -44,7 +43,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -52,7 +51,7 @@ export default function LoginPage() {
         >
           {/* Logo and Title */}
           <div className="text-center mb-8">
-            <motion.div 
+            <motion.div
               className="inline-flex items-center justify-center gap-3 mb-6"
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
@@ -64,9 +63,11 @@ export default function LoginPage() {
               <span className="font-bold text-2xl text-white">SPLANE</span>
             </motion.div>
             <h1 className="text-2xl font-bold text-white">Connexion</h1>
-            <p className="text-zinc-400 mt-2">Bienvenue sur SPLANE, votre outil de gestion de projet</p>
+            <p className="text-zinc-400 mt-2">
+              Bienvenue sur SPLANE, votre outil de gestion de projet
+            </p>
           </div>
-          
+
           {/* Error message */}
           {error && (
             <motion.div
@@ -78,7 +79,7 @@ export default function LoginPage() {
               <span className="text-sm">{error}</span>
             </motion.div>
           )}
-          
+
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-1">
@@ -95,7 +96,7 @@ export default function LoginPage() {
                   type="email"
                   autoComplete="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={e => setEmail(e.target.value)}
                   placeholder="admin@splane.com"
                   required
                   className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-md py-2.5 pl-10 pr-3 
@@ -103,7 +104,7 @@ export default function LoginPage() {
                 />
               </div>
             </div>
-            
+
             <div className="space-y-1">
               <label htmlFor="password" className="block text-sm font-medium text-zinc-300">
                 Mot de passe
@@ -115,10 +116,10 @@ export default function LoginPage() {
                 <input
                   id="password"
                   name="password"
-                  type={showPassword ? "text" : "password"}
+                  type={showPassword ? 'text' : 'password'}
                   autoComplete="current-password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
                   className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-md py-2.5 pl-10 pr-10 
@@ -129,15 +130,11 @@ export default function LoginPage() {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute inset-y-0 right-0 pr-3 flex items-center text-zinc-500 hover:text-zinc-300"
                 >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5" />
-                  ) : (
-                    <Eye className="h-5 w-5" />
-                  )}
+                  {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
               </div>
             </div>
-            
+
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <input
@@ -150,12 +147,15 @@ export default function LoginPage() {
                   Se souvenir de moi
                 </label>
               </div>
-              
-              <Link href="/forgot-password" className="text-sm font-medium text-indigo-400 hover:text-indigo-300">
+
+              <Link
+                href="/forgot-password"
+                className="text-sm font-medium text-indigo-400 hover:text-indigo-300"
+              >
                 Mot de passe oublié?
               </Link>
             </div>
-            
+
             <div>
               <motion.button
                 type="submit"
@@ -166,9 +166,25 @@ export default function LoginPage() {
               >
                 {isLoading ? (
                   <>
-                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <svg
+                      className="animate-spin h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
                     </svg>
                     <span>Connexion en cours...</span>
                   </>
@@ -180,7 +196,7 @@ export default function LoginPage() {
                 )}
               </motion.button>
             </div>
-          </form>   
+          </form>
         </motion.div>
       </div>
     </div>

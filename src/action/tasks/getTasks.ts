@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { prisma } from "@/lib/prisma";
-import { Task, Project, User, UserTask } from "@prisma/client";
+import { prisma } from '@/lib/prisma';
+import { Task, Project, User, UserTask } from '@prisma/client';
 
 // Type pour les tâches avec projets et utilisateurs associés
 export type TaskWithProject = Task & {
@@ -26,13 +26,13 @@ export async function getTasks(): Promise<TaskWithProject[]> {
         },
       },
       orderBy: {
-        deadline: "asc", // Trier par date limite croissante
+        deadline: 'asc', // Trier par date limite croissante
       },
     });
 
     return tasks;
   } catch (error) {
-    console.error("Erreur lors de la récupération des tâches:", error);
+    console.error('Erreur lors de la récupération des tâches:', error);
     return [];
   }
 }
@@ -55,7 +55,7 @@ export async function getTasksByProject(projectId: number): Promise<TaskWithProj
         },
       },
       orderBy: {
-        deadline: "asc",
+        deadline: 'asc',
       },
     });
 
@@ -88,7 +88,7 @@ export async function getTasksByUser(userId: number): Promise<TaskWithProject[]>
         },
       },
       orderBy: {
-        deadline: "asc",
+        deadline: 'asc',
       },
     });
 
@@ -103,7 +103,7 @@ export async function getTasksByUser(userId: number): Promise<TaskWithProject[]>
  * Récupère les tâches dont la date limite est comprise dans un intervalle
  */
 export async function getTasksByDateRange(
-  startDate: Date, 
+  startDate: Date,
   endDate: Date
 ): Promise<TaskWithProject[]> {
   try {
@@ -123,13 +123,13 @@ export async function getTasksByDateRange(
         },
       },
       orderBy: {
-        deadline: "asc",
+        deadline: 'asc',
       },
     });
 
     return tasks;
   } catch (error) {
-    console.error("Erreur lors de la récupération des tâches par plage de dates:", error);
+    console.error('Erreur lors de la récupération des tâches par plage de dates:', error);
     return [];
   }
 }

@@ -36,10 +36,10 @@ export async function generateResetToken(userId: number): Promise<string> {
     .setIssuedAt()
     .setExpirationTime('1h')
     .sign(JWT_SECRET);
-  
+
   // En production, vous pourriez stocker ce token dans une base de données
   // avec une date d'expiration pour une validation supplémentaire
-  
+
   return token;
 }
 
@@ -47,12 +47,12 @@ export async function generateResetToken(userId: number): Promise<string> {
 export async function verifyResetToken(token: string): Promise<number | null> {
   try {
     const verified = await jwtVerify(token, JWT_SECRET);
-    
+
     // Vérifier que c'est bien un token de réinitialisation
     if (verified.payload.type !== 'reset') {
       return null;
     }
-    
+
     return verified.payload.userId as number;
   } catch (error) {
     console.error('Erreur de vérification du token de réinitialisation:', error);
@@ -65,21 +65,21 @@ export async function getAuthenticatedUser(): Promise<number | null> {
   // Récupérer le token depuis les cookies
   const cookieStore = await cookies();
   const token = cookieStore.get('session_token')?.value;
-  
+
   if (!token) {
     return null;
   }
-  
+
   // Vérifier le token et récupérer l'ID de l'utilisateur
   return await verifySessionToken(token);
 }
 
 export async function requireAuth(): Promise<number | null> {
   const userId = await getAuthenticatedUser();
-  
+
   if (!userId) {
     return null;
   }
-  
+
   return userId;
 }

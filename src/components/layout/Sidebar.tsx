@@ -1,19 +1,19 @@
-"use client"
+'use client';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Calendar, 
-  CheckSquare, 
-  Home, 
-  Layers, 
-  Users, 
-  Settings, 
-  ChevronLeft, 
-  ChevronRight, 
-  Plus
+import {
+  Calendar,
+  CheckSquare,
+  Home,
+  Layers,
+  Users,
+  Settings,
+  ChevronLeft,
+  ChevronRight,
+  Plus,
 } from 'lucide-react';
 
 type NavItem = {
@@ -30,7 +30,12 @@ export default function Sidebar() {
   const mainNavItems: NavItem[] = [
     { name: 'Dashboard', href: '/dashboard', icon: <Home className="h-5 w-5" /> },
     { name: 'Projects', href: '/dashboard/projects', icon: <Layers className="h-5 w-5" /> },
-    { name: 'Tasks', href: '/dashboard/tasks', icon: <CheckSquare className="h-5 w-5" />, badge: 5 },
+    {
+      name: 'Tasks',
+      href: '/dashboard/tasks',
+      icon: <CheckSquare className="h-5 w-5" />,
+      badge: 5,
+    },
     { name: 'Calendar', href: '/dashboard/calendar', icon: <Calendar className="h-5 w-5" /> },
     { name: 'Team', href: '/dashboard/team', icon: <Users className="h-5 w-5" /> },
   ];
@@ -44,9 +49,9 @@ export default function Sidebar() {
   };
 
   return (
-    <motion.div 
+    <motion.div
       className="flex flex-col h-screen bg-zinc-900 text-zinc-200 border-r border-zinc-800 relative shadow-xl"
-      animate={{ 
+      animate={{
         width: isCollapsed ? '80px' : '240px',
       }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
@@ -59,7 +64,7 @@ export default function Sidebar() {
           </div>
           <AnimatePresence>
             {!isCollapsed && (
-              <motion.span 
+              <motion.span
                 className="font-bold text-lg"
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -75,15 +80,15 @@ export default function Sidebar() {
 
       {/* Main navigation */}
       <div className="flex-1 overflow-y-auto py-4 flex flex-col gap-1">
-        {mainNavItems.map((item) => (
-          <NavItem 
-            key={item.name} 
-            item={item} 
-            isActive={pathname === item.href} 
-            isCollapsed={isCollapsed} 
+        {mainNavItems.map(item => (
+          <NavItem
+            key={item.name}
+            item={item}
+            isActive={pathname === item.href}
+            isCollapsed={isCollapsed}
           />
         ))}
-        
+
         {/* Quick add button */}
         <div className="px-3 mt-6">
           <motion.button
@@ -111,47 +116,43 @@ export default function Sidebar() {
 
       {/* Bottom navigation */}
       <div className="border-t border-zinc-800 py-4 flex flex-col gap-1">
-        {bottomNavItems.map((item) => (
-          <NavItem 
-            key={item.name} 
-            item={item} 
-            isActive={pathname === item.href} 
-            isCollapsed={isCollapsed} 
+        {bottomNavItems.map(item => (
+          <NavItem
+            key={item.name}
+            item={item}
+            isActive={pathname === item.href}
+            isCollapsed={isCollapsed}
           />
         ))}
       </div>
 
       {/* Toggle button */}
-      <button 
+      <button
         onClick={toggleSidebar}
         className="absolute -right-3 top-20 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-full p-1 shadow-md transition-colors"
-        aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
       >
-        {isCollapsed ? (
-          <ChevronRight className="h-4 w-4" />
-        ) : (
-          <ChevronLeft className="h-4 w-4" />
-        )}
+        {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
       </button>
     </motion.div>
   );
 }
 
-function NavItem({ 
-  item, 
-  isActive, 
-  isCollapsed 
-}: { 
-  item: NavItem; 
-  isActive: boolean; 
+function NavItem({
+  item,
+  isActive,
+  isCollapsed,
+}: {
+  item: NavItem;
+  isActive: boolean;
   isCollapsed: boolean;
 }) {
   return (
-    <Link 
-      href={item.href} 
+    <Link
+      href={item.href}
       className={`flex items-center gap-3 px-3 py-2 mx-2 rounded-md transition-colors relative ${
-        isActive 
-          ? 'bg-zinc-800 text-indigo-400' 
+        isActive
+          ? 'bg-zinc-800 text-indigo-400'
           : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50'
       }`}
     >
@@ -162,10 +163,10 @@ function NavItem({
       >
         {item.icon}
       </motion.div>
-      
+
       <AnimatePresence>
         {!isCollapsed && (
-          <motion.span 
+          <motion.span
             className="font-medium"
             initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
@@ -176,7 +177,7 @@ function NavItem({
           </motion.span>
         )}
       </AnimatePresence>
-      
+
       {/* Badge */}
       {item.badge && (
         <div className={`absolute ${isCollapsed ? 'right-1' : 'right-3'} flex`}>

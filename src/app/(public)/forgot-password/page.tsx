@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
@@ -14,18 +14,18 @@ export default function ForgotPasswordPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    
+
     if (!email) {
       setError('Veuillez saisir votre adresse email');
       return;
     }
-    
+
     try {
       setIsSubmitting(true);
-      
+
       // Simulate API call - Replace with actual implementation in production
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       // For demo purposes - simulate success
       setSuccess(true);
     } catch (err) {
@@ -40,13 +40,13 @@ export default function ForgotPasswordPage() {
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-    exit: { opacity: 0, y: -20, transition: { duration: 0.3 } }
+    exit: { opacity: 0, y: -20, transition: { duration: 0.3 } },
   };
 
   return (
     <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <motion.div 
+        <motion.div
           initial="hidden"
           animate="visible"
           exit="exit"
@@ -55,7 +55,7 @@ export default function ForgotPasswordPage() {
         >
           {/* Logo and Title */}
           <div className="text-center mb-8">
-            <motion.div 
+            <motion.div
               className="inline-flex items-center justify-center gap-3 mb-6"
               initial={{ scale: 0.9 }}
               animate={{ scale: 1 }}
@@ -68,12 +68,12 @@ export default function ForgotPasswordPage() {
             </motion.div>
             <h1 className="text-2xl font-bold text-white">Mot de passe oublié</h1>
             <p className="text-zinc-400 mt-2">
-              {!success 
-                ? "Saisissez votre email pour réinitialiser votre mot de passe" 
-                : "Instructions envoyées! Vérifiez votre boîte de réception"}
+              {!success
+                ? 'Saisissez votre email pour réinitialiser votre mot de passe'
+                : 'Instructions envoyées! Vérifiez votre boîte de réception'}
             </p>
           </div>
-          
+
           {/* Success message */}
           {success ? (
             <motion.div
@@ -87,8 +87,8 @@ export default function ForgotPasswordPage() {
               <div className="text-center">
                 <h3 className="font-medium text-lg mb-1">Email envoyé!</h3>
                 <p className="text-sm text-zinc-400">
-                  Si un compte existe avec l&apos;adresse {email}, 
-                  vous recevrez un email avec les instructions pour réinitialiser votre mot de passe.
+                  Si un compte existe avec l&apos;adresse {email}, vous recevrez un email avec les
+                  instructions pour réinitialiser votre mot de passe.
                 </p>
               </div>
             </motion.div>
@@ -105,7 +105,7 @@ export default function ForgotPasswordPage() {
               </motion.div>
             )
           )}
-          
+
           {/* Form */}
           {!success ? (
             <form onSubmit={handleSubmit} className="space-y-5">
@@ -123,7 +123,7 @@ export default function ForgotPasswordPage() {
                     type="email"
                     autoComplete="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onChange={e => setEmail(e.target.value)}
                     placeholder="votreemail@exemple.com"
                     required
                     className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-md py-2.5 pl-10 pr-3 
@@ -131,7 +131,7 @@ export default function ForgotPasswordPage() {
                   />
                 </div>
               </div>
-              
+
               <div>
                 <motion.button
                   type="submit"
@@ -142,9 +142,25 @@ export default function ForgotPasswordPage() {
                 >
                   {isSubmitting ? (
                     <>
-                      <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
                       </svg>
                       <span>Envoi en cours...</span>
                     </>
@@ -157,7 +173,7 @@ export default function ForgotPasswordPage() {
           ) : (
             <div className="mt-6">
               <motion.button
-                onClick={() => window.location.href = '/login'}
+                onClick={() => (window.location.href = '/login')}
                 className="w-full bg-zinc-800 hover:bg-zinc-700 text-white py-3 rounded-md font-medium flex items-center justify-center gap-2
                           transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-600"
                 whileTap={{ scale: 0.98 }}
@@ -166,11 +182,11 @@ export default function ForgotPasswordPage() {
               </motion.button>
             </div>
           )}
-            
+
           {/* Footer */}
           <div className="mt-8 text-center">
-            <Link 
-              href="/login" 
+            <Link
+              href="/login"
               className="inline-flex items-center gap-2 text-sm font-medium text-indigo-400 hover:text-indigo-300"
             >
               <ArrowLeft className="h-4 w-4" />

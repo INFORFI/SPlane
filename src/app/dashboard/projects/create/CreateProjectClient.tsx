@@ -1,17 +1,9 @@
-"use client";
+'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { 
-  ArrowLeft, 
-  Calendar, 
-  Save, 
-  Users, 
-  X,
-  CheckCircle2,
-  AlertCircle
-} from 'lucide-react';
+import { ArrowLeft, Calendar, Save, Users, X, CheckCircle2, AlertCircle } from 'lucide-react';
 import { User } from '@prisma/client';
 import { createProject } from '@/action/projects/createProject';
 import TeamMember from '@/components/dashboard/TeamMembers/TeamMember';
@@ -29,21 +21,21 @@ type ProjectFormData = {
 // Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: { 
+  visible: {
     opacity: 1,
-    transition: { 
-      staggerChildren: 0.1
-    }
-  }
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
 };
 
 const itemVariants = {
   hidden: { y: 20, opacity: 0 },
-  visible: { 
-    y: 0, 
+  visible: {
+    y: 0,
     opacity: 1,
-    transition: { type: 'spring', stiffness: 100 }
-  }
+    transition: { type: 'spring', stiffness: 100 },
+  },
 };
 
 interface CreateProjectPageProps {
@@ -61,17 +53,19 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
     ownerId: currentUserId.toString(),
     teamMembers: [],
   });
-  
+
   // UI state
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  
+
   // Handle input changes
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
+
     // Clear error for this field if any
     if (errors[name]) {
       setErrors(prev => {
@@ -81,51 +75,55 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
       });
     }
   };
-  
+
   // Toggle team member selection
   const toggleTeamMember = (userId: number) => {
     setFormData(prev => {
       const newTeamMembers = prev.teamMembers.includes(userId)
         ? prev.teamMembers.filter(id => id !== userId)
         : [...prev.teamMembers, userId];
-      
+
       return { ...prev, teamMembers: newTeamMembers };
     });
   };
-  
+
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validate form
     const newErrors: Record<string, string> = {};
-    
+
     if (!formData.name.trim()) {
       newErrors.name = 'Project name is required';
     }
-    
+
     if (!formData.startDate) {
       newErrors.startDate = 'Start date is required';
     }
-    
-    if (formData.endDate && formData.startDate && new Date(formData.endDate) < new Date(formData.startDate)) {
+
+    if (
+      formData.endDate &&
+      formData.startDate &&
+      new Date(formData.endDate) < new Date(formData.startDate)
+    ) {
       newErrors.endDate = 'End date must be after start date';
     }
-    
+
     if (!formData.ownerId) {
       newErrors.ownerId = 'Project owner is required';
     }
-    
+
     setErrors(newErrors);
-    
+
     if (Object.keys(newErrors).length > 0) {
       return;
     }
-    
+
     // Submit form
     try {
       setIsSubmitting(true);
-      
+
       // Call the server action
       const result = await createProject({
         name: formData.name,
@@ -135,14 +133,14 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
         ownerId: formData.ownerId,
         teamMembers: formData.teamMembers,
       });
-      
+
       if (!result.success) {
         setErrors({ submit: result.error || 'Failed to create project' });
         return;
       }
-      
+
       setShowSuccessMessage(true);
-      
+
       // Reset form after success
       setFormData({
         name: '',
@@ -152,12 +150,11 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
         ownerId: currentUserId.toString(),
         teamMembers: [],
       });
-      
+
       // Hide success message after a delay
       setTimeout(() => {
         setShowSuccessMessage(false);
       }, 5000);
-      
     } catch (error) {
       setErrors({ submit: 'An error occurred while creating the project' });
       console.error(error);
@@ -165,7 +162,7 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
       setIsSubmitting(false);
     }
   };
-  
+
   return (
     <motion.div
       initial="hidden"
@@ -175,14 +172,17 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
     >
       {/* Header with back button */}
       <div className="flex items-center gap-4 mb-6">
-        <Link href="/dashboard/projects" className="text-zinc-400 hover:text-white transition-colors">
+        <Link
+          href="/dashboard/projects"
+          className="text-zinc-400 hover:text-white transition-colors"
+        >
           <ArrowLeft className="h-5 w-5" />
         </Link>
         <motion.h1 variants={itemVariants} className="text-2xl font-bold text-white">
           Create New Project
         </motion.h1>
       </div>
-      
+
       {/* Success message */}
       {showSuccessMessage && (
         <motion.div
@@ -195,10 +195,10 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
           <span>Project created successfully!</span>
         </motion.div>
       )}
-      
+
       {/* Main form */}
-      <motion.form 
-        variants={itemVariants} 
+      <motion.form
+        variants={itemVariants}
         onSubmit={handleSubmit}
         className="bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl overflow-hidden"
       >
@@ -207,7 +207,7 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
           <h2 className="text-lg font-medium text-white">Project Information</h2>
           <p className="text-sm text-zinc-400">Fill in the details to create a new project</p>
         </div>
-        
+
         {/* Form fields */}
         <div className="p-6 space-y-6">
           {/* Project name */}
@@ -224,11 +224,9 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
               placeholder="Enter project name"
               className={`w-full px-4 py-2.5 bg-zinc-800 border ${errors.name ? 'border-rose-500' : 'border-zinc-700'} rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
             />
-            {errors.name && (
-              <p className="text-rose-500 text-xs mt-1">{errors.name}</p>
-            )}
+            {errors.name && <p className="text-rose-500 text-xs mt-1">{errors.name}</p>}
           </div>
-          
+
           {/* Project description */}
           <div className="space-y-2">
             <label htmlFor="description" className="block text-sm font-medium text-zinc-300">
@@ -244,7 +242,7 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
               className="w-full px-4 py-2.5 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
             />
           </div>
-          
+
           {/* Date fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Start date */}
@@ -269,7 +267,7 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
                 )}
               </div>
             </div>
-            
+
             {/* End date */}
             <div className="space-y-2">
               <label htmlFor="endDate" className="block text-sm font-medium text-zinc-300">
@@ -287,14 +285,14 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
                   onChange={handleChange}
                   className={`w-full pl-10 pr-4 py-2.5 bg-zinc-800 border ${errors.endDate ? 'border-rose-500' : 'border-zinc-700'} rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
                 />
-                {errors.endDate && (
-                  <p className="text-rose-500 text-xs mt-1">{errors.endDate}</p>
-                )}
-                <p className="text-zinc-500 text-xs mt-1">Optionnel - Laissez vide pour un projet sans date de fin</p>
+                {errors.endDate && <p className="text-rose-500 text-xs mt-1">{errors.endDate}</p>}
+                <p className="text-zinc-500 text-xs mt-1">
+                  Optionnel - Laissez vide pour un projet sans date de fin
+                </p>
               </div>
             </div>
           </div>
-          
+
           {/* Team assignment */}
           <div className="space-y-6">
             {/* Project owner */}
@@ -316,19 +314,13 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
                   </option>
                 ))}
               </select>
-              {errors.ownerId && (
-                <p className="text-rose-500 text-xs mt-1">{errors.ownerId}</p>
-              )}
+              {errors.ownerId && <p className="text-rose-500 text-xs mt-1">{errors.ownerId}</p>}
             </div>
-            
+
             {/* Team members */}
-            <TeamMember
-              users={users}
-              formData={formData}
-              toggleTeamMember={toggleTeamMember}
-            />
+            <TeamMember users={users} formData={formData} toggleTeamMember={toggleTeamMember} />
           </div>
-          
+
           {/* General error message */}
           {errors.submit && (
             <div className="p-3 bg-rose-500/10 border border-rose-500/20 rounded-lg flex items-center gap-3 text-rose-400">
@@ -337,16 +329,16 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
             </div>
           )}
         </div>
-        
+
         {/* Form actions */}
         <div className="px-6 py-4 bg-zinc-800/50 border-t border-zinc-800 flex justify-end gap-3">
-          <Link 
+          <Link
             href="/dashboard/projects"
             className="px-4 py-2.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors"
           >
             Cancel
           </Link>
-          
+
           <motion.button
             type="submit"
             disabled={isSubmitting}
@@ -356,9 +348,25 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
           >
             {isSubmitting ? (
               <>
-                <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                <svg
+                  className="animate-spin h-4 w-4 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
                 </svg>
                 <span>Creating...</span>
               </>
@@ -371,24 +379,22 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
           </motion.button>
         </div>
       </motion.form>
-      
+
       {/* Project Preview */}
       <motion.div
         variants={itemVariants}
         className="mt-8 bg-zinc-900 border border-zinc-800 rounded-xl p-6"
       >
         <h2 className="text-lg font-medium text-white mb-4">Project Preview</h2>
-        
+
         <div className="p-5 border border-zinc-800 rounded-lg bg-zinc-800/50">
           <div className="mb-4">
-            <h3 className="text-xl font-semibold text-white">
-              {formData.name || 'Project Name'}
-            </h3>
+            <h3 className="text-xl font-semibold text-white">{formData.name || 'Project Name'}</h3>
             <p className="text-zinc-400 mt-1">
               {formData.description || 'Project description will appear here'}
             </p>
           </div>
-          
+
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 text-sm">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
@@ -398,12 +404,16 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
                 <div>
                   <p className="text-zinc-400">Timeline</p>
                   <p className="text-white">
-                    {formData.startDate ? new Date(formData.startDate).toLocaleDateString() : 'Start date'} 
-                    {formData.endDate ? ` - ${new Date(formData.endDate).toLocaleDateString()}` : ' - Pas de date de fin'}
+                    {formData.startDate
+                      ? new Date(formData.startDate).toLocaleDateString()
+                      : 'Start date'}
+                    {formData.endDate
+                      ? ` - ${new Date(formData.endDate).toLocaleDateString()}`
+                      : ' - Pas de date de fin'}
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex items-center gap-3">
                 <div className="bg-emerald-500/10 p-2 rounded-lg">
                   <Users className="h-5 w-5 text-emerald-400" />
@@ -411,26 +421,29 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
                 <div>
                   <p className="text-zinc-400">Team</p>
                   <p className="text-white">
-                    {formData.teamMembers.length > 0 
-                      ? `${formData.teamMembers.length} members` 
+                    {formData.teamMembers.length > 0
+                      ? `${formData.teamMembers.length} members`
                       : 'No team members yet'}
                   </p>
                 </div>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-2">
               {formData.teamMembers.length > 0 && (
                 <div className="flex -space-x-2">
                   {formData.teamMembers.slice(0, 3).map(userId => {
                     const user = users.find(u => u.id === userId);
                     return user ? (
-                      <div 
+                      <div
                         key={user.id}
                         className="h-8 w-8 rounded-full bg-indigo-600 border-2 border-zinc-900 flex items-center justify-center text-xs text-white"
                         title={user.fullName}
                       >
-                        {user.fullName.split(' ').map(n => n[0]).join('')}
+                        {user.fullName
+                          .split(' ')
+                          .map(n => n[0])
+                          .join('')}
                       </div>
                     ) : null;
                   })}

@@ -1,21 +1,13 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  XCircle, 
-  Clock, 
-  Calendar,
-  CheckCircle2,
-  Edit,
-  Trash2,
-  Plus
-} from 'lucide-react';
+import { XCircle, Clock, Calendar, CheckCircle2, Edit, Trash2, Plus } from 'lucide-react';
 import { TaskStatus, Task, User as UserType, UserTask } from '@prisma/client';
 
 interface TaskDetailsModalProps {
   task: Task & {
     userTasks: (UserTask & {
-      user: UserType
-    })[]
+      user: UserType;
+    })[];
   };
   onClose: () => void;
   projectTeam: UserType[];
@@ -26,7 +18,7 @@ export default function TaskDetailsModal({
   task,
   onClose,
   projectTeam,
-  formatDate
+  formatDate,
 }: TaskDetailsModalProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [taskForm, setTaskForm] = useState({
@@ -35,9 +27,9 @@ export default function TaskDetailsModal({
     deadline: task.deadline ? new Date(task.deadline).toISOString().split('T')[0] : '',
     status: task.status,
     priority: task.priority,
-    assigneeId: task.userTasks[0]?.userId || ''
+    assigneeId: task.userTasks[0]?.userId || '',
   });
-  
+
   // Get status color and text
   const getStatusColor = (status: TaskStatus) => {
     switch (status) {
@@ -51,7 +43,7 @@ export default function TaskDetailsModal({
         return { bg: 'bg-indigo-500/10', text: 'text-indigo-400', label: 'À faire' };
     }
   };
-  
+
   // Get priority indicator
   const getPriority = (priority: number) => {
     switch (priority) {
@@ -63,17 +55,19 @@ export default function TaskDetailsModal({
         return { color: 'bg-emerald-500', label: 'Basse' };
     }
   };
-  
+
   const status = getStatusColor(task.status);
   const priority = getPriority(task.priority);
   const assignedUser = task.userTasks[0]?.user;
-  
+
   // Handle form changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setTaskForm(prev => ({ ...prev, [name]: value }));
   };
-  
+
   // Handle form submission
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,7 +75,7 @@ export default function TaskDetailsModal({
     console.log('Task form submitted:', taskForm);
     setIsEditing(false);
   };
-  
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -106,14 +100,11 @@ export default function TaskDetailsModal({
               <h2 className="text-xl font-semibold text-white">Modifier la tâche</h2>
             )}
           </div>
-          <button 
-            onClick={onClose}
-            className="text-zinc-400 hover:text-zinc-300 transition-colors"
-          >
+          <button onClick={onClose} className="text-zinc-400 hover:text-zinc-300 transition-colors">
             <XCircle className="h-6 w-6" />
           </button>
         </div>
-        
+
         <AnimatePresence mode="wait">
           {isEditing ? (
             <motion.form
@@ -138,9 +129,12 @@ export default function TaskDetailsModal({
                   required
                 />
               </div>
-              
+
               <div>
-                <label htmlFor="description" className="block text-sm font-medium text-zinc-300 mb-1">
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-zinc-300 mb-1"
+                >
                   Description
                 </label>
                 <textarea
@@ -152,7 +146,7 @@ export default function TaskDetailsModal({
                   className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                 ></textarea>
               </div>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="status" className="block text-sm font-medium text-zinc-300 mb-1">
@@ -171,9 +165,12 @@ export default function TaskDetailsModal({
                     <option value="CANCELED">Annulée</option>
                   </select>
                 </div>
-                
+
                 <div>
-                  <label htmlFor="priority" className="block text-sm font-medium text-zinc-300 mb-1">
+                  <label
+                    htmlFor="priority"
+                    className="block text-sm font-medium text-zinc-300 mb-1"
+                  >
                     Priorité
                   </label>
                   <select
@@ -188,9 +185,12 @@ export default function TaskDetailsModal({
                     <option value="3">Haute</option>
                   </select>
                 </div>
-                
+
                 <div>
-                  <label htmlFor="deadline" className="block text-sm font-medium text-zinc-300 mb-1">
+                  <label
+                    htmlFor="deadline"
+                    className="block text-sm font-medium text-zinc-300 mb-1"
+                  >
                     Date limite
                   </label>
                   <div className="relative">
@@ -207,9 +207,12 @@ export default function TaskDetailsModal({
                     />
                   </div>
                 </div>
-                
+
                 <div>
-                  <label htmlFor="assigneeId" className="block text-sm font-medium text-zinc-300 mb-1">
+                  <label
+                    htmlFor="assigneeId"
+                    className="block text-sm font-medium text-zinc-300 mb-1"
+                  >
                     Assigné à
                   </label>
                   <select
@@ -228,7 +231,7 @@ export default function TaskDetailsModal({
                   </select>
                 </div>
               </div>
-              
+
               <div className="flex justify-end gap-3 pt-4">
                 <motion.button
                   type="button"
@@ -239,7 +242,7 @@ export default function TaskDetailsModal({
                 >
                   Annuler
                 </motion.button>
-                
+
                 <motion.button
                   type="submit"
                   className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors"
@@ -263,29 +266,33 @@ export default function TaskDetailsModal({
                   <div>
                     <h3 className="text-sm font-medium text-zinc-400 mb-2">Description</h3>
                     <p className="text-white">
-                      {task.description || "Aucune description fournie."}
+                      {task.description || 'Aucune description fournie.'}
                     </p>
                   </div>
-                  
+
                   {/* Comments section */}
                   <div>
                     <h3 className="text-sm font-medium text-zinc-400 mb-3">Commentaires</h3>
-                    
+
                     <div className="space-y-4">
                       <div className="flex gap-3">
                         <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white text-sm">
-                          {assignedUser ? 
-                            assignedUser.fullName.split(' ').map(name => name[0]).join('') 
+                          {assignedUser
+                            ? assignedUser.fullName
+                                .split(' ')
+                                .map(name => name[0])
+                                .join('')
                             : 'U'}
                         </div>
                         <div className="flex-1 p-3 bg-zinc-800 rounded-lg">
                           <p className="text-sm text-white">
-                            J&apos;ai commencé à travailler sur cette tâche. Je pense pouvoir la terminer d&apos;ici demain.
+                            J&apos;ai commencé à travailler sur cette tâche. Je pense pouvoir la
+                            terminer d&apos;ici demain.
                           </p>
                           <p className="text-xs text-zinc-500 mt-1">Il y a 2 jours</p>
                         </div>
                       </div>
-                      
+
                       {/* Comment input */}
                       <div className="flex gap-3">
                         <div className="h-8 w-8 rounded-full bg-zinc-700 flex items-center justify-center text-white text-sm">
@@ -305,18 +312,20 @@ export default function TaskDetailsModal({
                     </div>
                   </div>
                 </div>
-                
+
                 {/* Task details sidebar */}
                 <div className="space-y-6">
                   <div className="bg-zinc-800/50 rounded-lg p-4 space-y-4">
                     {/* Status */}
                     <div>
                       <h4 className="text-xs font-medium text-zinc-500 mb-1">STATUT</h4>
-                      <div className={`inline-flex items-center px-2.5 py-1 rounded-full text-sm font-medium ${status.bg} ${status.text}`}>
+                      <div
+                        className={`inline-flex items-center px-2.5 py-1 rounded-full text-sm font-medium ${status.bg} ${status.text}`}
+                      >
                         {status.label}
                       </div>
                     </div>
-                    
+
                     {/* Priority */}
                     <div>
                       <h4 className="text-xs font-medium text-zinc-500 mb-1">PRIORITÉ</h4>
@@ -325,14 +334,17 @@ export default function TaskDetailsModal({
                         <span className="text-sm text-white">{priority.label}</span>
                       </div>
                     </div>
-                    
+
                     {/* Assignee */}
                     <div>
                       <h4 className="text-xs font-medium text-zinc-500 mb-1">ASSIGNÉ À</h4>
                       {assignedUser ? (
                         <div className="flex items-center gap-2">
                           <div className="h-6 w-6 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs">
-                            {assignedUser.fullName.split(' ').map(name => name[0]).join('')}
+                            {assignedUser.fullName
+                              .split(' ')
+                              .map(name => name[0])
+                              .join('')}
                           </div>
                           <span className="text-sm text-white">{assignedUser.fullName}</span>
                         </div>
@@ -340,7 +352,7 @@ export default function TaskDetailsModal({
                         <span className="text-sm text-zinc-400">Non assignée</span>
                       )}
                     </div>
-                    
+
                     {/* Deadline */}
                     {task.deadline && (
                       <div>
@@ -352,7 +364,7 @@ export default function TaskDetailsModal({
                       </div>
                     )}
                   </div>
-                  
+
                   {/* Actions */}
                   <div className="space-y-2">
                     <motion.button
@@ -364,7 +376,7 @@ export default function TaskDetailsModal({
                       <Edit className="h-4 w-4" />
                       <span>Modifier</span>
                     </motion.button>
-                    
+
                     {task.status !== TaskStatus.COMPLETED ? (
                       <motion.button
                         className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600/20 hover:bg-emerald-500/30 text-emerald-400 rounded-lg text-sm font-medium transition-colors"
@@ -384,7 +396,7 @@ export default function TaskDetailsModal({
                         <span>Marquer non terminée</span>
                       </motion.button>
                     )}
-                    
+
                     <motion.button
                       className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-rose-600/20 hover:bg-rose-500/30 text-rose-400 rounded-lg text-sm font-medium transition-colors"
                       whileHover={{ scale: 1.02 }}
