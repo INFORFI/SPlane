@@ -3,7 +3,6 @@ import HomepageClient from './HomepageClient';
 import { prisma } from '@/lib/prisma';
 import { TaskStatus } from '@prisma/client';
 import { getCalendarData } from './CalendarEvents';
-export const dynamic = 'force-dynamic';
 
 // Définir le type pour les données du tableau de bord
 type DashboardData = {
