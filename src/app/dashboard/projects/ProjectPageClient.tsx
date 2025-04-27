@@ -20,6 +20,9 @@ import {
 import { ProjectWithTasks } from '@/action/projects/getProjects';
 import { Task } from '@prisma/client';
 import { itemVariants, containerVariants } from '@/utils/ItemVariants';
+import { deleteProject } from '@/action/projects/deleteProject';
+import DeleteProjectModal from '@/components/projects/DeleteProjectModal';
+import { toast } from 'react-toastify';
 
 export default function ProjectsPage({ projects }: { projects: ProjectWithTasks[] }) {
   const [isCreatingProject, setIsCreatingProject] = useState(false);
@@ -299,11 +302,23 @@ interface ProjectCardProps {
 }
 
 function ProjectCard({ project, formatDate, getDaysLeft }: ProjectCardProps) {
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
+  const handleDeleteProject = () => {
+    setOpenDeleteModal(true);
+  };
+
   return (
     <motion.div
       variants={itemVariants}
       className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden flex flex-col"
     >
+      <DeleteProjectModal
+        projectId={project.id}
+        projectName={project.name}
+        isOpen={openDeleteModal}
+        onClose={() => setOpenDeleteModal(false)}
+      />
       <div className="p-6 flex-grow">
         <div className="flex justify-between items-start mb-3">
           <h3 className="text-lg font-semibold text-white line-clamp-1">
@@ -424,6 +439,7 @@ function ProjectCard({ project, formatDate, getDaysLeft }: ProjectCardProps) {
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
+            onClick={handleDeleteProject}
             className="p-1.5 rounded-md hover:bg-zinc-800 text-zinc-400 hover:text-rose-400 transition-colors"
           >
             <Trash2 className="h-4 w-4" />

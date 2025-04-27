@@ -22,6 +22,7 @@ import { TaskStatus } from '@prisma/client';
 import { containerVariants, itemVariants } from '@/utils/ItemVariants';
 import TaskDetailsModal from '@/components/projects/TasskDetailsModal';
 import { TaskWithProject } from '@/action/tasks/getTasks';
+import DeleteProjectModal from '@/components/projects/DeleteProjectModal';
 
 interface ProjectDetailsClientProps {
   project: ProjectWithDetails;
@@ -31,6 +32,7 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
   const [activeTab, setActiveTab] = useState<'all' | 'todo' | 'in-progress' | 'completed'>('all');
   const [showAddTask, setShowAddTask] = useState(false);
   const [selectedTask, setSelectedTask] = useState<TaskWithProject | null>(null);
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   // Format dates for display
   const formatDate = (date: Date | null) => {
@@ -74,6 +76,10 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
     return true;
   });
 
+  const handleDeleteProject = () => {
+    setOpenDeleteModal(true);
+  };
+
   return (
     <motion.div
       initial="hidden"
@@ -81,6 +87,12 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
       variants={containerVariants}
       className="space-y-8"
     >
+      <DeleteProjectModal
+        projectId={project.id}
+        projectName={project.name}
+        isOpen={openDeleteModal}
+        onClose={() => setOpenDeleteModal(false)}
+      />
       {/* Project header with actions */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -106,7 +118,7 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
               variants={itemVariants}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors"
+              className="flex items-center gap-2 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors cursor-pointer"
             >
               <Edit className="h-4 w-4" />
               <span>Modifier</span>
@@ -117,7 +129,8 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
             variants={itemVariants}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-3 py-2 bg-rose-600/20 hover:bg-rose-500/30 text-rose-400 rounded-lg text-sm font-medium transition-colors"
+            onClick={handleDeleteProject}
+            className="flex items-center gap-2 px-3 py-2 bg-rose-600/20 hover:bg-rose-500/30 text-rose-400 rounded-lg text-sm font-medium transition-colors cursor-pointer"
           >
             <Trash2 className="h-4 w-4" />
             <span>Supprimer</span>
