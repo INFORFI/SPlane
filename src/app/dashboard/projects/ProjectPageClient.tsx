@@ -20,12 +20,9 @@ import {
 import { ProjectWithTasks } from '@/action/projects/getProjects';
 import { Task } from '@prisma/client';
 import { itemVariants, containerVariants } from '@/utils/ItemVariants';
-import { deleteProject } from '@/action/projects/deleteProject';
 import DeleteProjectModal from '@/components/projects/DeleteProjectModal';
-import { toast } from 'react-toastify';
 
 export default function ProjectsPage({ projects }: { projects: ProjectWithTasks[] }) {
-  const [isCreatingProject, setIsCreatingProject] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState<string | null>(null);
 
@@ -65,10 +62,6 @@ export default function ProjectsPage({ projects }: { projects: ProjectWithTasks[
     return matchesSearch && matchesStatus;
   });
 
-  const handleCreateProject = () => {
-    setIsCreatingProject(true);
-  };
-
   const getDaysLeft = (endDate: Date) => {
     const today = new Date();
     const diffTime = endDate.getTime() - today.getTime();
@@ -97,15 +90,16 @@ export default function ProjectsPage({ projects }: { projects: ProjectWithTasks[
           <p className="text-zinc-400">Gérez vos projets et suivez leur progression</p>
         </div>
 
-        <motion.button
-          onClick={handleCreateProject}
-          className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Plus className="h-4 w-4" />
-          Nouveau projet
-        </motion.button>
+        <Link href="/dashboard/projects/create">
+          <motion.button
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors cursor-pointer"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Plus className="h-4 w-4" />
+            Nouveau projet
+          </motion.button>
+        </Link>
       </div>
 
       {/* Search and filters */}
@@ -146,111 +140,6 @@ export default function ProjectsPage({ projects }: { projects: ProjectWithTasks[
         </div>
       </motion.div>
 
-      {/* Create project form */}
-      {isCreatingProject && (
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-          transition={{ duration: 0.3 }}
-          className="p-6 bg-zinc-900 border border-zinc-800 rounded-xl shadow-lg"
-        >
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold text-white">Créer un nouveau projet</h2>
-            <button
-              onClick={() => setIsCreatingProject(false)}
-              className="text-zinc-400 hover:text-zinc-200"
-            >
-              <XCircle className="h-5 w-5" />
-            </button>
-          </div>
-
-          <form className="space-y-4">
-            <div>
-              <label htmlFor="projectName" className="block text-sm font-medium text-zinc-300 mb-1">
-                Nom du projet
-              </label>
-              <input
-                id="projectName"
-                type="text"
-                placeholder="Saisissez le nom du projet"
-                className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="projectDescription"
-                className="block text-sm font-medium text-zinc-300 mb-1"
-              >
-                Description
-              </label>
-              <textarea
-                id="projectDescription"
-                rows={3}
-                placeholder="Décrivez votre projet"
-                className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              ></textarea>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="startDate" className="block text-sm font-medium text-zinc-300 mb-1">
-                  Date de début
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <CalendarDays className="h-5 w-5 text-zinc-500" />
-                  </div>
-                  <input
-                    id="startDate"
-                    type="date"
-                    className="w-full pl-10 pr-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label htmlFor="endDate" className="block text-sm font-medium text-zinc-300 mb-1">
-                  Date de fin
-                </label>
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <CalendarDays className="h-5 w-5 text-zinc-500" />
-                  </div>
-                  <input
-                    id="endDate"
-                    type="date"
-                    className="w-full pl-10 pr-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <div className="flex justify-end gap-3 pt-4">
-              <motion.button
-                type="button"
-                onClick={() => setIsCreatingProject(false)}
-                className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Annuler
-              </motion.button>
-
-              <motion.button
-                type="submit"
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Créer le projet
-              </motion.button>
-            </div>
-          </form>
-        </motion.div>
-      )}
-
       {/* Project grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProjects.map(project => (
@@ -279,15 +168,16 @@ export default function ProjectsPage({ projects }: { projects: ProjectWithTasks[
               : "Vous n'avez pas encore de projets. Commencez par en créer un nouveau."}
           </p>
           {!searchQuery && !filterStatus && (
-            <motion.button
-              onClick={handleCreateProject}
-              className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Plus className="h-4 w-4" />
-              Nouveau projet
-            </motion.button>
+            <Link href="/dashboard/projects/create">
+              <motion.button
+                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors cursor-pointer"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Plus className="h-4 w-4" />
+                Nouveau projet
+              </motion.button>
+            </Link>
           )}
         </motion.div>
       )}
@@ -430,7 +320,7 @@ function ProjectCard({ project, formatDate, getDaysLeft }: ProjectCardProps) {
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="p-1.5 rounded-md hover:bg-zinc-800 text-zinc-400 hover:text-indigo-400 transition-colors"
+              className="p-1.5 rounded-md hover:bg-zinc-800 text-zinc-400 hover:text-indigo-400 transition-colors cursor-not-allowed"
             >
               <Edit className="h-4 w-4" />
             </motion.button>
@@ -440,7 +330,7 @@ function ProjectCard({ project, formatDate, getDaysLeft }: ProjectCardProps) {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={handleDeleteProject}
-            className="p-1.5 rounded-md hover:bg-zinc-800 text-zinc-400 hover:text-rose-400 transition-colors"
+            className="p-1.5 rounded-md hover:bg-zinc-800 text-zinc-400 hover:text-rose-400 transition-colors cursor-pointer"
           >
             <Trash2 className="h-4 w-4" />
           </motion.button>
