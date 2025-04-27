@@ -50,13 +50,13 @@ export async function deleteProject(projectId: string | number): Promise<DeleteP
     if (project.ownerId !== userId) {
       return {
         success: false,
-        message: 'Vous n\'êtes pas autorisé à supprimer ce projet',
+        message: "Vous n'êtes pas autorisé à supprimer ce projet",
         error: 'FORBIDDEN',
       };
     }
 
     // Utiliser une transaction pour garantir l'intégrité des données
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async tx => {
       // 1. Supprimer d'abord les associations userTask pour toutes les tâches du projet
       await tx.userTask.deleteMany({
         where: {
@@ -91,7 +91,7 @@ export async function deleteProject(projectId: string | number): Promise<DeleteP
     };
   } catch (error) {
     console.error('Erreur lors de la suppression du projet:', error);
-    
+
     return {
       success: false,
       message: 'Une erreur est survenue lors de la suppression du projet',

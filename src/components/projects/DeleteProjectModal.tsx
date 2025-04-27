@@ -25,10 +25,10 @@ export default function DeleteProjectModal({
 
   const handleDelete = async () => {
     setIsDeleting(true);
-    
+
     try {
       const result = await deleteProject(projectId);
-      
+
       if (result.success) {
         toast.success(result.message);
         onClose();
@@ -59,7 +59,7 @@ export default function DeleteProjectModal({
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
         className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 w-full max-w-md"
-        onClick={(e) => e.stopPropagation()}
+        onClick={e => e.stopPropagation()}
       >
         <div className="flex items-start justify-between mb-6">
           <div className="flex items-center gap-3 text-rose-500">
@@ -77,13 +77,14 @@ export default function DeleteProjectModal({
 
         <div className="space-y-4">
           <p className="text-zinc-300">
-            Êtes-vous sûr de vouloir supprimer le projet <span className="font-semibold text-white">{projectName}</span> ?
+            Êtes-vous sûr de vouloir supprimer le projet{' '}
+            <span className="font-semibold text-white">{projectName}</span> ?
           </p>
-          
+
           <div className="bg-rose-500/10 border border-rose-500/20 rounded-lg p-4 text-sm text-rose-300">
             <p>
-              <strong>Attention :</strong> Cette action est irréversible et supprimera également toutes
-              les tâches associées à ce projet.
+              <strong>Attention :</strong> Cette action est irréversible et supprimera également
+              toutes les tâches associées à ce projet.
             </p>
           </div>
 
