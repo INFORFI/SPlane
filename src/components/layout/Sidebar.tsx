@@ -90,9 +90,9 @@ export default function Sidebar() {
         ))}
 
         {/* Quick add button */}
-        <div className="px-3 mt-6">
+        <Link href="/dashboard/projects/create" className="px-3 mt-6">
           <motion.button
-            className={`flex items-center gap-2 w-full rounded-md p-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-colors ${isCollapsed ? 'justify-center' : 'justify-between'}`}
+            className={`flex items-center gap-2 w-full rounded-md p-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-colors cursor-pointer ${isCollapsed ? 'justify-center' : 'justify-between'}`}
             whileTap={{ scale: 0.97 }}
           >
             <div className="flex items-center gap-2">
@@ -101,17 +101,17 @@ export default function Sidebar() {
                 {!isCollapsed && (
                   <motion.span
                     initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -10 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    New Project
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -10 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      New Project
                   </motion.span>
                 )}
               </AnimatePresence>
             </div>
           </motion.button>
-        </div>
+        </Link>
       </div>
 
       {/* Bottom navigation */}
