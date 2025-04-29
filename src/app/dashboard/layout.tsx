@@ -3,13 +3,15 @@ import { Bell, User, LogOut } from 'lucide-react';
 import Sidebar from '@/components/layout/Sidebar';
 import { logout } from '@/action/auth/logout';
 import { redirect } from 'next/navigation';
+import { getUserLoggedIn } from '@/action/users/getUserLoggedIn';
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
 
+  const user = await getUserLoggedIn();
 
   async function handleLogout() {
     "use server";
@@ -42,8 +44,8 @@ export default function DashboardLayout({
 
             <div className="flex items-center gap-3">
               <div className="flex flex-col items-end">
-                <span className="text-sm font-medium text-zinc-200">Admin User</span>
-                <span className="text-xs text-zinc-400">admin@splane.com</span>
+                <span className="text-sm font-medium text-zinc-200">{user?.fullName}</span>
+                <span className="text-xs text-zinc-400">{user?.email}</span>
               </div>
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-white">
                 <User className="h-5 w-5" />
