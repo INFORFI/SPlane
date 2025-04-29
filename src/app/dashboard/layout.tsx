@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bell, User, LogOut } from 'lucide-react';
+import { User, LogOut } from 'lucide-react';
 import Sidebar from '@/components/layout/Sidebar';
 import { logout } from '@/action/auth/logout';
 import { redirect } from 'next/navigation';

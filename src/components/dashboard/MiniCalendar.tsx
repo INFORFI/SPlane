@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ArrowRight, Loader2, XCircle, Filter, User } from 'lucide-react';
+import { ArrowRight, Loader2, XCircle, User } from 'lucide-react';
 import { useState, useTransition } from 'react';
 import { itemVariants } from '@/utils/ItemVariants';
 import type { CalendarData, CalendarEvent } from '@/app/dashboard/CalendarEvents';

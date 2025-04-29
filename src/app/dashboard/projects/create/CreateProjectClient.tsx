@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowLeft, Calendar, Save, Users, X, CheckCircle2, AlertCircle } from 'lucide-react';
+import { ArrowLeft, Calendar, Save, Users, CheckCircle2, AlertCircle } from 'lucide-react';
 import { User } from '@prisma/client';
 import { createProject } from '@/action/projects/createProject';
 import TeamMember from '@/components/dashboard/TeamMembers/TeamMember';

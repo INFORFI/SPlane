@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import HomepageClient from './HomepageClient';
 import { prisma } from '@/lib/prisma';
-import { TaskStatus } from '@prisma/client';
+import { TaskStatus, Task } from '@prisma/client';
 import { getCalendarData } from './CalendarEvents';
 
 // Définir le type pour les données du tableau de bord
@@ -151,7 +151,7 @@ async function Homepage() {
 }
 
 // Fonctions utilitaires
-function calculateProjectProgress(tasks: any[]): number {
+function calculateProjectProgress(tasks: Task[]): number {
   if (!tasks || tasks.length === 0) return 0;
 
   const completedTasks = tasks.filter(task => task.status === TaskStatus.COMPLETED).length;
