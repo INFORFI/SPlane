@@ -7,19 +7,17 @@ services:
       dockerfile: Dockerfile
       target: production
     ports:
-      - '3000:3000'
+      - '3205:3000'
     environment:
       - NODE_ENV=production
       - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/nextjs_prod
     depends_on:
-      db:
-        condition: service_healthy
+      db-setup:
+        condition: service_completed_successfully
     restart: always
 
   db:
     image: postgres:16-alpine
-    ports:
-      - '5432:5432'
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
@@ -33,21 +31,8 @@ services:
       timeout: 5s
       retries: 5
 
-  # Prisma service for migrations
-  prisma-migrate:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: development
-    environment:
-      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/nextjs_prod
-    depends_on:
-      db:
-        condition: service_healthy
-    command: npx prisma migrate deploy --schema=./prisma/schema.prisma
-
-  # Create admin user service
-  create-admin:
+  # Combined service for database setup
+  db-setup:
     build:
       context: .
       dockerfile: Dockerfile
@@ -58,22 +43,14 @@ services:
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
       - ADMIN_FULL_NAME=${ADMIN_FULL_NAME}
     depends_on:
-      prisma-migrate:
-        condition: service_completed_successfully
-    command: npx prisma db seed
-
-  # Nginx reverse proxy for production
-  nginx:
-    image: nginx:alpine
-    ports:
-      - '80:80'
-      - '443:443'
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d
-      - ./nginx/ssl:/etc/nginx/ssl
-    depends_on:
-      - app
-    restart: always
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "
+        npx prisma migrate deploy --schema=./prisma/schema.prisma &&
+        npx prisma generate &&
+        npx prisma db seed
+      "
 
 volumes:
   postgres_data_prod:

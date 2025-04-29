@@ -286,9 +286,6 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
                   className={`w-full pl-10 pr-4 py-2.5 bg-zinc-800 border ${errors.endDate ? 'border-rose-500' : 'border-zinc-700'} rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
                 />
                 {errors.endDate && <p className="text-rose-500 text-xs mt-1">{errors.endDate}</p>}
-                <p className="text-zinc-500 text-xs mt-1">
-                  Optionnel - Laissez vide pour un projet sans date de fin
-                </p>
               </div>
             </div>
           </div>
