@@ -37,10 +37,12 @@ export default async function DashboardLayout({
 
           {/* User actions */}
           <div className="flex items-center gap-4">
+            {/*
             <button className="p-2 rounded-md text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-colors relative">
               <Bell className="h-5 w-5" />
               <span className="absolute top-1 right-1 w-2 h-2 bg-indigo-500 rounded-full"></span>
             </button>
+            */}
 
             <div className="flex items-center gap-3">
               <div className="flex flex-col items-end">

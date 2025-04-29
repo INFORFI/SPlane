@@ -129,14 +129,6 @@ export default function ProjectsPage({ projects }: { projects: ProjectWithTasks[
             <option value="completed">Terminé</option>
           </select>
 
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors"
-          >
-            <Filter className="h-4 w-4" />
-            Plus de filtres
-          </motion.button>
         </div>
       </motion.div>
 
@@ -220,6 +212,7 @@ function ProjectCard({ project, formatDate, getDaysLeft }: ProjectCardProps) {
             </Link>
           </h3>
 
+          {/* 
           <div className="dropdown-wrapper relative">
             <motion.button
               whileHover={{ scale: 1.1 }}
@@ -229,6 +222,7 @@ function ProjectCard({ project, formatDate, getDaysLeft }: ProjectCardProps) {
               <MoreHorizontal className="h-5 w-5" />
             </motion.button>
           </div>
+          */}
         </div>
 
         <p className="text-zinc-400 text-sm line-clamp-2 mb-4">{project.description}</p>
