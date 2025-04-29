@@ -5,16 +5,29 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Clean up existing data
-  await prisma.userTask.deleteMany();
-  await prisma.task.deleteMany();
-  await prisma.project.deleteMany();
-  await prisma.user.deleteMany();
+  if (process.env.NODE_ENV !== 'production') {
+    await prisma.userTask.deleteMany();
+    await prisma.task.deleteMany();
+    await prisma.project.deleteMany();
+    await prisma.user.deleteMany();
+  }
 
-  console.log('Seeding the database...');
+  console.log('🌱 Seeding the database...');
 
   // Create users
   const adminPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD as string, 10);
   const userPassword = await bcrypt.hash('user123', 10);
+
+  const adminExists = await prisma.user.findUnique({
+    where: {
+      email: process.env.ADMIN_EMAIL as string,
+    },
+  });
+
+  if (adminExists) {
+    console.log('🔑 Admin user already exists. Skipping user creation.');
+    return;
+  }
 
   const admin = await prisma.user.create({
     data: {
@@ -24,6 +37,12 @@ async function main() {
       role: Role.ADMIN,
     },
   });
+
+  if (process.env.NODE_ENV === 'production') {
+    console.log('🔑 Production environment detected. Skipping user creation.');
+    console.log('👑 Admin user created:', admin.email);
+    return;
+  }
 
   const user1 = await prisma.user.create({
     data: {
@@ -41,7 +60,7 @@ async function main() {
     },
   });
 
-  console.log('Created users');
+  console.log('👤 Created users');
 
   // Create a project
   const projectOne = await prisma.project.create({
@@ -64,7 +83,7 @@ async function main() {
     },
   });
 
-  console.log('Created projects');
+  console.log('🏗️ Created projects');
 
   // Create tasks for project one
   const taskOne = await prisma.task.create({
@@ -101,7 +120,7 @@ async function main() {
     },
   });
 
-  console.log('Created tasks');
+  console.log('🔨 Created tasks');
 
   // Assign tasks to users
   await prisma.userTask.create({
@@ -125,9 +144,9 @@ async function main() {
     },
   });
 
-  console.log('Assigned tasks to users');
+  console.log('🔄 Assigned tasks to users');
 
-  console.log('Database seeded successfully');
+  console.log('🌳 Database seeded successfully');
 }
 
 main()

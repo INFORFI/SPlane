@@ -57,6 +57,7 @@ services:
     volumes:
       - .:/app
     environment:
+      - NODE_ENV=development
       - DATABASE_URL=postgresql://postgres:postgres@db:5432/nextjs_dev
     depends_on:
       prisma-migrate:
