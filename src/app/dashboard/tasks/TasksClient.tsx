@@ -200,7 +200,7 @@ export default function TasksClient({ tasks }: TasksClientProps) {
           <p className="text-zinc-400">Manage and track your assigned tasks</p>
         </motion.div>
 
-        <Link href="/dashboard/tasks/add">
+        <Link href="/dashboard/tasks/create">
           <motion.button
             variants={itemVariants}
             whileHover={{ scale: 1.05 }}
@@ -461,7 +461,7 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                   demandez à votre équipe de vous assigner des tâches.
                 </p>
                 <Link
-                  href="/dashboard/tasks/add"
+                  href="/dashboard/tasks/create"
                   className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm transition-colors flex items-center gap-2"
                 >
                   <Plus className="h-4 w-4" />

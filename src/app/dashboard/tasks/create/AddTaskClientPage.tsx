@@ -15,19 +15,13 @@ import {
   User,
   X,
 } from 'lucide-react';
-import { TaskStatus } from '@prisma/client';
-
+import { TaskStatus, User as UserType } from '@prisma/client';
+import TeamMember from '@/components/dashboard/TeamMembers/TeamMember';
 import { containerVariants, itemVariants } from '@/utils/ItemVariants';
 import { createTask } from '@/action/tasks/createTask';
 import { toast } from 'react-toastify';
 
 // Define types based on your Prisma schema
-type User = {
-  id: number;
-  email: string;
-  fullName: string;
-};
-
 type Project = {
   id: number;
   name: string;
@@ -41,7 +35,7 @@ const NewTaskPage = ({
   projectId = null,
 }: {
   projects: Project[];
-  users: User[];
+  users: UserType[];
   projectId?: number | null;
 }) => {
   // Task form state
@@ -339,79 +333,11 @@ const NewTaskPage = ({
           </div>
 
           {/* Assignees field */}
-          <div className="space-y-2">
-            <label className="block text-sm font-medium text-zinc-300">Assignés</label>
-
-            <div className="relative">
-              <div
-                className="flex flex-wrap gap-2 min-h-10 p-2 bg-zinc-800 border border-zinc-700 rounded-lg cursor-pointer"
-                onClick={() => setIsAssigneesOpen(!isAssigneesOpen)}
-              >
-                {formData.assignees.length > 0 ? (
-                  formData.assignees.map(userId => {
-                    const user = users.find(u => u.id === userId);
-                    return user ? (
-                      <div
-                        key={user.id}
-                        className="flex items-center gap-1 bg-indigo-500/20 text-indigo-400 px-2 py-1 rounded-full text-sm"
-                      >
-                        <span>{user.fullName}</span>
-                        <button
-                          type="button"
-                          onClick={e => {
-                            e.stopPropagation();
-                            toggleAssignee(user.id);
-                          }}
-                          className="text-indigo-400 hover:text-indigo-300"
-                        >
-                          <X className="h-3 w-3" />
-                        </button>
-                      </div>
-                    ) : null;
-                  })
-                ) : (
-                  <div className="text-zinc-500 py-1">Aucun utilisateur assigné</div>
-                )}
-              </div>
-
-              {isAssigneesOpen && (
-                <div className="absolute z-10 mt-1 w-full bg-zinc-800 border border-zinc-700 rounded-lg shadow-lg max-h-60 overflow-y-auto">
-                  {users.length > 0 ? (
-                    <div className="p-2">
-                      {users.map(user => (
-                        <div
-                          key={user.id}
-                          className={`flex items-center justify-between px-3 py-2 rounded-md cursor-pointer ${
-                            formData.assignees.includes(user.id)
-                              ? 'bg-indigo-500/20 text-indigo-400'
-                              : 'hover:bg-zinc-700/50 text-zinc-300'
-                          }`}
-                          onClick={() => toggleAssignee(user.id)}
-                        >
-                          <div className="flex items-center gap-2">
-                            <div className="h-6 w-6 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs">
-                              {user.fullName
-                                .split(' ')
-                                .map(n => n[0])
-                                .join('')}
-                            </div>
-                            <span>{user.fullName}</span>
-                          </div>
-                          {formData.assignees.includes(user.id) && (
-                            <CheckCircle2 className="h-4 w-4" />
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="p-4 text-center text-zinc-500">
-                      Aucun utilisateur disponible
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
+          <TeamMember
+            users={users}
+            formData={{...formData, teamMembers: formData.assignees}}
+            toggleTeamMember={toggleAssignee}
+          />
 
           {/* General error message */}
           {errors.submit && (
@@ -548,7 +474,7 @@ const NewTaskPage = ({
                       >
                         {user.fullName
                           .split(' ')
-                          .map(n => n[0])
+                          .map((n: string) => n[0])
                           .join('')}
                       </div>
                     ) : null;
