@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { User } from '@prisma/client';
-import { createPortal } from 'react-dom';
 import { CheckCircle2 } from 'lucide-react';
 
 export default function TeamMembersDropdown({
@@ -93,7 +92,7 @@ export default function TeamMembersDropdown({
           ))
         ) : (
           <div className="px-3 py-2 text-zinc-500 text-center">
-            No members found matching "{searchTerm}"
+            Aucun membre trouvé correspondant à &quot;{searchTerm}&quot;
           </div>
         )}
       </div>

@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Plus, 
   Search, 
-  Filter, 
   User as UserIcon, 
   Mail, 
   Calendar, 
@@ -13,11 +12,8 @@ import {
   MoreHorizontal, 
   Edit, 
   Trash2, 
-  CheckCircle2,
-  AlertCircle,
-  X
 } from 'lucide-react';
-import { User, Role } from '@prisma/client';
+import { User } from '@prisma/client';
 import { toast } from 'react-toastify';
 import AddUserModal from './AddUserModal';
 import DeleteUserModal from './DeleteUserModal';

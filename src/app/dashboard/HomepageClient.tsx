@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Users, Layers, CheckCircle, AlertCircle, Plus, Filter, ArrowRight } from 'lucide-react';
+import { Users, Layers, CheckCircle, AlertCircle, Plus, ArrowRight } from 'lucide-react';
 
 import StatCard from '@/components/dashboard/StatCard';
 import ProjectCard from '@/components/dashboard/ProjectCard';
@@ -134,7 +134,7 @@ export default function HomepageClient({ dashboardData, calendarData }: Dashboar
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {dashboardData.projects.map((project, index) => (
+              {dashboardData.projects.map((project) => (
                 <Link href={`/dashboard/projects/${project.id}`} key={project.id}>
                   <ProjectCard project={project} />
                 </Link>
@@ -156,7 +156,7 @@ export default function HomepageClient({ dashboardData, calendarData }: Dashboar
             </div>
 
             <div className="space-y-1">
-              {dashboardData.tasks.map((task, index) => (
+              {dashboardData.tasks.map((task) => (
                 <TaskItem key={task.id} task={task} />
               ))}
             </div>

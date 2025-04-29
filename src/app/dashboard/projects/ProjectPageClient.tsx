@@ -6,14 +6,10 @@ import Link from 'next/link';
 import {
   Plus,
   Search,
-  Filter,
   Clock,
-  CalendarDays,
   Trash2,
   Edit,
-  MoreHorizontal,
   Users,
-  XCircle,
   CalendarClock,
   Layers,
 } from 'lucide-react';

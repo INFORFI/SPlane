@@ -9,7 +9,9 @@ export default function TeamMember({
   toggleTeamMember,
 }: {
   users: User[];
-  formData: any;
+  formData: {
+    teamMembers: number[];
+  };
   toggleTeamMember: (userId: number) => void;
 }) {
   const [isTeamSelectOpen, setIsTeamSelectOpen] = useState(false);
@@ -62,7 +64,7 @@ export default function TeamMember({
         />
       </div>
       <p className="text-zinc-500 text-xs mt-1">
-        Team members will have access to the project but won't be assigned tasks automatically
+        Les membres du projet auront accès au projet mais ne seront pas assignés automatiquement aux tâches
       </p>
     </div>
   );

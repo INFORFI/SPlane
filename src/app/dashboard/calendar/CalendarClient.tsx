@@ -8,7 +8,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Plus,
-  Filter,
   Clock,
   User,
   CheckCircle2,

@@ -13,7 +13,6 @@ import {
   Layers,
   Save,
   User,
-  X,
 } from 'lucide-react';
 import { TaskStatus, User as UserType } from '@prisma/client';
 import TeamMember from '@/components/dashboard/TeamMembers/TeamMember';
@@ -53,7 +52,6 @@ const NewTaskPage = ({
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccessMessage] = useState(false);
-  const [isAssigneesOpen, setIsAssigneesOpen] = useState(false);
 
   // Handle input changes
   const handleChange = (

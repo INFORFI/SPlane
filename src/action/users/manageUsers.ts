@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 import { requireAuth } from '@/lib/auth';
 import { Role } from '@prisma/client';
 import { hash } from 'bcryptjs';
+import { Prisma } from '@prisma/client';
 
 // Type for creating a new user
 type CreateUserInput = {
@@ -154,7 +155,7 @@ export async function updateUser(input: UpdateUserInput): Promise<UserOperationR
     }
 
     // Prepare update data
-    const updateData: any = {
+    const updateData: Prisma.UserUpdateInput = {
       email: input.email,
       fullName: input.fullName,
       role: input.role
