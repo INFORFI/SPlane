@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ArrowLeft,
-  Edit,
   Trash2,
   Calendar,
   Clock,
@@ -14,7 +13,6 @@ import {
   CheckCircle2,
   MessageSquare,
   Plus,
-  Filter,
   MoreHorizontal,
 } from 'lucide-react';
 import { ProjectWithDetails } from '@/action/projects/getProjectById';
@@ -113,18 +111,6 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
         </div>
 
         <div className="flex gap-2">
-          <Link href={`/dashboard/projects/${project.id}/edit`}>
-            <motion.button
-              variants={itemVariants}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors cursor-pointer"
-            >
-              <Edit className="h-4 w-4" />
-              <span>Modifier</span>
-            </motion.button>
-          </Link>
-
           <motion.button
             variants={itemVariants}
             whileHover={{ scale: 1.05 }}
@@ -234,9 +220,6 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
           <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-semibold text-white">Équipe</h2>
-              <button className="text-indigo-400 hover:text-indigo-300 transition-colors text-sm">
-                <Plus className="h-4 w-4" />
-              </button>
             </div>
 
             <div className="space-y-3">
@@ -276,24 +259,16 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
               <h2 className="text-lg font-semibold text-white">Tâches</h2>
 
               <div className="flex gap-2">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-2 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors"
-                >
-                  <Filter className="h-4 w-4" />
-                  <span>Filtrer</span>
-                </motion.button>
-
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setShowAddTask(true)}
-                  className="flex items-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors"
+                <Link href={`/dashboard/tasks/create`}>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors cursor-pointer"
                 >
                   <Plus className="h-4 w-4" />
-                  <span>Nouvelle tâche</span>
-                </motion.button>
+                    <span>Nouvelle tâche</span>
+                  </motion.button>
+                </Link>
               </div>
             </div>
 
@@ -381,15 +356,16 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                         }".`
                       : "Aucune tâche n'a été créée pour ce projet."}
                   </p>
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setShowAddTask(true)}
-                    className="flex items-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors mx-auto"
-                  >
-                    <Plus className="h-4 w-4" />
-                    <span>Créer une tâche</span>
-                  </motion.button>
+                  <Link href={`/dashboard/tasks/create`} className="cursor-default">
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors mx-auto cursor-pointer"
+                    >
+                      <Plus className="h-4 w-4" />
+                      <span>Créer une tâche</span>
+                    </motion.button>
+                  </Link>
                 </motion.div>
               )}
             </AnimatePresence>

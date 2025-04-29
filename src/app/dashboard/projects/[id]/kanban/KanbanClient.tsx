@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Plus, MoreHorizontal, Clock, ArrowLeft, Filter } from 'lucide-react';
+import { Plus, MoreHorizontal, Clock, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { TaskStatus, Task, User as UserType, UserTask } from '@prisma/client';
 import { ProjectWithDetails } from '@/action/projects/getProjectById';
@@ -186,23 +186,16 @@ export default function KanbanPage({ project }: KanbanProps) {
         </div>
 
         <div className="flex gap-2">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors"
-          >
-            <Filter className="h-4 w-4" />
-            <span>Filtrer</span>
-          </motion.button>
-
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors"
-          >
-            <Plus className="h-4 w-4" />
-            <span>Nouvelle tâche</span>
-          </motion.button>
+          <Link href={`/dashboard/tasks/create`}>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors cursor-pointer"
+            >
+              <Plus className="h-4 w-4" />
+              <span>Nouvelle tâche</span>
+            </motion.button>
+          </Link>
         </div>
       </div>
 

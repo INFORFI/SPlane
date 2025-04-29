@@ -26,7 +26,7 @@ export const createTask = async (input: CreateTaskInput) => {
         description: input.description || null,
         deadline: input.deadline ? new Date(input.deadline) : null,
         status: input.status,
-        priority: input.priority,
+        priority: Number(input.priority),
         projectId: projectId,
       },
     });

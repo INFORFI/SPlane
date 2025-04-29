@@ -4,7 +4,7 @@ WORKDIR /app
 # Base de développement pour dépendances et build
 FROM base AS deps
 COPY package.json package-lock.json* ./
-RUN npm ci
+RUN npm install
 
 # Image de développement
 FROM base AS development
@@ -18,6 +18,8 @@ CMD ["npm", "run", "dev"]
 FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# Générer Prisma lors du build
+RUN npx prisma generate
 RUN npm run build
 
 # Image de production
@@ -28,6 +30,9 @@ WORKDIR /app
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
+# Copier les fichiers générés par Prisma
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+COPY --from=builder /app/node_modules/@prisma ./node_modules/@prisma
 
 EXPOSE 3000
 
