@@ -362,7 +362,7 @@ const NewTaskPage = ({
           <motion.button
             type="submit"
             disabled={isSubmitting}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
             whileHover={{ scale: isSubmitting ? 1 : 1.03 }}
             whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
           >

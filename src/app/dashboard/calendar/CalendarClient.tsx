@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Calendar as CalendarIcon,
@@ -221,25 +222,17 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
         </motion.div>
 
         <div className="flex gap-2">
-          <motion.button
-            variants={itemVariants}
-            className="flex items-center gap-2 px-3 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Filter className="h-4 w-4" />
-            <span>Filtrer</span>
-          </motion.button>
-
-          <motion.button
-            variants={itemVariants}
-            className="flex items-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Plus className="h-4 w-4" />
-            <span>Nouvelle tâche</span>
-          </motion.button>
+          <Link href="/dashboard/tasks/create">
+            <motion.button
+              variants={itemVariants}
+              className="flex items-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors cursor-pointer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Plus className="h-4 w-4" />
+              <span>Nouvelle tâche</span>
+            </motion.button>
+          </Link>
         </div>
       </div>
 
