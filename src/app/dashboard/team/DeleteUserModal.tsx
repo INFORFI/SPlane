@@ -58,7 +58,7 @@ export default function DeleteUserModal({ user, isOpen, onClose }: DeleteUserMod
           <h3 className="text-xl font-semibold">Supprimer un membre</h3>
           <button
             onClick={onClose}
-            className="ml-auto text-zinc-400 hover:text-zinc-300 transition-colors"
+            className="ml-auto text-zinc-400 hover:text-zinc-300 transition-colors cursor-pointer"
             disabled={isDeleting}
           >
             <X className="h-5 w-5" />
@@ -82,7 +82,7 @@ export default function DeleteUserModal({ user, isOpen, onClose }: DeleteUserMod
               type="button"
               onClick={onClose}
               disabled={isDeleting}
-              className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors"
+              className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors cursor-pointer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -93,7 +93,7 @@ export default function DeleteUserModal({ user, isOpen, onClose }: DeleteUserMod
               type="button"
               onClick={handleDelete}
               disabled={isDeleting}
-              className="flex items-center gap-2 px-4 py-2 bg-rose-600 hover:bg-rose-700 rounded-lg text-sm font-medium text-white transition-colors"
+              className="flex items-center gap-2 px-4 py-2 bg-rose-600 hover:bg-rose-700 rounded-lg text-sm font-medium text-white transition-colors cursor-pointer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
