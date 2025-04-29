@@ -37,6 +37,7 @@ export default function Sidebar() {
       badge: 5,
     },
     { name: 'Calendar', href: '/dashboard/calendar', icon: <Calendar className="h-5 w-5" /> },
+    { name: 'Team', href: '/dashboard/team', icon: <Users className="h-5 w-5" /> },
   ];
 
   const bottomNavItems: NavItem[] = [

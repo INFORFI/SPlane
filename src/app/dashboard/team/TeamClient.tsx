@@ -276,7 +276,7 @@ function TeamMemberCard({
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setShowActions(!showActions)}
-                className="p-2 rounded-md hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors"
+                className="p-2 rounded-md hover:bg-zinc-800 text-zinc-400 hover:text-white transition-colors cursor-pointer"
               >
                 <MoreHorizontal className="h-5 w-5" />
               </motion.button>
@@ -294,7 +294,7 @@ function TeamMemberCard({
                         setShowActions(false);
                         onEdit(user);
                       }}
-                      className="w-full flex items-center gap-2 px-3 py-2 text-sm text-zinc-200 hover:bg-zinc-700 transition-colors"
+                      className="w-full flex items-center gap-2 px-3 py-2 text-sm text-zinc-200 hover:bg-zinc-700 transition-colors cursor-pointer"
                     >
                       <Edit className="h-4 w-4" />
                       <span>Modifier</span>
@@ -304,7 +304,7 @@ function TeamMemberCard({
                         setShowActions(false);
                         onDelete(user);
                       }}
-                      className="w-full flex items-center gap-2 px-3 py-2 text-sm text-rose-400 hover:bg-zinc-700 transition-colors"
+                      className="w-full flex items-center gap-2 px-3 py-2 text-sm text-rose-400 hover:bg-zinc-700 transition-colors cursor-pointer"
                     >
                       <Trash2 className="h-4 w-4" />
                       <span>Supprimer</span>
@@ -339,7 +339,7 @@ function TeamMemberCard({
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="text-zinc-400 hover:text-indigo-400 transition-colors"
+              className="text-zinc-400 hover:text-indigo-400 transition-colors cursor-not-allowed"
             >
               <Mail className="h-5 w-5" />
             </motion.button>
@@ -351,7 +351,7 @@ function TeamMemberCard({
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => onEdit(user)}
-                className="p-1.5 rounded-md hover:bg-zinc-800 text-zinc-400 hover:text-indigo-400 transition-colors"
+                className="p-1.5 rounded-md hover:bg-zinc-800 text-zinc-400 hover:text-indigo-400 transition-colors cursor-pointer"
               >
                 <Edit className="h-4 w-4" />
               </motion.button>
@@ -360,7 +360,7 @@ function TeamMemberCard({
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => onDelete(user)}
-                className="p-1.5 rounded-md hover:bg-zinc-800 text-zinc-400 hover:text-rose-400 transition-colors"
+                className="p-1.5 rounded-md hover:bg-zinc-800 text-zinc-400 hover:text-rose-400 transition-colors cursor-pointer"
               >
                 <Trash2 className="h-4 w-4" />
               </motion.button>

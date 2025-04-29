@@ -187,7 +187,7 @@ export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProp
           </h2>
           <button
             onClick={onClose}
-            className="text-zinc-400 hover:text-zinc-300 transition-colors"
+            className="text-zinc-400 hover:text-zinc-300 transition-colors cursor-pointer"
             disabled={isSubmitting}
           >
             <X className="h-5 w-5" />
@@ -287,7 +287,7 @@ export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProp
                   name="role"
                   value={formData.role}
                   onChange={handleChange}
-                  className="w-full pl-10 pr-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full pl-10 pr-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent cursor-pointer"
                   disabled={isSubmitting}
                 >
                   <option value={Role.USER}>Utilisateur</option>
@@ -361,7 +361,7 @@ export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProp
                 type="button"
                 onClick={onClose}
                 disabled={isSubmitting}
-                className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors"
+                className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors cursor-pointer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -371,7 +371,7 @@ export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProp
               <motion.button
                 type="submit"
                 disabled={isSubmitting}
-                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors disabled:opacity-70"
+                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors disabled:opacity-70 cursor-pointer"
                 whileHover={{ scale: isSubmitting ? 1 : 1.05 }}
                 whileTap={{ scale: isSubmitting ? 1 : 0.95 }}
               >
