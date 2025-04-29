@@ -1,4 +1,4 @@
-import { PrismaClient, TaskStatus } from '@prisma/client';
+import { PrismaClient, TaskStatus, Role } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
@@ -21,6 +21,7 @@ async function main() {
       email: process.env.ADMIN_EMAIL as string,
       passwordHash: adminPassword,
       fullName: process.env.ADMIN_FULL_NAME as string,
+      role: Role.ADMIN,
     },
   });
 
