@@ -1,13 +1,22 @@
-// src/app/(dashboard)/layout.tsx
 import React from 'react';
-import { Bell, User } from 'lucide-react';
+import { Bell, User, LogOut } from 'lucide-react';
 import Sidebar from '@/components/layout/Sidebar';
+import { logout } from '@/action/auth/logout';
+import { redirect } from 'next/navigation';
 
 export default function DashboardLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
+  async function handleLogout() {
+    "use server";
+    await logout();
+    redirect('/login');
+  }
+
   return (
     <div className="flex h-screen bg-zinc-950">
       <Sidebar />
@@ -40,6 +49,12 @@ export default function DashboardLayout({
                 <User className="h-5 w-5" />
               </div>
             </div>
+
+            <form action={handleLogout}>
+              <button type="submit" className="p-2 rounded-md text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer">
+                <LogOut className="h-5 w-5" />
+              </button>
+            </form>
           </div>
         </header>
 
