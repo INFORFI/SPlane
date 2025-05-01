@@ -1,0 +1,90 @@
+name: Update Patchnote
+
+on:
+  pull_request:
+    branches:
+      - dev
+    types: [closed]
+
+jobs:
+  update-patchnote:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev
+          fetch-depth: 0
+          
+      - name: Extract PR information
+        id: pr_info
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_DESCRIPTION="${{ github.event.pull_request.body }}"
+          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
+          
+          if [[ $BRANCH_NAME =~ ^([^/]+)/ ]]; then
+            TYPE="${BASH_REMATCH[1]}"
+          else
+            TYPE="other"
+          fi
+          
+          if [[ $BRANCH_NAME =~ ^[^/]+/(.+)$ ]]; then
+            FEATURE_NAME="${BASH_REMATCH[1]}"
+          else
+            FEATURE_NAME="$BRANCH_NAME"
+          fi
+          
+          echo "type=$TYPE" >> $GITHUB_OUTPUT
+          echo "feature_name=$FEATURE_NAME" >> $GITHUB_OUTPUT
+          echo "pr_title=$PR_TITLE" >> $GITHUB_OUTPUT
+          
+      - name: Update patchnote-draft.json
+        run: |
+          TYPE="${{ steps.pr_info.outputs.type }}"
+          FEATURE_NAME="${{ steps.pr_info.outputs.feature_name }}"
+          PR_TITLE="${{ steps.pr_info.outputs.pr_title }}"
+          
+          case "$TYPE" in
+            feature)
+              SECTION="Nouveautés"
+              ;;
+            fix|bugfix|patch)
+              SECTION="Corrections"
+              ;;
+            chore)
+              SECTION="Améliorations techniques"
+              ;;
+            *)
+              SECTION="Autres changements"
+              ;;
+          esac
+          
+          if [ ! -f "patchnote-draft.json" ]; then
+            echo '{
+              "version": "",
+              "title": "Prochaine mise à jour",
+              "emoji": "✨",
+              "sections": {
+                "Nouveautés": [],
+                "Corrections": [],
+                "Améliorations techniques": [],
+                "Autres changements": []
+              }
+            }' > patchnote-draft.json
+          fi
+          
+          jq --arg section "$SECTION" \
+             --arg feature "$FEATURE_NAME" \
+             --arg description "$PR_TITLE" \
+             '.sections[$section] += [{name: $feature, description: $description}]' \
+             patchnote-draft.json > temp.json && mv temp.json patchnote-draft.json
+          
+      - name: Commit updated patchnote draft
+        run: |
+          git config --local user.email "github-actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add patchnote-draft.json
+          git commit -m "Update patchnote draft with ${{ steps.pr_info.outputs.feature_name }}" || echo "No changes to commit"
+          git push
