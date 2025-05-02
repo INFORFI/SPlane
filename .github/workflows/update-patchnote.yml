@@ -8,7 +8,7 @@ on:
 
 jobs:
   update-patchnote:
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true && !startsWith(github.event.pull_request.head.ref, 'patchnote/')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -92,14 +92,14 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Update patchnote draft with ${{ steps.pr_info.outputs.feature_name }}"
-          title: "Update patchnote draft"
+          commit-message: ":memo: (automated/patchnote): Update patchnote draft with ${{ steps.pr_info.outputs.feature_name }}"
+          title: "[Automated] 🤖 Update patchnote draft"
           body: |
-            Automatically generated PR to update the patchnote draft.
+            🧙‍♂️ Automatically generated PR to update the patchnote draft.
             This PR adds the changes from PR #${{ github.event.pull_request.number }} to the draft patchnote.
             
             **Branch type:** ${{ steps.pr_info.outputs.type }}
             **Feature name:** ${{ steps.pr_info.outputs.feature_name }}
-          branch: automated-patchnote-update
+          branch: patchnote/update-${{ github.event.pull_request.number }}
           base: dev
           delete-branch: true
