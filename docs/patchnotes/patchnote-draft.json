@@ -1,0 +1,16 @@
+{
+  "version": "1.1.1",
+  "title": "Ajout de la documentation des patchnotes",
+  "emoji": "📝",
+  "sections": {
+    "news": [],
+    "corrections": [],
+    "technical-improvements": [],
+    "other-changes": [
+      {
+        "name": "patchnotes",
+        "description": "Ajout de la documentation de la feature des `patchnotes`"
+      }
+    ]
+  }
+}
