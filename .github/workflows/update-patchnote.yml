@@ -1,4 +1,4 @@
-name: Update Patchnote
+name: Update Patchnote Draft
 
 on:
   pull_request:
@@ -14,22 +14,21 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: dev
-          fetch-depth: 0
           
       - name: Extract PR information
         id: pr_info
         run: |
           BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
           PR_TITLE="${{ github.event.pull_request.title }}"
-          PR_DESCRIPTION="${{ github.event.pull_request.body }}"
-          PR_AUTHOR="${{ github.event.pull_request.user.login }}"
           
+          # Extraire le type de branche
           if [[ $BRANCH_NAME =~ ^([^/]+)/ ]]; then
             TYPE="${BASH_REMATCH[1]}"
           else
             TYPE="other"
           fi
           
+          # Extraire le nom de la feature
           if [[ $BRANCH_NAME =~ ^[^/]+/(.+)$ ]]; then
             FEATURE_NAME="${BASH_REMATCH[1]}"
           else
@@ -46,6 +45,7 @@ jobs:
           FEATURE_NAME="${{ steps.pr_info.outputs.feature_name }}"
           PR_TITLE="${{ steps.pr_info.outputs.pr_title }}"
           
+          # Mapper les types de branches aux sections du patchnote
           case "$TYPE" in
             feature)
               SECTION="Nouveautés"
@@ -61,6 +61,12 @@ jobs:
               ;;
           esac
           
+          # Installer jq si nécessaire
+          if ! command -v jq &> /dev/null; then
+            sudo apt-get update && sudo apt-get install -y jq
+          fi
+          
+          # Créer le fichier s'il n'existe pas
           if [ ! -f "patchnote-draft.json" ]; then
             echo '{
               "version": "",
@@ -75,16 +81,25 @@ jobs:
             }' > patchnote-draft.json
           fi
           
+          # Ajouter l'entrée à la section appropriée
           jq --arg section "$SECTION" \
              --arg feature "$FEATURE_NAME" \
              --arg description "$PR_TITLE" \
-             '.sections[$section] += [{name: $feature, description: $description}]' \
+             '.sections[$section] += [{"name": $feature, "description": $description}]' \
              patchnote-draft.json > temp.json && mv temp.json patchnote-draft.json
-          
-      - name: Commit updated patchnote draft
-        run: |
-          git config --local user.email "github-actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git add patchnote-draft.json
-          git commit -m "Update patchnote draft with ${{ steps.pr_info.outputs.feature_name }}" || echo "No changes to commit"
-          git push
+      
+      - name: Create Pull Request for patchnote update
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Update patchnote draft with ${{ steps.pr_info.outputs.feature_name }}"
+          title: "Update patchnote draft"
+          body: |
+            Automatically generated PR to update the patchnote draft.
+            This PR adds the changes from PR #${{ github.event.pull_request.number }} to the draft patchnote.
+            
+            **Branch type:** ${{ steps.pr_info.outputs.type }}
+            **Feature name:** ${{ steps.pr_info.outputs.feature_name }}
+          branch: automated-patchnote-update
+          base: dev
+          delete-branch: true
