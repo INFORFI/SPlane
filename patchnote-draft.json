@@ -1,0 +1,16 @@
+{
+  "version": "",
+  "title": "Prochaine mise à jour",
+  "emoji": "✨",
+  "sections": {
+    "Nouveautés": [
+      {
+        "name": "patchnote",
+        "description": ":construction_worker: (update-patchnote): Change update patchnote"
+      }
+    ],
+    "Corrections": [],
+    "Améliorations techniques": [],
+    "Autres changements": []
+  }
+}
