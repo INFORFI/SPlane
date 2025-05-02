@@ -1,0 +1,16 @@
+{
+  "version": "",
+  "title": "Prochaine mise à jour",
+  "emoji": "✨",
+  "sections": {
+    "Nouveautés": [],
+    "Corrections": [],
+    "Améliorations techniques": [],
+    "Autres changements": [
+      {
+        "name": "deploy",
+        "description": ":adhesive_bandage: (deploy): Fix deploy CI for production"
+      }
+    ]
+  }
+}
