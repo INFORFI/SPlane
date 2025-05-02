@@ -7,6 +7,10 @@
       {
         "name": "patchnote",
         "description": "Ajout de la fonctionnalité de patchnote"
+      },
+      {
+        "name": "patchnote",
+        "description": "construction_worker: (update-patchnote): Check if not patchnote branch"
       }
     ],
     "Corrections": [],
