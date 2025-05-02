@@ -1,7 +1,7 @@
 {
   "version": "",
   "title": "Prochaine mise à jour",
-  "emoji": "✨",
+  "emoji": "🔧",
   "sections": {
     "Nouveautés": [],
     "Corrections": [],
@@ -9,7 +9,7 @@
     "Autres changements": [
       {
         "name": "deploy",
-        "description": ":adhesive_bandage: (deploy): Fix deploy CI for production"
+        "description": "🚀 Ajout de la fonctionnalité de déploiement automatique depuis github actions"
       }
     ]
   }
