@@ -90,7 +90,8 @@ jobs:
           jq --arg section "$SECTION" \
              --arg feature "$FEATURE_NAME" \
              --arg description "$PR_TITLE" \
-             '.sections[$section] += [{"name": $feature, "description": $description}]' \
+             --arg pr_number "${{ github.event.pull_request.number }}" \
+             '.sections[$section] += [{"name": $feature, "description": $description, "pr_number": $pr_number}]' \
              docs/patchnotes/patchnote-draft.json > temp.json && mv temp.json docs/patchnotes/patchnote-draft.json
       
       - name: Create Pull Request for patchnote update
