@@ -1,0 +1,16 @@
+{
+  "version": "",
+  "title": "Prochaine mise à jour",
+  "emoji": "✨",
+  "sections": {
+    "news": [],
+    "corrections": [],
+    "technical-improvements": [],
+    "other-changes": [
+      {
+        "name": "patchnotes",
+        "description": ":memo: (docs/patchnotes): Add patchnotes docs"
+      }
+    ]
+  }
+}
