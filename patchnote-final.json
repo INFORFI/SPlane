@@ -3,14 +3,14 @@
   "title": "Mise à jour 0.1.0",
   "emoji": "🔧",
   "sections": {
-    "Nouveautés": [
-      {
-        "name": "patchnote",
-        "description": "👷‍♂️ Ajout de la fonctionnalité de patchnote automatique depuis github actions"
-      }
-    ],
+    "Nouveautés": [],
     "Corrections": [],
     "Améliorations techniques": [],
-    "Autres changements": []
+    "Autres changements": [
+      {
+        "name": "deploy",
+        "description": "🚀 Ajout de la fonctionnalité de déploiement automatique depuis github actions"
+      }
+    ]
   }
 }
