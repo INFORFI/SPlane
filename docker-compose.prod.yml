@@ -61,12 +61,12 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/nextjs_prod
     volumes:
-      - ./patchnotes:/app/patchnotes
+      - ./docs/patchnotes:/app/docs/patchnotes
     depends_on:
       db-setup:
         condition: service_completed_successfully
     restart: "no"
-    command: node /app/scripts/import-patchnotes.js
+    command: sh -c "node /app/scripts/import-patchnotes.js"
 
 volumes:
   postgres_data_prod:
