@@ -1,16 +1,16 @@
 {
-  "version": "0.1.0",
-  "title": "Mise à jour 0.1.0",
+  "version": "1.1.0",
+  "title": "Mise à jour 1.1.0",
   "emoji": "🔧",
   "sections": {
-    "Nouveautés": [
+    "news": [
       {
         "name": "patchnote",
         "description": "👷‍♂️ Ajout de la fonctionnalité de patchnote automatique depuis github actions"
       }
     ],
-    "Corrections": [],
-    "Améliorations techniques": [],
-    "Autres changements": []
+    "corrections": [],
+    "technical-improvements": [],
+    "other-changes": []
   }
 }
