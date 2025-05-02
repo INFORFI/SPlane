@@ -4,6 +4,7 @@ import Sidebar from '@/components/layout/Sidebar';
 import { logout } from '@/action/auth/logout';
 import { redirect } from 'next/navigation';
 import { getUserLoggedIn } from '@/action/users/getUserLoggedIn';
+import PatchnoteChecker from '@/components/patchnote/PatchnoteChecker';
 
 export default async function DashboardLayout({
   children,
@@ -70,6 +71,8 @@ export default async function DashboardLayout({
           [&::-webkit-scrollbar-thumb]:bg-zinc-700 
           [&::-webkit-scrollbar-thumb:hover]:bg-indigo-600"
         >
+          <PatchnoteChecker />
+
           {children}
         </main>
       </div>
