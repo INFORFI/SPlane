@@ -14,6 +14,11 @@
         "name": "add-pull-request-number-on-patchnotes",
         "description": "Ajout du numéro de la pull request sur les patchnotes",
         "pr_number": "56"
+      },
+      {
+        "name": "patchnote-modal",
+        "description": "Ajout du modal pour les patchnotes",
+        "pr_number": "58"
       }
     ],
     "corrections": [
