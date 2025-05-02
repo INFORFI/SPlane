@@ -53,10 +53,11 @@ Le fichier de `docker-compose.prod.yml` contient un service pour **importer dire
 {
   "version": "",
   "title": "Prochaine mise à jour",
+  "description": "Description du patchnote",
   "emoji": "✨",
   "sections": {
     "Nouveautés": [
-      { "name": "feature-name", "description": "Description de la fonctionnalité" }
+      { "name": "feature-name", "description": "Description de la fonctionnalité", "pr_number": 2 }
     ],
     "Corrections": [],
     "Améliorations techniques": [],
@@ -70,10 +71,11 @@ Le fichier de `docker-compose.prod.yml` contient un service pour **importer dire
 {
   "version": "1.2.0",
   "title": "Mise à jour 1.2.0",
+  "description": "Description du patchnote",
   "emoji": "✨",
   "sections": {
     "Nouveautés": [
-      { "name": "feature-name", "description": "Description de la fonctionnalité" }
+      { "name": "feature-name", "description": "Description de la fonctionnalité", "pr_number": 2 }
     ],
     "Corrections": [],
     "Améliorations techniques": [],
@@ -89,6 +91,7 @@ model PatchNote {
   id          Int       @id @default(autoincrement())
   version     String    // Par exemple "1.2.0"
   title       String
+  description String    @default("No description for this patchnote")
   emoji       String?
   releaseDate DateTime  @default(now())
   content     String    // Contenu JSON structuré des notes
