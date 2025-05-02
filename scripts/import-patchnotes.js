@@ -27,7 +27,7 @@ async function importPatchnotes() {
       
       try {
         const patchnoteData = JSON.parse(fileContent);
-        const { version, title, emoji, sections } = patchnoteData;
+        const { version, title, description, emoji, sections } = patchnoteData;
         
         const existingPatchnote = await prisma.patchNote.findFirst({
           where: {
@@ -44,6 +44,7 @@ async function importPatchnotes() {
           data: {
             version,
             title,
+            description,
             emoji: emoji || '✨',
             content: JSON.stringify(sections),
             published: true
