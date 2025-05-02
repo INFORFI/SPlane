@@ -4,7 +4,12 @@
   "emoji": "📝",
   "sections": {
     "news": [],
-    "corrections": [],
+    "corrections": [
+      {
+        "name": "version-first-docs",
+        "description": ":memo: (docs/patchnotes/v1.1.0): Change version from 1.0.0 -> 1.1.0"
+      }
+    ],
     "technical-improvements": [],
     "other-changes": [
       {
