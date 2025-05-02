@@ -1,18 +1,26 @@
-import React from 'react';
-import { User, LogOut } from 'lucide-react';
+import { ReactNode } from 'react';
+import { User, LogOut, Bell } from 'lucide-react';
 import Sidebar from '@/components/layout/Sidebar';
 import { logout } from '@/action/auth/logout';
 import { redirect } from 'next/navigation';
 import { getUserLoggedIn } from '@/action/users/getUserLoggedIn';
 import PatchnoteChecker from '@/components/patchnote/PatchnoteChecker';
+import { checkUnreadPatchnotes } from '@/action/patchnote/patchnote';
+import PatchnotesDropdown from '@/components/patchnote/PatchnotesDropdown';
 
 export default async function DashboardLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
 
   const user = await getUserLoggedIn();
+
+  if (!user) {
+    redirect('/login');
+  }
+
+  const unreadPatchnotes = await checkUnreadPatchnotes(user?.id);
 
   async function handleLogout() {
     "use server";
@@ -38,12 +46,7 @@ export default async function DashboardLayout({
 
           {/* User actions */}
           <div className="flex items-center gap-4">
-            {/*
-            <button className="p-2 rounded-md text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-colors relative">
-              <Bell className="h-5 w-5" />
-              <span className="absolute top-1 right-1 w-2 h-2 bg-indigo-500 rounded-full"></span>
-            </button>
-            */}
+            <PatchnotesDropdown patchnotes={unreadPatchnotes} />
 
             <div className="flex items-center gap-3">
               <div className="flex flex-col items-end">

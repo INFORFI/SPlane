@@ -1,20 +1,19 @@
 import { checkUnreadPatchnotes, markPatchnoteAsRead } from '@/action/patchnote/patchnote';
 import { getUserLoggedIn } from '@/action/users/getUserLoggedIn';
 import PatchnoteModalContainer from './PatchnoteModalContainer';
+import { redirect } from 'next/navigation';
 
 // This component is rendered in the dashboard layout
 export default async function PatchnoteChecker() {
-  // Get the currently logged in user
   const user = await getUserLoggedIn();
   
   if (!user) {
-    return null;
+    return redirect('/login');
   }
   
-  // Check if the user has any unread patchnotes
   const unreadPatchnote = await checkUnreadPatchnotes(user.id);
   console.log('unreadPatchnote', unreadPatchnote);
-  // If there are no unread patchnotes, don't render anything
+
   if (!unreadPatchnote) {
     return null;
   }
