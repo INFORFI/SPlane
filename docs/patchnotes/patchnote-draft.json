@@ -22,7 +22,7 @@
       },
       {
         "name": "patchnote-indicator",
-        "description": ":hammer: Add notification for new update",
+        "description": "Ajout d'un indicateur pour les nouvelles mises à jour directement sur le dashboard",
         "pr_number": "60"
       }
     ],
