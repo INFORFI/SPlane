@@ -38,6 +38,11 @@ jobs:
           echo "type=$TYPE" >> $GITHUB_OUTPUT
           echo "feature_name=$FEATURE_NAME" >> $GITHUB_OUTPUT
           echo "pr_title=$PR_TITLE" >> $GITHUB_OUTPUT
+
+      - name: Create patchnotes directory
+        run: |
+          mkdir -p docs/patchnotes
+          echo "🐤 Created docs/patchnotes directory"
           
       - name: Update patchnote-draft.json
         run: |
@@ -48,16 +53,16 @@ jobs:
           # Mapper les types de branches aux sections du patchnote
           case "$TYPE" in
             feature)
-              SECTION="Nouveautés"
+              SECTION="news"
               ;;
             fix|bugfix|patch)
-              SECTION="Corrections"
+              SECTION="corrections"
               ;;
             chore)
-              SECTION="Améliorations techniques"
+              SECTION="technical-improvements"
               ;;
             *)
-              SECTION="Autres changements"
+              SECTION="other-changes"
               ;;
           esac
           
@@ -67,18 +72,18 @@ jobs:
           fi
           
           # Créer le fichier s'il n'existe pas
-          if [ ! -f "patchnote-draft.json" ]; then
+          if [ ! -f "docs/patchnotes/patchnote-draft.json" ]; then
             echo '{
               "version": "",
               "title": "Prochaine mise à jour",
               "emoji": "✨",
               "sections": {
-                "Nouveautés": [],
-                "Corrections": [],
-                "Améliorations techniques": [],
-                "Autres changements": []
+                "news": [],
+                "corrections": [],
+                "technical-improvements": [],
+                "other-changes": []
               }
-            }' > patchnote-draft.json
+            }' > docs/patchnotes/patchnote-draft.json
           fi
           
           # Ajouter l'entrée à la section appropriée
@@ -86,7 +91,7 @@ jobs:
              --arg feature "$FEATURE_NAME" \
              --arg description "$PR_TITLE" \
              '.sections[$section] += [{"name": $feature, "description": $description}]' \
-             patchnote-draft.json > temp.json && mv temp.json patchnote-draft.json
+             docs/patchnotes/patchnote-draft.json > temp.json && mv temp.json docs/patchnotes/patchnote-draft.json
       
       - name: Create Pull Request for patchnote update
         uses: peter-evans/create-pull-request@v5

@@ -24,7 +24,7 @@ jobs:
       - name: Check if patchnote-draft.json exists
         id: check_file
         run: |
-          if [ -f "patchnote-draft.json" ]; then
+          if [ -f "docs/patchnotes/patchnote-draft.json" ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
             echo "Found patchnote-draft.json file"
           else
@@ -63,22 +63,16 @@ jobs:
           jq --arg version "$NEW_VERSION" \
              --arg title "Mise à jour $NEW_VERSION" \
              '.version = $version | .title = $title' \
-             patchnote-draft.json > patchnote-final.json
+             docs/patchnotes/patchnote-draft.json > docs/patchnotes/patchnote-final.json
           
           echo "Updated patchnote with version $NEW_VERSION"
-          cat patchnote-final.json
-      
-      - name: Create patchnotes directory
-        if: steps.check_file.outputs.exists == 'true'
-        run: |
-          mkdir -p docs/patchnotes
-          echo "Created docs/patchnotes directory"
-      
+          cat docs/patchnotes/patchnote-final.json
+       
       - name: Save final patchnote to patchnotes directory
         if: steps.check_file.outputs.exists == 'true'
         run: |
           NEW_VERSION="${{ steps.version.outputs.new_version }}"
-          cp patchnote-final.json "docs/patchnotes/v$NEW_VERSION.json"
+          cp docs/patchnotes/patchnote-final.json "docs/patchnotes/v$NEW_VERSION.json"
           echo "Saved patchnote as docs/patchnotes/v$NEW_VERSION.json"
       
       - name: Tag release
@@ -93,8 +87,9 @@ jobs:
         if: steps.check_file.outputs.exists == 'true'
         run: |
           # Remove the draft file as part of the PR
-          rm -f patchnote-draft.json
-          echo "Removed patchnote-draft.json from repository"
+          rm -f docs/patchnotes/patchnote-draft.json
+          rm -f docs/patchnotes/patchnote-final.json
+          echo "Removed patchnote-draft.json and patchnote-final.json from repository"
       
       - name: Create Pull Request for publishing patchnote
         if: steps.check_file.outputs.exists == 'true'
