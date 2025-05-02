@@ -1,4 +1,3 @@
-# .github/workflows/publish-patchnote.yml
 name: Publish Patchnote
 
 on:
@@ -9,7 +8,7 @@ on:
 
 jobs:
   publish-patchnote:
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true && !startsWith(github.event.pull_request.head.ref, 'patchnote/publish/')
     runs-on: ubuntu-latest
     outputs:
       patchnote_updated: ${{ steps.check_file.outputs.exists }}
@@ -27,6 +26,7 @@ jobs:
         run: |
           if [ -f "patchnote-draft.json" ]; then
             echo "exists=true" >> $GITHUB_OUTPUT
+            echo "Found patchnote-draft.json file"
           else
             echo "exists=false" >> $GITHUB_OUTPUT
             echo "No patchnote-draft.json found. Skipping patchnote publication."
@@ -47,6 +47,13 @@ jobs:
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
           echo "Generated new version: $NEW_VERSION"
           
+      - name: Install jq
+        if: steps.check_file.outputs.exists == 'true'
+        run: |
+          if ! command -v jq &> /dev/null; then
+            sudo apt-get update && sudo apt-get install -y jq
+          fi
+          
       - name: Update patchnote version and title
         if: steps.check_file.outputs.exists == 'true'
         run: |
@@ -59,11 +66,13 @@ jobs:
              patchnote-draft.json > patchnote-final.json
           
           echo "Updated patchnote with version $NEW_VERSION"
+          cat patchnote-final.json
       
       - name: Create patchnotes directory
         if: steps.check_file.outputs.exists == 'true'
         run: |
           mkdir -p docs/patchnotes
+          echo "Created docs/patchnotes directory"
       
       - name: Save final patchnote to patchnotes directory
         if: steps.check_file.outputs.exists == 'true'
@@ -72,43 +81,37 @@ jobs:
           cp patchnote-final.json "docs/patchnotes/v$NEW_VERSION.json"
           echo "Saved patchnote as docs/patchnotes/v$NEW_VERSION.json"
       
-      - name: Create git tag
+      - name: Tag release
         if: steps.check_file.outputs.exists == 'true'
         run: |
           NEW_VERSION="${{ steps.version.outputs.new_version }}"
-          
           git config --local user.email "github-actions@github.com"
           git config --local user.name "GitHub Actions"
-          
           git tag "v$NEW_VERSION"
-          git push origin "v$NEW_VERSION"
           
-          echo "Created and pushed tag v$NEW_VERSION"
+      - name: Remove draft patchnote file
+        if: steps.check_file.outputs.exists == 'true'
+        run: |
+          # Remove the draft file as part of the PR
+          rm -f patchnote-draft.json
+          echo "Removed patchnote-draft.json from repository"
       
-      - name: Commit patchnote to repository
+      - name: Create Pull Request for publishing patchnote
         if: steps.check_file.outputs.exists == 'true'
-        run: |
-          NEW_VERSION="${{ steps.version.outputs.new_version }}"
-          
-          git config --local user.email "github-actions@github.com"
-          git config --local user.name "GitHub Actions"
-          
-          git add docs/patchnotes/
-          git commit -m "docs(patchnotes): Add patchnote for v$NEW_VERSION"
-          git push origin main
-          
-          echo "Committed and pushed patchnote to repository"
-              
-      - name: Cleanup draft file
-        if: steps.check_file.outputs.exists == 'true'
-        run: |
-          NEW_VERSION="${{ steps.version.outputs.new_version }}"
-          
-          git config --local user.email "github-actions@github.com"
-          git config --local user.name "GitHub Actions"
-          
-          git rm patchnote-draft.json
-          git commit -m "Remove patchnote draft after publishing v$NEW_VERSION"
-          git push origin main
-          
-          echo "Removed patchnote-draft.json file"
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: ":memo: (automated/patchnote/publish): Publish patchnote for v${{ steps.version.outputs.new_version }}"
+          title: "[Automated] 📝 Publish patchnote v${{ steps.version.outputs.new_version }}"
+          body: |
+            🧙‍♂️ Automatically generated PR to publish a new patchnote.
+            
+            This PR:
+            1. Updates the version to v${{ steps.version.outputs.new_version }}
+            2. Saves the final patchnote to docs/patchnotes/
+            3. Removes the draft patchnote file
+            
+            The tag v${{ steps.version.outputs.new_version }} has been created locally and will be pushed once this PR is merged.
+          branch: patchnote/publish/${{ steps.version.outputs.new_version }}
+          base: main
+          delete-branch: true
