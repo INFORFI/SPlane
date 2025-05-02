@@ -1,18 +1,19 @@
 name: Deploy to Production
 
 on:
-  pull_request:
+  push:
     branches:
       - main
+  pull_request:
     types: [closed]
+    branches:
+      - main
 
 jobs:
   deploy:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    name: Deploy to VPS
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: main
 
     steps:
       - name: Checkout code
