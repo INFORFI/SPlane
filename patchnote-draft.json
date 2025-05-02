@@ -1,0 +1,16 @@
+{
+  "version": "",
+  "title": "Prochaine mise à jour",
+  "emoji": "🔧",
+  "sections": {
+    "Nouveautés": [
+      {
+        "name": "patchnote",
+        "description": "Ajout de la fonctionnalité de patchnote"
+      }
+    ],
+    "Corrections": [],
+    "Améliorations techniques": [],
+    "Autres changements": []
+  }
+}
