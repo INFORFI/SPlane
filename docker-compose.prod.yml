@@ -53,5 +53,20 @@ services:
         npx prisma db seed
       "
 
+  patchnote-importer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    environment:
+      - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD}@db:5432/nextjs_prod
+    volumes:
+      - ./patchnotes:/app/patchnotes
+    depends_on:
+      db-setup:
+        condition: service_completed_successfully
+    restart: "no"
+    command: node /app/scripts/import-patchnotes.js
+
 volumes:
   postgres_data_prod:

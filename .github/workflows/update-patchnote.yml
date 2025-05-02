@@ -1,0 +1,105 @@
+name: Update Patchnote Draft
+
+on:
+  pull_request:
+    branches:
+      - dev
+    types: [closed]
+
+jobs:
+  update-patchnote:
+    if: github.event.pull_request.merged == true && !startsWith(github.event.pull_request.head.ref, 'patchnote/')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev
+          
+      - name: Extract PR information
+        id: pr_info
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          
+          # Extraire le type de branche
+          if [[ $BRANCH_NAME =~ ^([^/]+)/ ]]; then
+            TYPE="${BASH_REMATCH[1]}"
+          else
+            TYPE="other"
+          fi
+          
+          # Extraire le nom de la feature
+          if [[ $BRANCH_NAME =~ ^[^/]+/(.+)$ ]]; then
+            FEATURE_NAME="${BASH_REMATCH[1]}"
+          else
+            FEATURE_NAME="$BRANCH_NAME"
+          fi
+          
+          echo "type=$TYPE" >> $GITHUB_OUTPUT
+          echo "feature_name=$FEATURE_NAME" >> $GITHUB_OUTPUT
+          echo "pr_title=$PR_TITLE" >> $GITHUB_OUTPUT
+          
+      - name: Update patchnote-draft.json
+        run: |
+          TYPE="${{ steps.pr_info.outputs.type }}"
+          FEATURE_NAME="${{ steps.pr_info.outputs.feature_name }}"
+          PR_TITLE="${{ steps.pr_info.outputs.pr_title }}"
+          
+          # Mapper les types de branches aux sections du patchnote
+          case "$TYPE" in
+            feature)
+              SECTION="Nouveautés"
+              ;;
+            fix|bugfix|patch)
+              SECTION="Corrections"
+              ;;
+            chore)
+              SECTION="Améliorations techniques"
+              ;;
+            *)
+              SECTION="Autres changements"
+              ;;
+          esac
+          
+          # Installer jq si nécessaire
+          if ! command -v jq &> /dev/null; then
+            sudo apt-get update && sudo apt-get install -y jq
+          fi
+          
+          # Créer le fichier s'il n'existe pas
+          if [ ! -f "patchnote-draft.json" ]; then
+            echo '{
+              "version": "",
+              "title": "Prochaine mise à jour",
+              "emoji": "✨",
+              "sections": {
+                "Nouveautés": [],
+                "Corrections": [],
+                "Améliorations techniques": [],
+                "Autres changements": []
+              }
+            }' > patchnote-draft.json
+          fi
+          
+          # Ajouter l'entrée à la section appropriée
+          jq --arg section "$SECTION" \
+             --arg feature "$FEATURE_NAME" \
+             --arg description "$PR_TITLE" \
+             '.sections[$section] += [{"name": $feature, "description": $description}]' \
+             patchnote-draft.json > temp.json && mv temp.json patchnote-draft.json
+      
+      - name: Create Pull Request for patchnote update
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: ":memo: (automated/patchnote): Update patchnote draft with ${{ steps.pr_info.outputs.feature_name }}"
+          title: "[Automated] 🤖 Update patchnote draft"
+          body: |
+            🧙‍♂️ Automatically generated PR to update the patchnote draft.
+            This PR adds the changes from PR #${{ github.event.pull_request.number }} to the draft patchnote.
+            
+            **Branch type:** ${{ steps.pr_info.outputs.type }}
+            **Feature name:** ${{ steps.pr_info.outputs.feature_name }}
+          branch: patchnote/update-${{ github.event.pull_request.number }}
+          base: dev
+          delete-branch: true

@@ -18,6 +18,33 @@ enum Role {
   @@map("roles")
 }
 
+model PatchNote {
+  id          Int       @id @default(autoincrement())
+  version     String
+  title       String
+  emoji       String?
+  releaseDate DateTime  @default(now())
+  content     String
+  published   Boolean   @default(false)
+  
+  userViews   PatchNoteView[]
+  
+  @@map("patch_notes")
+}
+
+model PatchNoteView {
+  id          Int       @id @default(autoincrement())
+  userId      Int       @map("user_id")
+  patchNoteId Int       @map("patch_note_id")
+  viewedAt    DateTime  @default(now()) @map("viewed_at")
+  
+  user        User      @relation(fields: [userId], references: [id])
+  patchNote   PatchNote @relation(fields: [patchNoteId], references: [id])
+  
+  @@unique([userId, patchNoteId])
+  @@map("patch_note_views")
+}
+
 model User {
   id           Int          @id @default(autoincrement())
   email        String       @unique
@@ -28,6 +55,7 @@ model User {
   updatedAt    DateTime     @updatedAt @map("updated_at")
   projects     Project[]
   userTasks    UserTask[]
+  patchNoteViews PatchNoteView[]
 
   @@map("users")
 }
