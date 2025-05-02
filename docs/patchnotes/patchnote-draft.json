@@ -19,6 +19,11 @@
         "name": "patchnote-modal",
         "description": "Ajout du modal pour les patchnotes",
         "pr_number": "58"
+      },
+      {
+        "name": "patchnote-indicator",
+        "description": "Ajout d'un indicateur pour les nouvelles mises à jour directement sur le dashboard",
+        "pr_number": "60"
       }
     ],
     "corrections": [
