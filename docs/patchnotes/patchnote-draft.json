@@ -1,10 +1,15 @@
 {
-  "version": "1.1.1",
-  "title": "Ajout de la documentation des patchnotes",
+  "version": "1.2.0",
+  "title": "Modifications des patchnotes",
   "description": "Ajout de la documentation de la feature des `patchnotes`",
   "emoji": "📝",
   "sections": {
-    "news": [],
+    "news": [
+      {
+        "name": "add-global-description",
+        "description": "Ajout d'une description globale pour les patchnotes"
+      }
+    ],
     "corrections": [
       {
         "name": "version-first-docs",
