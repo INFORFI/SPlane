@@ -4,7 +4,12 @@
   "description": "Ajout de la documentation de la feature des `patchnotes`",
   "emoji": "📝",
   "sections": {
-    "news": [],
+    "news": [
+      {
+        "name": "add-global-description",
+        "description": "🔨 Add description to patchnotes"
+      }
+    ],
     "corrections": [
       {
         "name": "version-first-docs",
