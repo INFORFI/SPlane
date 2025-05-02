@@ -1,7 +1,7 @@
 {
-  "version": "",
-  "title": "Prochaine mise à jour",
-  "emoji": "✨",
+  "version": "1.1.1",
+  "title": "Ajout de la documentation des patchnotes",
+  "emoji": "📝",
   "sections": {
     "news": [],
     "corrections": [],
@@ -9,7 +9,7 @@
     "other-changes": [
       {
         "name": "patchnotes",
-        "description": ":memo: (docs/patchnotes): Add patchnotes docs"
+        "description": "Ajout de la documentation de la feature des `patchnotes`"
       }
     ]
   }
