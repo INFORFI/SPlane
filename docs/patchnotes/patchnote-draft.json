@@ -7,25 +7,28 @@
     "news": [
       {
         "name": "add-global-description",
-        "description": "Ajout d'une description globale pour les patchnotes"
+        "description": "Ajout d'une description globale pour les patchnotes",
+        "pr_number": "54"
       },
       {
-        "name": "add-pull-request-number",
-        "description": "🔨 (patchnotes): Add pull request number",
+        "name": "add-pull-request-number-on-patchnotes",
+        "description": "Ajout du numéro de la pull request sur les patchnotes",
         "pr_number": "56"
       }
     ],
     "corrections": [
       {
         "name": "version-first-docs",
-        "description": "Changement de version pour le premier patchnote de 1.0.0 à 1.1.1"
+        "description": "Changement de version pour le premier patchnote de 1.0.0 à 1.1.1",
+        "pr_number": "52"
       }
     ],
     "technical-improvements": [],
     "other-changes": [
       {
         "name": "patchnotes",
-        "description": "Ajout de la documentation de la feature des `patchnotes`"
+        "description": "Ajout de la documentation de la feature des `patchnotes`",
+        "pr_number": "50"
       }
     ]
   }
