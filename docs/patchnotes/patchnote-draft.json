@@ -8,6 +8,11 @@
       {
         "name": "add-global-description",
         "description": "Ajout d'une description globale pour les patchnotes"
+      },
+      {
+        "name": "add-pull-request-number",
+        "description": "🔨 (patchnotes): Add pull request number",
+        "pr_number": "56"
       }
     ],
     "corrections": [
