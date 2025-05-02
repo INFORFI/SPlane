@@ -11,6 +11,11 @@
     ],
     "Corrections": [],
     "Améliorations techniques": [],
-    "Autres changements": []
+    "Autres changements": [
+      {
+        "name": "automated-patchnote-update",
+        "description": "Update patchnote draft"
+      }
+    ]
   }
 }
