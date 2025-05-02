@@ -1,0 +1,114 @@
+# .github/workflows/publish-patchnote.yml
+name: Publish Patchnote
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+
+jobs:
+  publish-patchnote:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    outputs:
+      patchnote_updated: ${{ steps.check_file.outputs.exists }}
+      version: ${{ steps.version.outputs.new_version }}
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+          
+      - name: Check if patchnote-draft.json exists
+        id: check_file
+        run: |
+          if [ -f "patchnote-draft.json" ]; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+            echo "No patchnote-draft.json found. Skipping patchnote publication."
+          fi
+          
+      - name: Generate version number
+        if: steps.check_file.outputs.exists == 'true'
+        id: version
+        run: |
+          # Get latest tag or default to v0.0.0 if none exists
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          LATEST_VERSION=${LATEST_TAG#v}
+          
+          # Increment the minor version number
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$LATEST_VERSION"
+          NEW_VERSION="$MAJOR.$((MINOR + 1)).$PATCH"
+          
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "Generated new version: $NEW_VERSION"
+          
+      - name: Update patchnote version and title
+        if: steps.check_file.outputs.exists == 'true'
+        run: |
+          NEW_VERSION="${{ steps.version.outputs.new_version }}"
+          
+          # Use jq to update the version and title
+          jq --arg version "$NEW_VERSION" \
+             --arg title "Mise à jour $NEW_VERSION" \
+             '.version = $version | .title = $title' \
+             patchnote-draft.json > patchnote-final.json
+          
+          echo "Updated patchnote with version $NEW_VERSION"
+      
+      - name: Create patchnotes directory
+        if: steps.check_file.outputs.exists == 'true'
+        run: |
+          mkdir -p docs/patchnotes
+      
+      - name: Save final patchnote to patchnotes directory
+        if: steps.check_file.outputs.exists == 'true'
+        run: |
+          NEW_VERSION="${{ steps.version.outputs.new_version }}"
+          cp patchnote-final.json "docs/patchnotes/v$NEW_VERSION.json"
+          echo "Saved patchnote as docs/patchnotes/v$NEW_VERSION.json"
+      
+      - name: Create git tag
+        if: steps.check_file.outputs.exists == 'true'
+        run: |
+          NEW_VERSION="${{ steps.version.outputs.new_version }}"
+          
+          git config --local user.email "github-actions@github.com"
+          git config --local user.name "GitHub Actions"
+          
+          git tag "v$NEW_VERSION"
+          git push origin "v$NEW_VERSION"
+          
+          echo "Created and pushed tag v$NEW_VERSION"
+      
+      - name: Commit patchnote to repository
+        if: steps.check_file.outputs.exists == 'true'
+        run: |
+          NEW_VERSION="${{ steps.version.outputs.new_version }}"
+          
+          git config --local user.email "github-actions@github.com"
+          git config --local user.name "GitHub Actions"
+          
+          git add docs/patchnotes/
+          git commit -m "docs(patchnotes): Add patchnote for v$NEW_VERSION"
+          git push origin main
+          
+          echo "Committed and pushed patchnote to repository"
+              
+      - name: Cleanup draft file
+        if: steps.check_file.outputs.exists == 'true'
+        run: |
+          NEW_VERSION="${{ steps.version.outputs.new_version }}"
+          
+          git config --local user.email "github-actions@github.com"
+          git config --local user.name "GitHub Actions"
+          
+          git rm patchnote-draft.json
+          git commit -m "Remove patchnote draft after publishing v$NEW_VERSION"
+          git push origin main
+          
+          echo "Removed patchnote-draft.json file"
