@@ -24,6 +24,11 @@
         "name": "patchnote-indicator",
         "description": "Ajout d'un indicateur pour les nouvelles mises à jour directement sur le dashboard",
         "pr_number": "60"
+      },
+      {
+        "name": "patchnote-page",
+        "description": "✨ Add patchnote page",
+        "pr_number": "62"
       }
     ],
     "corrections": [
