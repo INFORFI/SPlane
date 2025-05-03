@@ -74,7 +74,7 @@ export default async function DashboardLayout({
           [&::-webkit-scrollbar-thumb]:bg-zinc-700 
           [&::-webkit-scrollbar-thumb:hover]:bg-indigo-600"
         >
-          <PatchnoteChecker />
+          {user.settings.notifications_patch_notes ? <PatchnoteChecker /> : null}
 
           {children}
         </main>
