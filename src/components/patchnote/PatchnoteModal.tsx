@@ -151,7 +151,11 @@ export default function PatchNoteModal({
                   <h3 className="text-xl font-bold text-white">{patchNote.title}</h3>
                   <div className="flex items-center gap-2 mt-1">
                     <p className="text-sm text-zinc-400">
-                      {formatDate(patchNote.releaseDate.toISOString())}
+                      {new Date(patchNote.releaseDate).toLocaleDateString('fr-FR', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                      })}
                     </p>
                     {totalPatchnotesCount > 1 && (
                       <>

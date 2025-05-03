@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import PatchNoteModal, { PatchNote } from './PatchnoteModal';
+import PatchNoteModal from './PatchnoteModal';
+import { PatchNote } from '@prisma/client';
 
 interface PatchnoteModalContainerProps {
   patchnote: PatchNote[];

@@ -3,9 +3,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { PatchNote } from './PatchnoteModal';
+import { PatchNote } from '@prisma/client';
 import { markPatchnoteAsRead } from '@/action/patchnote/patchnote';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 interface PatchnotesDropdownProps {
   patchnotes: PatchNote[];
@@ -88,30 +89,36 @@ export default function PatchnotesDropdown({ patchnotes }: PatchnotesDropdownPro
             <div className="py-2">
               {hasUnreadPatchnotes ? (
                 patchnotes.map((note) => (
-                  <motion.div
-                    key={note.id}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.1 }}
-                    className="px-3 py-2 hover:bg-zinc-800 cursor-pointer transition-colors"
-                    onClick={() => handlePatchnoteClick(note.id)}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
-                        <span>{note.emoji || '✨'}</span>
+                  <Link href={`/dashboard/patchnotes/${note.id}`} key={note.id}>
+                    <motion.div
+                      key={note.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.1 }}
+                      className="px-3 py-2 hover:bg-zinc-800 cursor-pointer transition-colors"
+                      onClick={() => handlePatchnoteClick(note.id)}
+                    >
+                      <div className="flex items-start gap-3">
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                          <span>{note.emoji || '✨'}</span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-zinc-200 flex items-center gap-2">
+                            {note.title}
+                            <span className="text-xs px-1.5 py-0.5 bg-indigo-500/20 text-indigo-400 rounded-full">
+                              v{note.version}
+                            </span>
+                          </p>
+                          <p className="text-xs text-zinc-400 truncate mt-0.5">{note.description}</p>
+                          <p className="text-xs text-zinc-500 mt-1">{new Date(note.releaseDate).toLocaleDateString('fr-FR', {
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric'
+                          })}</p>
+                        </div>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm font-medium text-zinc-200 flex items-center gap-2">
-                          {note.title}
-                          <span className="text-xs px-1.5 py-0.5 bg-indigo-500/20 text-indigo-400 rounded-full">
-                            v{note.version}
-                          </span>
-                        </p>
-                        <p className="text-xs text-zinc-400 truncate mt-0.5">{note.description}</p>
-                        <p className="text-xs text-zinc-500 mt-1">{formatDate(note.releaseDate)}</p>
-                      </div>
-                    </div>
-                  </motion.div>
+                    </motion.div>
+                  </Link>
                 ))
               ) : (
                 <div className="px-4 py-6 text-center">
