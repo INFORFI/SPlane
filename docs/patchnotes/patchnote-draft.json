@@ -29,6 +29,11 @@
         "name": "patchnote-page",
         "description": "Ajout de la page pour voir les détails d'un patchnote",
         "pr_number": "62"
+      },
+      {
+        "name": "patchnotes-page",
+        "description": ":lipstick: (patchnotes): Add patchnotes page to see all patchnotes",
+        "pr_number": "66"
       }
     ],
     "corrections": [
