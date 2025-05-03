@@ -34,6 +34,11 @@
         "name": "patchnotes-page",
         "description": "Ajout de la page pour voir les patchnotes",
         "pr_number": "66"
+      },
+      {
+        "name": "settings",
+        "description": "✨ (settings): Add settings page",
+        "pr_number": "68"
       }
     ],
     "corrections": [
