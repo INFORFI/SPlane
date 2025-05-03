@@ -39,6 +39,11 @@
         "name": "settings",
         "description": "Ajout de la page pour les paramètres",
         "pr_number": "68"
+      },
+      {
+        "name": "settings-patchnote",
+        "description": "Ajout de la possibilité de voir les patchnotes directement lors de la connexion sur le dashboard",
+        "pr_number": "70"
       }
     ],
     "corrections": [
