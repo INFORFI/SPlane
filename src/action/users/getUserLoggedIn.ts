@@ -2,7 +2,7 @@
 
 import { requireAuth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { Project, UserTask, Role } from "@prisma/client";
+import { Project, UserTask, Role, UserSettings } from "@prisma/client";
 
 /**
  * Type représentant les données de l'utilisateur connecté
@@ -16,6 +16,7 @@ export type UserLoggedIn = {
   updatedAt: Date;
   projects: Project[];
   userTasks: UserTask[];
+  settings: UserSettings;
 };
 
 /**
@@ -42,7 +43,8 @@ export async function getUserLoggedIn() {
       updatedAt: true,
       projects: true,
       userTasks: true,
-      passwordHash: false
+      passwordHash: false,
+      settings: true,
     }
   });
 
