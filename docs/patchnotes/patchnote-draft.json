@@ -37,7 +37,7 @@
       },
       {
         "name": "settings",
-        "description": "✨ (settings): Add settings page",
+        "description": "Ajout de la page pour les paramètres",
         "pr_number": "68"
       }
     ],
