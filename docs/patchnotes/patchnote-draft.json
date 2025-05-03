@@ -54,7 +54,7 @@
       },
       {
         "name": "button-style",
-        "description": ":lipstick: (style/global.css): Add a cursor pointer for all button",
+        "description": "Ajout d'un curseur cliquable pour tous les boutons",
         "pr_number": "72"
       }
     ],
