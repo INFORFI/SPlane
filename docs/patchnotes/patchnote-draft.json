@@ -32,7 +32,7 @@
       },
       {
         "name": "patchnotes-page",
-        "description": ":lipstick: (patchnotes): Add patchnotes page to see all patchnotes",
+        "description": "Ajout de la page pour voir les patchnotes",
         "pr_number": "66"
       }
     ],
