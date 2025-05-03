@@ -51,6 +51,11 @@
         "name": "version-first-docs",
         "description": "Changement de version pour le premier patchnote de 1.0.0 à 1.1.1",
         "pr_number": "52"
+      },
+      {
+        "name": "button-style",
+        "description": "Ajout d'un curseur cliquable pour tous les boutons",
+        "pr_number": "72"
       }
     ],
     "technical-improvements": [],
