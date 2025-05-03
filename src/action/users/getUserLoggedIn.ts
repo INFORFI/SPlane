@@ -2,6 +2,21 @@
 
 import { requireAuth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { Project, UserTask, Role } from "@prisma/client";
+
+/**
+ * Type représentant les données de l'utilisateur connecté
+ */
+export type UserLoggedIn = {
+  id: number;
+  email: string;
+  role: Role;
+  fullName: string;
+  createdAt: Date;
+  updatedAt: Date;
+  projects: Project[];
+  userTasks: UserTask[];
+};
 
 /**
  * Récupère les données de l'utilisateur connecté
@@ -21,6 +36,7 @@ export async function getUserLoggedIn() {
     select: {
       id: true,
       email: true,
+      role: true,
       fullName: true,
       createdAt: true,
       updatedAt: true,
@@ -30,5 +46,9 @@ export async function getUserLoggedIn() {
     }
   });
 
-  return userData;
+  if (!userData) {
+    return null;
+  }
+
+  return userData as UserLoggedIn;
 }
