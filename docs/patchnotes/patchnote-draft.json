@@ -39,6 +39,11 @@
         "name": "settings",
         "description": "Ajout de la page pour les paramètres",
         "pr_number": "68"
+      },
+      {
+        "name": "settings-patchnote",
+        "description": ":hammer: (settings/patchnote): Make patchnote settings functional",
+        "pr_number": "70"
       }
     ],
     "corrections": [
