@@ -42,7 +42,7 @@
       },
       {
         "name": "settings-patchnote",
-        "description": ":hammer: (settings/patchnote): Make patchnote settings functional",
+        "description": "Ajout de la possibilité de voir les patchnotes directement lors de la connexion sur le dashboard",
         "pr_number": "70"
       }
     ],
