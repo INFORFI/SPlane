@@ -57,8 +57,19 @@ model User {
   projects     Project[]
   userTasks    UserTask[]
   patchNoteViews PatchNoteView[]
+  settings     UserSettings?
 
   @@map("users")
+}
+
+model UserSettings {
+  id Int @id @default(autoincrement())
+  userId Int @unique @map("user_id")
+  user User @relation(fields: [userId], references: [id])
+
+  notifications_patch_notes Boolean @default(false)
+
+  @@map("user_settings")
 }
 
 model Project {
