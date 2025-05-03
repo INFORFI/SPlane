@@ -27,7 +27,7 @@
       },
       {
         "name": "patchnote-page",
-        "description": "✨ Add patchnote page",
+        "description": "Ajout de la page pour voir les détails d'un patchnote",
         "pr_number": "62"
       }
     ],
