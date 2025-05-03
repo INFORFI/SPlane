@@ -3,9 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { XCircle, ExternalLink, ChevronRight, Info, Clock, Tag, CheckCircle, ArrowLeft, ArrowRight } from 'lucide-react';
+import { PatchNote } from '@prisma/client';
 
 // Types
-interface PatchNoteSection {
+export type PatchNoteSection = {
   name: string;
   description: string;
   pr_number?: string;
@@ -16,18 +17,6 @@ interface PatchNoteSections {
   corrections: PatchNoteSection[];
   "technical-improvements": PatchNoteSection[];
   "other-changes": PatchNoteSection[];
-}
-
-export interface PatchNote {
-  id: number;
-  version: string;
-  title: string;
-  description: string;
-  emoji: string;
-  releaseDate: string;
-  content: string;
-  // Parsed content from JSON string
-  parsedContent?: PatchNoteSections;
 }
 
 interface PatchNoteModalProps {
@@ -69,10 +58,8 @@ export default function PatchNoteModal({
   useEffect(() => {
     try {
       // Parse the content JSON string if it's not already parsed
-      if (patchNote.content && !patchNote.parsedContent) {
+      if (patchNote.content) {
         setParsedContent(JSON.parse(patchNote.content));
-      } else if (patchNote.parsedContent) {
-        setParsedContent(patchNote.parsedContent);
       }
     } catch (error) {
       console.error('Error parsing patchnote content:', error);
@@ -164,7 +151,7 @@ export default function PatchNoteModal({
                   <h3 className="text-xl font-bold text-white">{patchNote.title}</h3>
                   <div className="flex items-center gap-2 mt-1">
                     <p className="text-sm text-zinc-400">
-                      {formatDate(patchNote.releaseDate)}
+                      {formatDate(patchNote.releaseDate.toISOString())}
                     </p>
                     {totalPatchnotesCount > 1 && (
                       <>
