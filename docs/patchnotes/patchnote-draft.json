@@ -44,6 +44,11 @@
         "name": "settings-patchnote",
         "description": "Ajout de la possibilité de voir les patchnotes directement lors de la connexion sur le dashboard",
         "pr_number": "70"
+      },
+      {
+        "name": "lightmode",
+        "description": "Ajout de plusieurs thèmes pour le panel",
+        "pr_number": "74"
       }
     ],
     "corrections": [
