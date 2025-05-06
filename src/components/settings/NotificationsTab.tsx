@@ -28,10 +28,10 @@ export default function NotificationsTab({ settings }: { settings: UserSettings 
 
     return (
               <div>
-                <h2 className="text-xl font-semibold text-white mb-6">Notification Settings</h2>
+                <h2 className="text-xl font-semibold text-[var(--foreground)] mb-6">Notification Settings</h2>
                 
                 {success && (
-                  <div className="mb-6 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg flex items-center gap-3 text-emerald-400">
+                  <div className="mb-6 p-3 bg-[var(--success-muted)] border border-[var(--success)]/20 rounded-lg flex items-center gap-3 text-[var(--success)]">
                     <CheckCircle2 className="h-5 w-5 flex-shrink-0" />
                     <span className="text-sm">Notification settings updated successfully!</span>
                   </div>
@@ -103,7 +103,7 @@ export default function NotificationsTab({ settings }: { settings: UserSettings 
                     */}
                   
                   <div>
-                    <h3 className="text-lg font-medium text-white mb-4">Application Updates</h3>
+                    <h3 className="text-lg font-medium text-[var(--foreground)] mb-4">Application Updates</h3>
                     <div className="space-y-3">
                     {/*
                       <div className="flex items-center justify-between p-3 bg-zinc-800 rounded-lg border border-zinc-700">
@@ -126,14 +126,14 @@ export default function NotificationsTab({ settings }: { settings: UserSettings 
                       </div>
                       */}
                       
-                      <div className="flex items-center justify-between p-3 bg-zinc-800 rounded-lg border border-zinc-700">
+                      <div className="flex items-center justify-between p-3 bg-[var(--background-tertiary)] rounded-lg border border-[var(--border-secondary)]">
                         <div className="flex items-center gap-3">
-                          <div className="flex-shrink-0 h-8 w-8 bg-zinc-700 rounded-lg flex items-center justify-center">
-                            <Edit className="h-5 w-5 text-zinc-400" />
+                          <div className="flex-shrink-0 h-8 w-8 bg-[var(--background-tertiary)] rounded-lg flex items-center justify-center">
+                            <Edit className="h-5 w-5 text-[var(--foreground-tertiary)]" />
                           </div>
                           <div>
-                            <h4 className="text-sm font-medium text-white">Patch Notes</h4>
-                            <p className="text-xs text-zinc-400">Recevoir les dernières mise à jour de l'application directement lors de votre connexion sur splane</p>
+                            <h4 className="text-sm font-medium text-[var(--foreground)]">Patch Notes</h4>
+                            <p className="text-xs text-[var(--foreground-tertiary)]">Recevoir les dernières mise à jour de l'application directement lors de votre connexion sur splane</p>
                           </div>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">
@@ -143,7 +143,7 @@ export default function NotificationsTab({ settings }: { settings: UserSettings 
                             name="patchNotes"
                             defaultChecked={settings ? settings.notifications_patch_notes : false}
                           />
-                          <div className="w-11 h-6 bg-zinc-700 rounded-full peer peer-checked:bg-indigo-600 peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
+                          <div className="w-11 h-6 bg-[var(--background-tertiary)] rounded-full peer peer-checked:bg-[var(--primary)] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-[var(--foreground)] after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
                         </label>
                       </div>
                     </div>
@@ -153,11 +153,11 @@ export default function NotificationsTab({ settings }: { settings: UserSettings 
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                      className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-[var(--primary-foreground)] rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary)] disabled:opacity-50"
                     >
                       {isSubmitting ? (
                         <>
-                          <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                          <svg className="animate-spin h-5 w-5 text-[var(--primary-foreground)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                           </svg>

@@ -122,11 +122,11 @@ export default function MiniCalendar({ calendarData }: MiniCalendarProps) {
   return (
     <motion.div
       variants={itemVariants}
-      className="bg-zinc-900 border border-zinc-800 rounded-xl p-5"
+      className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-5"
     >
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
-          <h3 className="font-semibold text-white">
+          <h3 className="font-semibold text-[var(--foreground)]">
             {calData.currentMonth} {calData.currentYear}
           </h3>
           <button
@@ -134,8 +134,8 @@ export default function MiniCalendar({ calendarData }: MiniCalendarProps) {
             disabled={isPending}
             className={`p-1.5 rounded-md text-xs flex items-center gap-1 transition-colors cursor-pointer ${
               isFilteredByUser
-                ? 'bg-indigo-500 text-white'
-                : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-white'
+                ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
+                : 'bg-[var(--background-tertiary)] text-[var(--foreground-tertiary)] hover:bg-[var(--border-secondary)] hover:text-[var(--foreground)]'
             }`}
             title={
               isFilteredByUser ? 'Afficher toutes les tâches' : 'Afficher uniquement mes tâches'
@@ -149,14 +149,14 @@ export default function MiniCalendar({ calendarData }: MiniCalendarProps) {
           <button
             onClick={goToPreviousMonth}
             disabled={isPending}
-            className="p-1 rounded-md text-zinc-400 hover:text-white hover:bg-zinc-800 disabled:opacity-50 cursor-pointer"
+            className="p-1 rounded-md text-[var(--foreground-tertiary)] hover:text-[var(--foreground)] hover:bg-[var(--background-tertiary)] disabled:opacity-50 cursor-pointer"
           >
             <ArrowRight className="h-4 w-4 rotate-180" />
           </button>
           <button
             onClick={goToNextMonth}
             disabled={isPending}
-            className="p-1 rounded-md text-zinc-400 hover:text-white hover:bg-zinc-800 disabled:opacity-50 cursor-pointer"
+            className="p-1 rounded-md text-[var(--foreground-tertiary)] hover:text-[var(--foreground)] hover:bg-[var(--background-tertiary)] disabled:opacity-50 cursor-pointer"
           >
             <ArrowRight className="h-4 w-4" />
           </button>
@@ -167,7 +167,7 @@ export default function MiniCalendar({ calendarData }: MiniCalendarProps) {
         {weekdays.map((day, i) => (
           <div
             key={i}
-            className="flex items-center justify-center h-8 text-xs font-medium text-zinc-400"
+            className="flex items-center justify-center h-8 text-xs font-medium text-[var(--foreground-tertiary)]"
           >
             {day}
           </div>
@@ -176,7 +176,7 @@ export default function MiniCalendar({ calendarData }: MiniCalendarProps) {
 
       {isPending ? (
         <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-5 w-5 text-zinc-400 animate-spin" />
+          <Loader2 className="h-5 w-5 text-[var(--foreground-tertiary)] animate-spin" />
         </div>
       ) : (
         <>
@@ -194,22 +194,22 @@ export default function MiniCalendar({ calendarData }: MiniCalendarProps) {
                   className={`flex items-center justify-center h-8 w-full transition-colors cursor-pointer
                     ${
                       day === selectedDay
-                        ? 'text-white font-medium'
+                        ? 'text-[var(--primary-foreground)] font-medium'
                         : day === calData.today
-                          ? 'text-white font-medium'
+                          ? 'text-[var(--primary-foreground)] font-medium'
                           : calData.daysWithEvents.includes(day)
-                            ? 'text-white relative hover:bg-zinc-800/50 rounded-md'
-                            : 'text-zinc-400 hover:bg-zinc-800/50 hover:text-white rounded-md'
+                            ? 'text-[var(--foreground)] relative hover:bg-[var(--background-tertiary)]/50 rounded-md'
+                            : 'text-[var(--foreground-tertiary)] hover:bg-[var(--background-tertiary)]/50 hover:text-[var(--foreground)] rounded-md'
                     }`}
                 >
                   <div
                     className={`h-8 w-8 rounded-full flex items-center justify-center ${
                       day === selectedDay
-                        ? 'bg-indigo-500'
+                        ? 'bg-[var(--primary)]'
                         : day === calData.today
-                          ? 'bg-indigo-600'
+                          ? 'bg-[var(--primary-hover)]'
                           : calData.daysWithEvents.includes(day)
-                            ? 'after:absolute after:bottom-1 after:h-1 after:w-1 after:bg-indigo-500 after:rounded-full'
+                            ? 'after:absolute after:bottom-1 after:h-1 after:w-1 after:bg-[var(--primary)] after:rounded-full'
                             : ''
                     }`}
                   >
@@ -222,11 +222,11 @@ export default function MiniCalendar({ calendarData }: MiniCalendarProps) {
 
           <div className="mt-6 space-y-3">
             <div className="flex justify-between items-center">
-              <h4 className="text-sm font-medium text-white">{getSelectedDayLabel()}</h4>
+              <h4 className="text-sm font-medium text-[var(--foreground)]">{getSelectedDayLabel()}</h4>
               {selectedDay && (
                 <button
                   onClick={() => setSelectedDay(null)}
-                  className="text-zinc-400 hover:text-zinc-300 cursor-pointer"
+                  className="text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)] cursor-pointer"
                 >
                   <XCircle className="h-4 w-4" />
                 </button>
@@ -239,13 +239,13 @@ export default function MiniCalendar({ calendarData }: MiniCalendarProps) {
                   (event: CalendarEvent) => (
                     <div
                       key={event.id}
-                      className="flex items-center gap-3 p-2 rounded-lg bg-zinc-800/50 hover:bg-zinc-800 transition-colors"
+                      className="flex items-center gap-3 p-2 rounded-lg bg-[var(--background-tertiary)]/50 hover:bg-[var(--background-tertiary)] transition-colors"
                     >
                       <div className={`h-2 w-2 rounded-full ${event.colorClass}`}></div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-medium text-white truncate">{event.title}</p>
+                        <p className="text-xs font-medium text-[var(--foreground)] truncate">{event.title}</p>
                         <div className="flex items-center justify-between">
-                          <p className="text-xs text-zinc-400">
+                          <p className="text-xs text-[var(--foreground-tertiary)]">
                             {selectedDay
                               ? event.timeRange
                               : `${event.formattedDate}, ${event.timeRange}`}
@@ -255,14 +255,14 @@ export default function MiniCalendar({ calendarData }: MiniCalendarProps) {
                               {event.assignedUsers.slice(0, 3).map((user, i) => (
                                 <div
                                   key={i}
-                                  className="h-4 w-4 rounded-full bg-zinc-700 flex items-center justify-center text-[8px] text-white border border-zinc-900"
+                                  className="h-4 w-4 rounded-full bg-[var(--border-secondary)] flex items-center justify-center text-[8px] text-[var(--foreground)] border border-[var(--background)]"
                                   title={user.name}
                                 >
                                   {user.initials}
                                 </div>
                               ))}
                               {event.assignedUsers.length > 3 && (
-                                <div className="h-4 w-4 rounded-full bg-zinc-700 flex items-center justify-center text-[8px] text-white border border-zinc-900">
+                                <div className="h-4 w-4 rounded-full bg-[var(--border-secondary)] flex items-center justify-center text-[8px] text-[var(--foreground)] border border-[var(--background)]">
                                   +{event.assignedUsers.length - 3}
                                 </div>
                               )}
@@ -274,7 +274,7 @@ export default function MiniCalendar({ calendarData }: MiniCalendarProps) {
                   )
                 )
               ) : (
-                <p className="text-xs text-zinc-400">
+                <p className="text-xs text-[var(--foreground-tertiary)]">
                   {selectedDay
                     ? 'Aucun événement pour ce jour'
                     : isFilteredByUser

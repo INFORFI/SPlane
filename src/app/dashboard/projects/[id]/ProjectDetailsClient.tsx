@@ -97,15 +97,15 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
           <div className="flex items-center gap-2 mb-2">
             <Link
               href="/dashboard/projects"
-              className="text-zinc-400 hover:text-white transition-colors"
+              className="text-[var(--foreground-tertiary)] hover:text-[var(--foreground)] transition-colors"
             >
               <ArrowLeft className="h-5 w-5" />
             </Link>
-            <motion.h1 variants={itemVariants} className="text-2xl font-bold text-white">
+            <motion.h1 variants={itemVariants} className="text-2xl font-bold text-[var(--foreground)]">
               {project.name}
             </motion.h1>
           </div>
-          <motion.p variants={itemVariants} className="text-zinc-400">
+          <motion.p variants={itemVariants} className="text-[var(--foreground-tertiary)]">
             {project.description || 'Pas de description pour ce projet'}
           </motion.p>
         </div>
@@ -116,7 +116,7 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={handleDeleteProject}
-            className="flex items-center gap-2 px-3 py-2 bg-rose-600/20 hover:bg-rose-500/30 text-rose-400 rounded-lg text-sm font-medium transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-3 py-2 bg-[var(--error-muted)] hover:bg-[var(--error-muted)]/70 text-[var(--error)] rounded-lg text-sm font-medium transition-colors cursor-pointer"
           >
             <Trash2 className="h-4 w-4" />
             <span>Supprimer</span>
@@ -129,36 +129,36 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
         {/* Project info panel */}
         <motion.div variants={itemVariants} className="lg:col-span-1 space-y-6">
           {/* Project details card */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-5">
+          <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 space-y-5">
             <div>
-              <h2 className="text-lg font-semibold text-white mb-4">Détails du projet</h2>
+              <h2 className="text-lg font-semibold text-[var(--foreground)] mb-4">Détails du projet</h2>
 
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
-                  <div className="bg-indigo-500/10 p-2 rounded-lg">
-                    <Calendar className="h-5 w-5 text-indigo-400" />
+                  <div className="bg-[var(--primary-muted)] p-2 rounded-lg">
+                    <Calendar className="h-5 w-5 text-[var(--primary)]" />
                   </div>
                   <div>
-                    <p className="text-sm text-zinc-400">Période</p>
-                    <p className="text-sm font-medium text-white">
+                    <p className="text-sm text-[var(--foreground-tertiary)]">Période</p>
+                    <p className="text-sm font-medium text-[var(--foreground)]">
                       {formatDate(project.startDate)} - {formatDate(project.endDate)}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="bg-amber-500/10 p-2 rounded-lg">
-                    <Clock className="h-5 w-5 text-amber-400" />
+                  <div className="bg-[var(--warning-muted)] p-2 rounded-lg">
+                    <Clock className="h-5 w-5 text-[var(--warning)]" />
                   </div>
                   <div>
-                    <p className="text-sm text-zinc-400">Temps restant</p>
+                    <p className="text-sm text-[var(--foreground-tertiary)]">Temps restant</p>
                     <p
                       className={`text-sm font-medium ${
                         project.endDate &&
                         getDaysLeft(project.endDate) &&
                         getDaysLeft(project.endDate)! < 7
-                          ? 'text-rose-400'
-                          : 'text-white'
+                          ? 'text-[var(--error)]'
+                          : 'text-[var(--foreground)]'
                       }`}
                     >
                       {project.endDate
@@ -169,12 +169,12 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <div className="bg-emerald-500/10 p-2 rounded-lg">
-                    <User className="h-5 w-5 text-emerald-400" />
+                  <div className="bg-[var(--success-muted)] p-2 rounded-lg">
+                    <User className="h-5 w-5 text-[var(--success)]" />
                   </div>
                   <div>
-                    <p className="text-sm text-zinc-400">Propriétaire</p>
-                    <p className="text-sm font-medium text-white">{project.owner.fullName}</p>
+                    <p className="text-sm text-[var(--foreground-tertiary)]">Propriétaire</p>
+                    <p className="text-sm font-medium text-[var(--foreground)]">{project.owner.fullName}</p>
                   </div>
                 </div>
               </div>
@@ -182,34 +182,34 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
 
             <div className="space-y-3 pt-2">
               <div className="flex justify-between items-center">
-                <p className="text-sm font-medium text-white">Progression</p>
+                <p className="text-sm font-medium text-[var(--foreground)]">Progression</p>
                 <p
                   className={`text-sm font-medium ${
                     progress >= 75
-                      ? 'text-emerald-400'
+                      ? 'text-[var(--success)]'
                       : progress >= 40
-                        ? 'text-amber-400'
-                        : 'text-indigo-400'
+                        ? 'text-[var(--warning)]'
+                        : 'text-[var(--primary)]'
                   }`}
                 >
                   {progress}%
                 </p>
               </div>
 
-              <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
+              <div className="w-full h-2 bg-[var(--background-tertiary)] rounded-full overflow-hidden">
                 <div
                   className={`h-full rounded-full ${
                     progress >= 75
-                      ? 'bg-emerald-500'
+                      ? 'bg-[var(--success)]'
                       : progress >= 40
-                        ? 'bg-amber-500'
-                        : 'bg-indigo-500'
+                        ? 'bg-[var(--warning)]'
+                        : 'bg-[var(--primary)]'
                   }`}
                   style={{ width: `${progress}%` }}
                 ></div>
               </div>
 
-              <div className="flex justify-between text-xs text-zinc-500">
+              <div className="flex justify-between text-xs text-[var(--foreground-muted)]">
                 <p>0%</p>
                 <p>100%</p>
               </div>
@@ -217,9 +217,9 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
           </div>
 
           {/* Team members */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 space-y-4">
+          <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-white">Équipe</h2>
+              <h2 className="text-lg font-semibold text-[var(--foreground)]">Équipe</h2>
             </div>
 
             <div className="space-y-3">
@@ -227,24 +227,24 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                 project.teamMembers.map(member => (
                   <div
                     key={member.id}
-                    className="flex items-center gap-3 p-2 hover:bg-zinc-800/50 rounded-lg transition-colors"
+                    className="flex items-center gap-3 p-2 hover:bg-[var(--background-tertiary)]/50 rounded-lg transition-colors"
                   >
-                    <div className="h-9 w-9 rounded-full bg-indigo-600 flex items-center justify-center text-white text-sm font-medium">
+                    <div className="h-9 w-9 rounded-full bg-[var(--primary)] flex items-center justify-center text-[var(--primary-foreground)] text-sm font-medium">
                       {member.fullName
                         .split(' ')
                         .map(name => name[0])
                         .join('')}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-white">{member.fullName}</p>
-                      <p className="text-xs text-zinc-400">{member.email}</p>
+                      <p className="text-sm font-medium text-[var(--foreground)]">{member.fullName}</p>
+                      <p className="text-xs text-[var(--foreground-tertiary)]">{member.email}</p>
                     </div>
                   </div>
                 ))
               ) : (
                 <div className="text-center py-6">
-                  <Users className="h-8 w-8 text-zinc-600 mx-auto mb-2" />
-                  <p className="text-sm text-zinc-500">Aucun membre assigné</p>
+                  <Users className="h-8 w-8 text-[var(--foreground-muted)] mx-auto mb-2" />
+                  <p className="text-sm text-[var(--foreground-muted)]">Aucun membre assigné</p>
                 </div>
               )}
             </div>
@@ -254,18 +254,18 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
         {/* Tasks panel */}
         <motion.div variants={itemVariants} className="lg:col-span-2 space-y-5">
           {/* Tasks header with actions */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+          <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-5">
-              <h2 className="text-lg font-semibold text-white">Tâches</h2>
+              <h2 className="text-lg font-semibold text-[var(--foreground)]">Tâches</h2>
 
               <div className="flex gap-2">
                 <Link href={`/dashboard/tasks/create`}>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors cursor-pointer"
-                >
-                  <Plus className="h-4 w-4" />
+                    className="flex items-center gap-2 px-3 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-lg text-sm font-medium text-[var(--primary-foreground)] transition-colors cursor-pointer"
+                  >
+                    <Plus className="h-4 w-4" />
                     <span>Nouvelle tâche</span>
                   </motion.button>
                 </Link>
@@ -273,13 +273,13 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
             </div>
 
             {/* Task tabs */}
-            <div className="flex border-b border-zinc-800 mb-4">
+            <div className="flex border-b border-[var(--border)] mb-4">
               <button
                 onClick={() => setActiveTab('all')}
                 className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                   activeTab === 'all'
-                    ? 'border-indigo-500 text-indigo-400'
-                    : 'border-transparent text-zinc-400 hover:text-zinc-300'
+                    ? 'border-[var(--primary)] text-[var(--primary)]'
+                    : 'border-transparent text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)]'
                 }`}
               >
                 Toutes
@@ -288,8 +288,8 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                 onClick={() => setActiveTab('todo')}
                 className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                   activeTab === 'todo'
-                    ? 'border-indigo-500 text-indigo-400'
-                    : 'border-transparent text-zinc-400 hover:text-zinc-300'
+                    ? 'border-[var(--primary)] text-[var(--primary)]'
+                    : 'border-transparent text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)]'
                 }`}
               >
                 À faire
@@ -298,8 +298,8 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                 onClick={() => setActiveTab('in-progress')}
                 className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                   activeTab === 'in-progress'
-                    ? 'border-amber-500 text-amber-400'
-                    : 'border-transparent text-zinc-400 hover:text-zinc-300'
+                    ? 'border-[var(--warning)] text-[var(--warning)]'
+                    : 'border-transparent text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)]'
                 }`}
               >
                 En cours
@@ -308,8 +308,8 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                 onClick={() => setActiveTab('completed')}
                 className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors ${
                   activeTab === 'completed'
-                    ? 'border-emerald-500 text-emerald-400'
-                    : 'border-transparent text-zinc-400 hover:text-zinc-300'
+                    ? 'border-[var(--success)] text-[var(--success)]'
+                    : 'border-transparent text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)]'
                 }`}
               >
                 Terminées
@@ -343,9 +343,9 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                   exit={{ opacity: 0 }}
                   className="text-center py-10"
                 >
-                  <CheckCircle2 className="h-12 w-12 text-zinc-700 mx-auto mb-3" />
-                  <h3 className="text-lg font-medium text-zinc-500 mb-1">Aucune tâche trouvée</h3>
-                  <p className="text-sm text-zinc-600 mb-4 max-w-md mx-auto">
+                  <CheckCircle2 className="h-12 w-12 text-[var(--foreground-muted)] mx-auto mb-3" />
+                  <h3 className="text-lg font-medium text-[var(--foreground-tertiary)] mb-1">Aucune tâche trouvée</h3>
+                  <p className="text-sm text-[var(--foreground-tertiary)] mb-4 max-w-md mx-auto">
                     {activeTab !== 'all'
                       ? `Il n'y a pas de tâches dans la catégorie "${
                           activeTab === 'todo'
@@ -360,7 +360,7 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors mx-auto cursor-pointer"
+                      className="flex items-center gap-2 px-3 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-lg text-sm font-medium text-[var(--primary-foreground)] transition-colors mx-auto cursor-pointer"
                     >
                       <Plus className="h-4 w-4" />
                       <span>Créer une tâche</span>
@@ -374,52 +374,52 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
           {/* Activity feed */}
           <motion.div
             variants={itemVariants}
-            className="bg-zinc-900 border border-zinc-800 rounded-xl p-6"
+            className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6"
           >
-            <h2 className="text-lg font-semibold text-white mb-4">Activité récente</h2>
+            <h2 className="text-lg font-semibold text-[var(--foreground)] mb-4">Activité récente</h2>
 
             <div className="space-y-4">
               {project.tasks.length > 0 ? (
                 <>
                   <div className="flex gap-3">
-                    <div className="h-8 w-8 rounded-full bg-emerald-600 flex items-center justify-center text-white text-sm font-medium">
+                    <div className="h-8 w-8 rounded-full bg-[var(--success)] flex items-center justify-center text-[var(--success-foreground)] text-sm font-medium">
                       {project.teamMembers[0]?.fullName
                         .split(' ')
                         .map(name => name[0])
                         .join('') || 'U'}
                     </div>
                     <div>
-                      <p className="text-sm text-white">
+                      <p className="text-sm text-[var(--foreground)]">
                         <span className="font-medium">
                           {project.teamMembers[0]?.fullName || 'Un utilisateur'}
                         </span>{' '}
                         a été assigné à la tâche{' '}
                         <span className="font-medium">{project.tasks[0].title}</span>
                       </p>
-                      <p className="text-xs text-zinc-400 mt-1">Il y a 2 jours</p>
+                      <p className="text-xs text-[var(--foreground-tertiary)] mt-1">Il y a 2 jours</p>
                     </div>
                   </div>
 
                   <div className="flex gap-3">
-                    <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white text-sm font-medium">
+                    <div className="h-8 w-8 rounded-full bg-[var(--primary)] flex items-center justify-center text-[var(--primary-foreground)] text-sm font-medium">
                       {project.owner.fullName
                         .split(' ')
                         .map(name => name[0])
                         .join('')}
                     </div>
                     <div>
-                      <p className="text-sm text-white">
+                      <p className="text-sm text-[var(--foreground)]">
                         <span className="font-medium">{project.owner.fullName}</span> a créé le
                         projet <span className="font-medium">{project.name}</span>
                       </p>
-                      <p className="text-xs text-zinc-400 mt-1">Il y a 5 jours</p>
+                      <p className="text-xs text-[var(--foreground-tertiary)] mt-1">Il y a 5 jours</p>
                     </div>
                   </div>
                 </>
               ) : (
                 <div className="text-center py-6">
-                  <MessageSquare className="h-8 w-8 text-zinc-600 mx-auto mb-2" />
-                  <p className="text-sm text-zinc-500">Aucune activité récente</p>
+                  <MessageSquare className="h-8 w-8 text-[var(--foreground-muted)] mx-auto mb-2" />
+                  <p className="text-sm text-[var(--foreground-muted)]">Aucune activité récente</p>
                 </div>
               )}
             </div>
@@ -432,54 +432,54 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+          className="fixed inset-0 bg-[var(--background-tertiary)] bg-opacity-50 flex items-center justify-center"
         >
-          <div className="bg-zinc-900 p-8 rounded-lg space-y-4">
-            <h2 className="text-lg font-semibold text-white mb-4">Créer une tâche</h2>
+          <div className="bg-[var(--background-secondary)] p-8 rounded-lg space-y-4">
+            <h2 className="text-lg font-semibold text-[var(--foreground)] mb-4">Créer une tâche</h2>
 
             <form className="space-y-4">
               <div>
-                <label htmlFor="title" className="block text-sm font-medium text-zinc-300 mb-1">
+                <label htmlFor="title" className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1">
                   Titre
                 </label>
                 <input
                   id="title"
                   type="text"
-                  className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 bg-[var(--input)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="description"
-                  className="block text-sm font-medium text-zinc-300 mb-1"
+                  className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1"
                 >
                   Description
                 </label>
                 <textarea
                   id="description"
-                  className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 bg-[var(--input)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label htmlFor="deadline" className="block text-sm font-medium text-zinc-300 mb-1">
+                <label htmlFor="deadline" className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1">
                   Date limite
                 </label>
                 <input
                   id="deadline"
                   type="date"
-                  className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 bg-[var(--input)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label htmlFor="priority" className="block text-sm font-medium text-zinc-300 mb-1">
+                <label htmlFor="priority" className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1">
                   Priorité
                 </label>
                 <select
                   id="priority"
-                  className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 bg-[var(--input)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
                 >
                   <option value="1">Basse</option>
                   <option value="2">Moyenne</option>
@@ -488,12 +488,12 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
               </div>
 
               <div>
-                <label htmlFor="assignee" className="block text-sm font-medium text-zinc-300 mb-1">
+                <label htmlFor="assignee" className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1">
                   Assigné à
                 </label>
                 <select
                   id="assignee"
-                  className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 bg-[var(--input)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
                 >
                   <option value="">Sélectionner un membre</option>
                   {project.teamMembers.map(member => (
@@ -508,7 +508,7 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                 <motion.button
                   type="button"
                   onClick={() => setShowAddTask(false)}
-                  className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors"
+                  className="px-4 py-2 bg-[var(--background-tertiary)] hover:bg-[var(--border-secondary)] rounded-lg text-sm font-medium text-[var(--foreground-secondary)] transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -517,7 +517,7 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
 
                 <motion.button
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors"
+                  className="px-4 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-lg text-sm font-medium text-[var(--primary-foreground)] transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -555,29 +555,29 @@ function TaskItem({ task, formatDate, onClick }: TaskItemProps) {
   // Get the assigned user if any
   const assignedUser = task.userTasks[0]?.user;
 
-  // Get status color and text
+  // Get status color and text with CSS variables
   const getStatusColor = (status: TaskStatus) => {
     switch (status) {
       case TaskStatus.COMPLETED:
-        return { bg: 'bg-emerald-500/10', text: 'text-emerald-400', label: 'Terminée' };
+        return { bg: 'bg-[var(--success-muted)]', text: 'text-[var(--success)]', label: 'Terminée' };
       case TaskStatus.IN_PROGRESS:
-        return { bg: 'bg-amber-500/10', text: 'text-amber-400', label: 'En cours' };
+        return { bg: 'bg-[var(--warning-muted)]', text: 'text-[var(--warning)]', label: 'En cours' };
       case TaskStatus.CANCELED:
-        return { bg: 'bg-zinc-500/10', text: 'text-zinc-400', label: 'Annulée' };
+        return { bg: 'bg-[var(--foreground-muted)]/10', text: 'text-[var(--foreground-tertiary)]', label: 'Annulée' };
       default:
-        return { bg: 'bg-indigo-500/10', text: 'text-indigo-400', label: 'À faire' };
+        return { bg: 'bg-[var(--primary-muted)]', text: 'text-[var(--primary)]', label: 'À faire' };
     }
   };
 
-  // Get priority indicator
+  // Get priority indicator with CSS variables
   const getPriority = (priority: number) => {
     switch (priority) {
       case 3:
-        return { color: 'bg-rose-500', label: 'Haute' };
+        return { color: 'bg-[var(--error)]', label: 'Haute' };
       case 2:
-        return { color: 'bg-amber-500', label: 'Moyenne' };
+        return { color: 'bg-[var(--warning)]', label: 'Moyenne' };
       default:
-        return { color: 'bg-emerald-500', label: 'Basse' };
+        return { color: 'bg-[var(--success)]', label: 'Basse' };
     }
   };
 
@@ -590,16 +590,16 @@ function TaskItem({ task, formatDate, onClick }: TaskItemProps) {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -10 }}
-      className="p-4 border border-zinc-800 hover:border-zinc-700 rounded-lg transition-colors group cursor-pointer"
+      className="p-4 border border-[var(--border)] hover:border-[var(--border-secondary)] rounded-lg transition-colors group cursor-pointer"
       onClick={onClick}
     >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex gap-3 items-start">
           <div className={`mt-1 h-2 w-2 rounded-full flex-shrink-0 ${priority.color}`}></div>
           <div>
-            <h3 className="text-white font-medium">{task.title}</h3>
+            <h3 className="text-[var(--foreground)] font-medium">{task.title}</h3>
             {task.description && (
-              <p className="text-sm text-zinc-400 line-clamp-1">{task.description}</p>
+              <p className="text-sm text-[var(--foreground-tertiary)] line-clamp-1">{task.description}</p>
             )}
           </div>
         </div>
@@ -607,7 +607,7 @@ function TaskItem({ task, formatDate, onClick }: TaskItemProps) {
         <div className="flex flex-wrap gap-2 items-center sm:justify-end">
           {/* Deadline */}
           {task.deadline && (
-            <div className="flex items-center gap-1 text-xs text-zinc-400">
+            <div className="flex items-center gap-1 text-xs text-[var(--foreground-tertiary)]">
               <Clock className="h-3.5 w-3.5" />
               <span>{formatDate(task.deadline)}</span>
             </div>
@@ -624,7 +624,7 @@ function TaskItem({ task, formatDate, onClick }: TaskItemProps) {
           {assignedUser ? (
             <div
               title={assignedUser.fullName}
-              className="h-6 w-6 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs"
+              className="h-6 w-6 rounded-full bg-[var(--primary)] flex items-center justify-center text-[var(--primary-foreground)] text-xs"
             >
               {assignedUser.fullName
                 .split(' ')
@@ -634,14 +634,14 @@ function TaskItem({ task, formatDate, onClick }: TaskItemProps) {
           ) : (
             <div
               title="Non assignée"
-              className="h-6 w-6 rounded-full bg-zinc-700 flex items-center justify-center text-zinc-500 text-xs border border-zinc-600"
+              className="h-6 w-6 rounded-full bg-[var(--border-secondary)] flex items-center justify-center text-[var(--foreground-muted)] text-xs border border-[var(--border)]"
             >
               ?
             </div>
           )}
 
           {/* Action button */}
-          <button className="p-1.5 rounded-md text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 opacity-0 group-hover:opacity-100 transition-all">
+          <button className="p-1.5 rounded-md text-[var(--foreground-muted)] hover:text-[var(--foreground-secondary)] hover:bg-[var(--background-tertiary)] opacity-0 group-hover:opacity-100 transition-all">
             <MoreHorizontal className="h-4 w-4" />
           </button>
         </div>

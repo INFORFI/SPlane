@@ -34,13 +34,13 @@ export default function TaskDetailsModal({
   const getStatusColor = (status: TaskStatus) => {
     switch (status) {
       case TaskStatus.COMPLETED:
-        return { bg: 'bg-emerald-500/10', text: 'text-emerald-400', label: 'Terminée' };
+        return { bg: 'bg-[var(--success-muted)]', text: 'text-[var(--success)]', label: 'Terminée' };
       case TaskStatus.IN_PROGRESS:
-        return { bg: 'bg-amber-500/10', text: 'text-amber-400', label: 'En cours' };
+        return { bg: 'bg-[var(--warning-muted)]', text: 'text-[var(--warning)]', label: 'En cours' };
       case TaskStatus.CANCELED:
-        return { bg: 'bg-zinc-500/10', text: 'text-zinc-400', label: 'Annulée' };
+        return { bg: 'bg-[var(--foreground-muted)]/10', text: 'text-[var(--foreground-tertiary)]', label: 'Annulée' };
       default:
-        return { bg: 'bg-indigo-500/10', text: 'text-indigo-400', label: 'À faire' };
+        return { bg: 'bg-[var(--primary-muted)]', text: 'text-[var(--primary)]', label: 'À faire' };
     }
   };
 
@@ -48,11 +48,11 @@ export default function TaskDetailsModal({
   const getPriority = (priority: number) => {
     switch (priority) {
       case 3:
-        return { color: 'bg-rose-500', label: 'Haute' };
+        return { color: 'bg-[var(--error)]', label: 'Haute' };
       case 2:
-        return { color: 'bg-amber-500', label: 'Moyenne' };
+        return { color: 'bg-[var(--warning)]', label: 'Moyenne' };
       default:
-        return { color: 'bg-emerald-500', label: 'Basse' };
+        return { color: 'bg-[var(--success)]', label: 'Basse' };
     }
   };
 
@@ -88,19 +88,19 @@ export default function TaskDetailsModal({
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
-        className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+        className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <div className={`h-3 w-3 rounded-full ${priority.color}`}></div>
             {!isEditing ? (
-              <h2 className="text-xl font-semibold text-white">{task.title}</h2>
+              <h2 className="text-xl font-semibold text-[var(--foreground)]">{task.title}</h2>
             ) : (
-              <h2 className="text-xl font-semibold text-white">Modifier la tâche</h2>
+              <h2 className="text-xl font-semibold text-[var(--foreground)]">Modifier la tâche</h2>
             )}
           </div>
-          <button onClick={onClose} className="text-zinc-400 hover:text-zinc-300 transition-colors">
+          <button onClick={onClose} className="text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)] transition-colors">
             <XCircle className="h-6 w-6" />
           </button>
         </div>
@@ -116,7 +116,7 @@ export default function TaskDetailsModal({
               onSubmit={handleSubmit}
             >
               <div>
-                <label htmlFor="title" className="block text-sm font-medium text-zinc-300 mb-1">
+                <label htmlFor="title" className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1">
                   Titre
                 </label>
                 <input
@@ -125,7 +125,7 @@ export default function TaskDetailsModal({
                   type="text"
                   value={taskForm.title}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
                   required
                 />
               </div>
@@ -133,7 +133,7 @@ export default function TaskDetailsModal({
               <div>
                 <label
                   htmlFor="description"
-                  className="block text-sm font-medium text-zinc-300 mb-1"
+                  className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1"
                 >
                   Description
                 </label>
@@ -143,13 +143,13 @@ export default function TaskDetailsModal({
                   rows={4}
                   value={taskForm.description}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full px-4 py-2 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
                 ></textarea>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="status" className="block text-sm font-medium text-zinc-300 mb-1">
+                  <label htmlFor="status" className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1">
                     Statut
                   </label>
                   <select
@@ -157,7 +157,7 @@ export default function TaskDetailsModal({
                     name="status"
                     value={taskForm.status}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className="w-full px-4 py-2 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
                   >
                     <option value="TODO">À faire</option>
                     <option value="IN_PROGRESS">En cours</option>
@@ -169,7 +169,7 @@ export default function TaskDetailsModal({
                 <div>
                   <label
                     htmlFor="priority"
-                    className="block text-sm font-medium text-zinc-300 mb-1"
+                    className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1"
                   >
                     Priorité
                   </label>
@@ -178,7 +178,7 @@ export default function TaskDetailsModal({
                     name="priority"
                     value={taskForm.priority}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className="w-full px-4 py-2 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
                   >
                     <option value="1">Basse</option>
                     <option value="2">Moyenne</option>
@@ -189,13 +189,13 @@ export default function TaskDetailsModal({
                 <div>
                   <label
                     htmlFor="deadline"
-                    className="block text-sm font-medium text-zinc-300 mb-1"
+                    className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1"
                   >
                     Date limite
                   </label>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <Calendar className="h-5 w-5 text-zinc-500" />
+                      <Calendar className="h-5 w-5 text-[var(--foreground-muted)]" />
                     </div>
                     <input
                       id="deadline"
@@ -203,7 +203,7 @@ export default function TaskDetailsModal({
                       type="date"
                       value={taskForm.deadline}
                       onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-2 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
                     />
                   </div>
                 </div>
@@ -211,7 +211,7 @@ export default function TaskDetailsModal({
                 <div>
                   <label
                     htmlFor="assigneeId"
-                    className="block text-sm font-medium text-zinc-300 mb-1"
+                    className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1"
                   >
                     Assigné à
                   </label>
@@ -220,7 +220,7 @@ export default function TaskDetailsModal({
                     name="assigneeId"
                     value={taskForm.assigneeId}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className="w-full px-4 py-2 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
                   >
                     <option value="">Non assignée</option>
                     {projectTeam.map(member => (
@@ -236,7 +236,7 @@ export default function TaskDetailsModal({
                 <motion.button
                   type="button"
                   onClick={() => setIsEditing(false)}
-                  className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors"
+                  className="px-4 py-2 bg-[var(--background-tertiary)] hover:bg-[var(--border-secondary)] rounded-lg text-sm font-medium text-[var(--foreground-secondary)] transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -245,7 +245,7 @@ export default function TaskDetailsModal({
 
                 <motion.button
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors"
+                  className="px-4 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-lg text-sm font-medium text-[var(--primary-foreground)] transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -264,19 +264,19 @@ export default function TaskDetailsModal({
                 <div className="md:col-span-2 space-y-6">
                   {/* Task description */}
                   <div>
-                    <h3 className="text-sm font-medium text-zinc-400 mb-2">Description</h3>
-                    <p className="text-white">
+                    <h3 className="text-sm font-medium text-[var(--foreground-tertiary)] mb-2">Description</h3>
+                    <p className="text-[var(--foreground)]">
                       {task.description || 'Aucune description fournie.'}
                     </p>
                   </div>
 
                   {/* Comments section */}
                   <div>
-                    <h3 className="text-sm font-medium text-zinc-400 mb-3">Commentaires</h3>
+                    <h3 className="text-sm font-medium text-[var(--foreground-tertiary)] mb-3">Commentaires</h3>
 
                     <div className="space-y-4">
                       <div className="flex gap-3">
-                        <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white text-sm">
+                        <div className="h-8 w-8 rounded-full bg-[var(--primary)] flex items-center justify-center text-[var(--primary-foreground)] text-sm">
                           {assignedUser
                             ? assignedUser.fullName
                                 .split(' ')
@@ -284,27 +284,27 @@ export default function TaskDetailsModal({
                                 .join('')
                             : 'U'}
                         </div>
-                        <div className="flex-1 p-3 bg-zinc-800 rounded-lg">
-                          <p className="text-sm text-white">
+                        <div className="flex-1 p-3 bg-[var(--background-tertiary)] rounded-lg">
+                          <p className="text-sm text-[var(--foreground)]">
                             J&apos;ai commencé à travailler sur cette tâche. Je pense pouvoir la
                             terminer d&apos;ici demain.
                           </p>
-                          <p className="text-xs text-zinc-500 mt-1">Il y a 2 jours</p>
+                          <p className="text-xs text-[var(--foreground-muted)] mt-1">Il y a 2 jours</p>
                         </div>
                       </div>
 
                       {/* Comment input */}
                       <div className="flex gap-3">
-                        <div className="h-8 w-8 rounded-full bg-zinc-700 flex items-center justify-center text-white text-sm">
+                        <div className="h-8 w-8 rounded-full bg-[var(--border-secondary)] flex items-center justify-center text-[var(--foreground)] text-sm">
                           U
                         </div>
                         <div className="flex-1 relative">
                           <input
                             type="text"
                             placeholder="Ajouter un commentaire..."
-                            className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent pr-10"
+                            className="w-full px-4 py-2 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent pr-10"
                           />
-                          <button className="absolute right-2 top-1/2 -translate-y-1/2 text-indigo-400 hover:text-indigo-300">
+                          <button className="absolute right-2 top-1/2 -translate-y-1/2 text-[var(--primary)] hover:text-[var(--primary-hover)]">
                             <Plus className="h-5 w-5" />
                           </button>
                         </div>
@@ -315,10 +315,10 @@ export default function TaskDetailsModal({
 
                 {/* Task details sidebar */}
                 <div className="space-y-6">
-                  <div className="bg-zinc-800/50 rounded-lg p-4 space-y-4">
+                  <div className="bg-[var(--background-tertiary)]/50 rounded-lg p-4 space-y-4">
                     {/* Status */}
                     <div>
-                      <h4 className="text-xs font-medium text-zinc-500 mb-1">STATUT</h4>
+                      <h4 className="text-xs font-medium text-[var(--foreground-muted)] mb-1">STATUT</h4>
                       <div
                         className={`inline-flex items-center px-2.5 py-1 rounded-full text-sm font-medium ${status.bg} ${status.text}`}
                       >
@@ -328,38 +328,38 @@ export default function TaskDetailsModal({
 
                     {/* Priority */}
                     <div>
-                      <h4 className="text-xs font-medium text-zinc-500 mb-1">PRIORITÉ</h4>
+                      <h4 className="text-xs font-medium text-[var(--foreground-muted)] mb-1">PRIORITÉ</h4>
                       <div className="flex items-center gap-2">
                         <div className={`h-2 w-2 rounded-full ${priority.color}`}></div>
-                        <span className="text-sm text-white">{priority.label}</span>
+                        <span className="text-sm text-[var(--foreground)]">{priority.label}</span>
                       </div>
                     </div>
 
                     {/* Assignee */}
                     <div>
-                      <h4 className="text-xs font-medium text-zinc-500 mb-1">ASSIGNÉ À</h4>
+                      <h4 className="text-xs font-medium text-[var(--foreground-muted)] mb-1">ASSIGNÉ À</h4>
                       {assignedUser ? (
                         <div className="flex items-center gap-2">
-                          <div className="h-6 w-6 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs">
+                          <div className="h-6 w-6 rounded-full bg-[var(--primary)] flex items-center justify-center text-[var(--primary-foreground)] text-xs">
                             {assignedUser.fullName
                               .split(' ')
                               .map(name => name[0])
                               .join('')}
                           </div>
-                          <span className="text-sm text-white">{assignedUser.fullName}</span>
+                          <span className="text-sm text-[var(--foreground)]">{assignedUser.fullName}</span>
                         </div>
                       ) : (
-                        <span className="text-sm text-zinc-400">Non assignée</span>
+                        <span className="text-sm text-[var(--foreground-tertiary)]">Non assignée</span>
                       )}
                     </div>
 
                     {/* Deadline */}
                     {task.deadline && (
                       <div>
-                        <h4 className="text-xs font-medium text-zinc-500 mb-1">DATE LIMITE</h4>
+                        <h4 className="text-xs font-medium text-[var(--foreground-muted)] mb-1">DATE LIMITE</h4>
                         <div className="flex items-center gap-2">
-                          <Clock className="h-4 w-4 text-zinc-400" />
-                          <span className="text-sm text-white">{formatDate(task.deadline)}</span>
+                          <Clock className="h-4 w-4 text-[var(--foreground-tertiary)]" />
+                          <span className="text-sm text-[var(--foreground)]">{formatDate(task.deadline)}</span>
                         </div>
                       </div>
                     )}
@@ -369,7 +369,7 @@ export default function TaskDetailsModal({
                   <div className="space-y-2">
                     <motion.button
                       onClick={() => setIsEditing(true)}
-                      className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors"
+                      className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[var(--background-tertiary)] hover:bg-[var(--border-secondary)] rounded-lg text-sm font-medium text-[var(--foreground-secondary)] transition-colors"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -379,7 +379,7 @@ export default function TaskDetailsModal({
 
                     {task.status !== TaskStatus.COMPLETED ? (
                       <motion.button
-                        className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600/20 hover:bg-emerald-500/30 text-emerald-400 rounded-lg text-sm font-medium transition-colors"
+                        className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[var(--success-muted)] hover:bg-[var(--success-muted)]/70 text-[var(--success)] rounded-lg text-sm font-medium transition-colors"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -388,7 +388,7 @@ export default function TaskDetailsModal({
                       </motion.button>
                     ) : (
                       <motion.button
-                        className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600/20 hover:bg-indigo-500/30 text-indigo-400 rounded-lg text-sm font-medium transition-colors"
+                        className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[var(--primary-muted)] hover:bg-[var(--primary-muted)]/70 text-[var(--primary)] rounded-lg text-sm font-medium transition-colors"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
@@ -398,7 +398,7 @@ export default function TaskDetailsModal({
                     )}
 
                     <motion.button
-                      className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-rose-600/20 hover:bg-rose-500/30 text-rose-400 rounded-lg text-sm font-medium transition-colors"
+                      className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[var(--error-muted)] hover:bg-[var(--error-muted)]/70 text-[var(--error)] rounded-lg text-sm font-medium transition-colors"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >

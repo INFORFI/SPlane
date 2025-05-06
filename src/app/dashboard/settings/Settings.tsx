@@ -25,6 +25,7 @@ import { containerVariants, itemVariants } from '@/utils/ItemVariants';
 import type { UserLoggedIn } from '@/action/users/getUserLoggedIn';
 import ProfileTab from '@/components/settings/ProfileTab';
 import NotificationsTab from '@/components/settings/NotificationsTab';
+import ThemeSelector from '@/components/settings/ThemeSelector';
 
 // Mock function for demonstration - replace with actual server action
 const updateUserSettings = async () => {
@@ -246,31 +247,31 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
     >
       <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-[var(--foreground)]">
             Paramètres du compte
             <div className="relative inline-block group">
-              <span className="inline-flex items-center ml-2 px-2 py-0.5 rounded text-xs font-medium bg-amber-500/20 text-amber-400 cursor-help">
+              <span className="inline-flex items-center ml-2 px-2 py-0.5 rounded text-xs font-medium bg-[var(--warning-muted)] text-[var(--warning)]">
                 BETA
               </span>
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 opacity-0 group-hover:opacity-100 transition-opacity duration-200 invisible group-hover:visible z-10">
-                <div className="relative p-2 bg-zinc-800 border border-zinc-700 rounded-lg shadow-lg text-xs text-zinc-300">
+                <div className="relative p-2 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-lg shadow-lg text-xs text-[var(--foreground-secondary)]">
                   <p>Cette page est en cours de développement. Certaines fonctionnalités peuvent ne pas fonctionner correctement.</p>
-                  <div className="absolute w-2 h-2 bg-zinc-800 border-r border-b border-zinc-700 transform rotate-45 left-1/2 -top-1 -ml-1"></div>
+                  <div className="absolute w-2 h-2 bg-[var(--background-tertiary)] border-r border-b border-[var(--border-secondary)] transform rotate-45 left-1/2 -top-1 -ml-1"></div>
                 </div>
               </div>
             </div>
           </h1>
-          <p className="text-zinc-400">Gérez vos préférences et paramètres de compte</p>
+          <p className="text-[var(--foreground-tertiary)]">Gérez vos préférences et paramètres de compte</p>
         </div>
       </motion.div>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Sidebar */}
         <motion.div variants={itemVariants} className="lg:col-span-1">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden">
-            <div className="p-6 flex flex-col items-center text-center border-b border-zinc-800">
+          <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl overflow-hidden">
+            <div className="p-6 flex flex-col items-center text-center border-b border-[var(--border)]">
               <div className="relative group mb-4">
-                <div className="h-24 w-24 rounded-full bg-indigo-600 flex items-center justify-center text-white text-2xl font-medium mb-2 overflow-hidden select-none">
+                <div className="h-24 w-24 rounded-full bg-[var(--primary)] flex items-center justify-center text-[var(--primary-foreground)] text-2xl font-medium mb-2 overflow-hidden select-none">
                   {user.fullName
                     .split(' ')
                     .map(part => part.charAt(0))
@@ -278,9 +279,9 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                     .toUpperCase()}
                 </div>
               </div>
-              <h3 className="text-lg font-semibold text-white">{user.fullName}</h3>
-              <p className="text-sm text-zinc-400">{user.email}</p>
-              <div className="mt-2 px-3 py-1 rounded-full text-xs font-medium bg-indigo-500/20 text-indigo-400">
+              <h3 className="text-lg font-semibold text-[var(--foreground)]">{user.fullName}</h3>
+              <p className="text-sm text-[var(--foreground-tertiary)]">{user.email}</p>
+              <div className="mt-2 px-3 py-1 rounded-full text-xs font-medium bg-[var(--primary-muted)] text-[var(--primary)]">
                 {user.role === 'ADMIN' ? 'Administrateur' : 'Utilisateur'}
               </div>
             </div>
@@ -291,8 +292,8 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                   onClick={() => setActiveTab('profile')} 
                   className={`flex items-center gap-3 w-full px-4 py-2 rounded-lg text-left transition-colors cursor-pointer ${
                     activeTab === 'profile' 
-                      ? 'bg-indigo-500/20 text-indigo-400' 
-                      : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'
+                      ? 'bg-[var(--primary-muted)] text-[var(--primary)]' 
+                      : 'text-[var(--foreground-tertiary)] hover:bg-[var(--background-tertiary)] hover:text-[var(--foreground)]'
                   }`}
                 >
                   <UserIcon className="h-5 w-5" />
@@ -303,8 +304,8 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                   onClick={() => setActiveTab('security')} 
                   className={`flex items-center gap-3 w-full px-4 py-2 rounded-lg text-left transition-colors cursor-pointer ${
                     activeTab === 'security' 
-                      ? 'bg-indigo-500/20 text-indigo-400' 
-                      : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'
+                      ? 'bg-[var(--primary-muted)] text-[var(--primary)]' 
+                      : 'text-[var(--foreground-tertiary)] hover:bg-[var(--background-tertiary)] hover:text-[var(--foreground)]'
                   }`}
                 >
                   <Shield className="h-5 w-5" />
@@ -315,8 +316,8 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                   onClick={() => setActiveTab('appearance')} 
                   className={`flex items-center gap-3 w-full px-4 py-2 rounded-lg text-left transition-colors cursor-pointer ${
                     activeTab === 'appearance' 
-                      ? 'bg-indigo-500/20 text-indigo-400' 
-                      : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'
+                      ? 'bg-[var(--primary-muted)] text-[var(--primary)]' 
+                      : 'text-[var(--foreground-tertiary)] hover:bg-[var(--background-tertiary)] hover:text-[var(--foreground)]'
                   }`}
                 >
                   <Moon className="h-5 w-5" />
@@ -327,8 +328,8 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                   onClick={() => setActiveTab('notifications')} 
                   className={`flex items-center gap-3 w-full px-4 py-2 rounded-lg text-left transition-colors cursor-pointer ${
                     activeTab === 'notifications' 
-                      ? 'bg-indigo-500/20 text-indigo-400' 
-                      : 'text-zinc-400 hover:bg-zinc-800 hover:text-white'
+                      ? 'bg-[var(--primary-muted)] text-[var(--primary)]' 
+                      : 'text-[var(--foreground-tertiary)] hover:bg-[var(--background-tertiary)] hover:text-[var(--foreground)]'
                   }`}
                 >
                   <Bell className="h-5 w-5" />
@@ -337,10 +338,10 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
               </nav>
             </div>
             
-            <div className="p-4 border-t border-zinc-800">
+            <div className="p-4 border-t border-[var(--border)]">
               <button 
                 onClick={handleLogout}
-                className="flex items-center gap-2 w-full px-4 py-2 text-rose-500 hover:bg-rose-500/10 rounded-lg transition-colors cursor-pointer"
+                className="flex items-center gap-2 w-full px-4 py-2 text-[var(--error)] hover:bg-[var(--error-muted)] rounded-lg transition-colors cursor-pointer"
               >
                 <LogOut className="h-5 w-5" />
                 <span>Sign out</span>
@@ -351,7 +352,7 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
         
         {/* Main content */}
         <motion.div variants={itemVariants} className="lg:col-span-3">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
+          <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
             {/* Profile Tab */}
             {activeTab === 'profile' && (
               <ProfileTab user={user} />
@@ -360,34 +361,34 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
             {/* Security Tab */}
             {activeTab === 'security' && (
               <div>
-                <h2 className="text-xl font-semibold text-white mb-6">Security Settings</h2>
+                <h2 className="text-xl font-semibold text-[var(--foreground)] mb-6">Security Settings</h2>
                 
                 {error && (
-                  <div className="mb-6 p-3 bg-rose-500/10 border border-rose-500/20 rounded-lg flex items-center gap-3 text-rose-400">
+                  <div className="mb-6 p-3 bg-[var(--error-muted)] border border-[var(--error)] rounded-lg flex items-center gap-3 text-[var(--error)]">
                     <AlertCircle className="h-5 w-5 flex-shrink-0" />
                     <span className="text-sm">{error}</span>
                   </div>
                 )}
                 
                 {success && (
-                  <div className="mb-6 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg flex items-center gap-3 text-emerald-400">
+                  <div className="mb-6 p-3 bg-[var(--success-muted)] border border-[var(--success)] rounded-lg flex items-center gap-3 text-[var(--success)]">
                     <CheckCircle2 className="h-5 w-5 flex-shrink-0" />
-                    <span className="text-sm">Password updated successfully!</span>
+                    <span className="text-sm">Mot de passe mis à jour avec succès !</span>
                   </div>
                 )}
                 
                 <div className="space-y-8">
                   {/* Change Password */}
                   <div>
-                    <h3 className="text-lg font-medium text-white mb-4">Change Password</h3>
+                    <h3 className="text-lg font-medium text-[var(--foreground)] mb-4">Change Password</h3>
                     <form onSubmit={handlePasswordUpdate} className="space-y-4">
                       <div>
-                        <label htmlFor="currentPassword" className="block text-sm font-medium text-zinc-300 mb-1">
+                        <label htmlFor="currentPassword" className="block text-sm font-medium text-[var(--foreground-tertiary)] mb-1">
                           Current Password
                         </label>
                         <div className="relative">
                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <Key className="h-5 w-5 text-zinc-500" />
+                            <Key className="h-5 w-5 text-[var(--foreground-tertiary)]" />
                           </div>
                           <input
                             id="currentPassword"
@@ -395,19 +396,19 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                             type="password"
                             value={passwordForm.currentPassword}
                             onChange={handlePasswordChange}
-                            className="w-full px-4 py-2 pl-10 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                            className="w-full px-4 py-2 pl-10 bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                             placeholder="••••••••"
                           />
                         </div>
                       </div>
                       
                       <div>
-                        <label htmlFor="newPassword" className="block text-sm font-medium text-zinc-300 mb-1">
+                        <label htmlFor="newPassword" className="block text-sm font-medium text-[var(--foreground-tertiary)] mb-1">
                           New Password
                         </label>
                         <div className="relative">
                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <Key className="h-5 w-5 text-zinc-500" />
+                            <Key className="h-5 w-5 text-[var(--foreground-tertiary)]" />
                           </div>
                           <input
                             id="newPassword"
@@ -415,20 +416,20 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                             type="password"
                             value={passwordForm.newPassword}
                             onChange={handlePasswordChange}
-                            className="w-full px-4 py-2 pl-10 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                            className="w-full px-4 py-2 pl-10 bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                             placeholder="••••••••"
                           />
                         </div>
-                        <p className="text-xs text-zinc-500 mt-1">Password must be at least 8 characters long</p>
+                        <p className="text-xs text-[var(--foreground-tertiary)] mt-1">Password must be at least 8 characters long</p>
                       </div>
                       
                       <div>
-                        <label htmlFor="confirmPassword" className="block text-sm font-medium text-zinc-300 mb-1">
+                        <label htmlFor="confirmPassword" className="block text-sm font-medium text-[var(--foreground-tertiary)] mb-1">
                           Confirm New Password
                         </label>
                         <div className="relative">
                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <Key className="h-5 w-5 text-zinc-500" />
+                            <Key className="h-5 w-5 text-[var(--foreground-tertiary)]" />
                           </div>
                           <input
                             id="confirmPassword"
@@ -436,7 +437,7 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                             type="password"
                             value={passwordForm.confirmPassword}
                             onChange={handlePasswordChange}
-                            className="w-full px-4 py-2 pl-10 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                            className="w-full px-4 py-2 pl-10 bg-[var(--background-secondary)] border border-[var(--border)] rounded-lg text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                             placeholder="••••••••"
                           />
                         </div>
@@ -446,11 +447,11 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                         <button
                           type="submit"
                           disabled={isSubmitting}
-                          className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
+                          className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-[var(--primary-foreground)] rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
                         >
                           {isSubmitting ? (
                             <>
-                              <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <svg className="animate-spin h-5 w-5 text-[var(--primary-foreground)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                               </svg>
@@ -468,22 +469,22 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                   </div>
                   
                   {/* Security Recommendations */}
-                  <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
-                    <h3 className="flex items-center gap-2 text-amber-400 font-medium mb-2">
+                  <div className="p-4 bg-[var(--warning-muted)] border border-[var(--warning)] rounded-lg">
+                    <h3 className="flex items-center gap-2 text-[var(--warning)] font-medium mb-2">
                       <AlertCircle className="h-5 w-5" />
                       Security Recommendations
                     </h3>
-                    <ul className="text-sm text-zinc-300 space-y-2">
+                    <ul className="text-sm text-[var(--foreground-tertiary)] space-y-2">
                       <li className="flex items-center gap-2">
-                        <span className="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                        <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)]"></span>
                         Use a strong, unique password that you don't use elsewhere
                       </li>
                       <li className="flex items-center gap-2">
-                        <span className="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                        <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)]"></span>
                         Enable two-factor authentication when available
                       </li>
                       <li className="flex items-center gap-2">
-                        <span className="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                        <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)]"></span>
                         Change your password regularly
                       </li>
                     </ul>
@@ -493,149 +494,7 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
             )}
             
             {/* Appearance Tab */}
-            {activeTab === 'appearance' && (
-              <div>
-                <h2 className="text-xl font-semibold text-white mb-6">Appearance Settings</h2>
-                
-                {success && (
-                  <div className="mb-6 p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-lg flex items-center gap-3 text-emerald-400">
-                    <CheckCircle2 className="h-5 w-5 flex-shrink-0" />
-                    <span className="text-sm">Appearance settings updated successfully!</span>
-                  </div>
-                )}
-                
-                <div className="space-y-6">
-                  {/* Theme Selection */}
-                  <div>
-                    <h3 className="text-lg font-medium text-white mb-4">Theme</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <button
-                        type="button"
-                        onClick={() => handleThemeChange('light')}
-                        className={`p-4 rounded-lg border ${
-                          appearanceSettings.theme === 'light'
-                            ? 'border-indigo-500 bg-indigo-500/10'
-                            : 'border-zinc-700 bg-zinc-800 hover:border-zinc-600'
-                        } flex flex-col items-center gap-3 transition-colors`}
-                      >
-                        <div className="h-12 w-12 rounded-full bg-white flex items-center justify-center">
-                          <Sun className="h-6 w-6 text-amber-500" />
-                        </div>
-                        <span className={appearanceSettings.theme === 'light' ? 'text-indigo-400 font-medium' : 'text-zinc-400'}>
-                          Light
-                        </span>
-                      </button>
-                      
-                      <button
-                        type="button"
-                        onClick={() => handleThemeChange('dark')}
-                        className={`p-4 rounded-lg border ${
-                          appearanceSettings.theme === 'dark'
-                            ? 'border-indigo-500 bg-indigo-500/10'
-                            : 'border-zinc-700 bg-zinc-800 hover:border-zinc-600'
-                        } flex flex-col items-center gap-3 transition-colors`}
-                      >
-                        <div className="h-12 w-12 rounded-full bg-zinc-900 flex items-center justify-center border border-zinc-700">
-                          <Moon className="h-6 w-6 text-indigo-400" />
-                        </div>
-                        <span className={appearanceSettings.theme === 'dark' ? 'text-indigo-400 font-medium' : 'text-zinc-400'}>
-                          Dark
-                        </span>
-                      </button>
-                      
-                      <button
-                        type="button"
-                        onClick={() => handleThemeChange('system')}
-                        className={`p-4 rounded-lg border ${
-                          appearanceSettings.theme === 'system'
-                            ? 'border-indigo-500 bg-indigo-500/10'
-                            : 'border-zinc-700 bg-zinc-800 hover:border-zinc-600'
-                        } flex flex-col items-center gap-3 transition-colors`}
-                      >
-                        <div className="h-12 w-12 rounded-full bg-gradient-to-r from-white to-zinc-900 flex items-center justify-center">
-                          <div className="h-5 w-5 bg-zinc-900 rounded-full border-2 border-white"></div>
-                        </div>
-                        <span className={appearanceSettings.theme === 'system' ? 'text-indigo-400 font-medium' : 'text-zinc-400'}>
-                          System
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                  
-                  {/* Display Options */}
-                  <div>
-                    <h3 className="text-lg font-medium text-white mb-4">Display Options</h3>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 bg-zinc-800 rounded-lg border border-zinc-700">
-                        <div className="flex items-center gap-3">
-                          <div className="flex-shrink-0 h-8 w-8 bg-zinc-700 rounded-lg flex items-center justify-center">
-                            <ChevronRight className="h-5 w-5 text-zinc-400" />
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-medium text-white">Compact Mode</h4>
-                            <p className="text-xs text-zinc-400">Reduce padding and spacing throughout the interface</p>
-                          </div>
-                        </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input 
-                            type="checkbox" 
-                            className="sr-only peer"
-                            checked={appearanceSettings.compactMode}
-                            onChange={() => handleToggle('appearance', 'compactMode')}
-                          />
-                          <div className="w-11 h-6 bg-zinc-700 rounded-full peer peer-checked:bg-indigo-600 peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
-                        </label>
-                      </div>
-                      
-                      <div className="flex items-center justify-between p-3 bg-zinc-800 rounded-lg border border-zinc-700">
-                        <div className="flex items-center gap-3">
-                          <div className="flex-shrink-0 h-8 w-8 bg-zinc-700 rounded-lg flex items-center justify-center">
-                            <ChevronRight className="h-5 w-5 text-zinc-400" />
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-medium text-white">High Contrast Mode</h4>
-                            <p className="text-xs text-zinc-400">Increase contrast for better visibility</p>
-                          </div>
-                        </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input 
-                            type="checkbox" 
-                            className="sr-only peer"
-                            checked={appearanceSettings.highContrastMode}
-                            onChange={() => handleToggle('appearance', 'highContrastMode')}
-                          />
-                          <div className="w-11 h-6 bg-zinc-700 rounded-full peer peer-checked:bg-indigo-600 peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="pt-4">
-                    <button
-                      type="button"
-                      onClick={handleAppearanceUpdate}
-                      disabled={isSubmitting}
-                      className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          <span>Saving...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Save className="h-5 w-5" />
-                          <span>Save Appearance Settings</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
+            {activeTab === 'appearance' && <ThemeSelector />}
             
             {/* Notifications Tab */}
             {activeTab === 'notifications' && <NotificationsTab settings={user.settings} />}

@@ -82,13 +82,13 @@ export default function ProjectsPage({ projects }: { projects: ProjectWithTasks[
     >
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Projets</h1>
-          <p className="text-zinc-400">Gérez vos projets et suivez leur progression</p>
+          <h1 className="text-2xl font-bold text-[var(--foreground)]">Projets</h1>
+          <p className="text-[var(--foreground-tertiary)]">Gérez vos projets et suivez leur progression</p>
         </div>
 
         <Link href="/dashboard/projects/create">
           <motion.button
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-lg text-sm font-medium text-[var(--primary-foreground)] transition-colors cursor-pointer"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -102,14 +102,14 @@ export default function ProjectsPage({ projects }: { projects: ProjectWithTasks[
       <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-grow">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-zinc-500" />
+            <Search className="h-5 w-5 text-[var(--foreground-muted)]" />
           </div>
           <input
             type="text"
             placeholder="Rechercher un projet..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 bg-[var(--input)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
           />
         </div>
 
@@ -117,7 +117,7 @@ export default function ProjectsPage({ projects }: { projects: ProjectWithTasks[
           <select
             value={filterStatus || ''}
             onChange={e => setFilterStatus(e.target.value || null)}
-            className="px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="px-4 py-2 bg-[var(--input)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
           >
             <option value="">Tous les statuts</option>
             <option value="not-started">Non commencé</option>
@@ -144,13 +144,13 @@ export default function ProjectsPage({ projects }: { projects: ProjectWithTasks[
       {filteredProjects.length === 0 && (
         <motion.div
           variants={itemVariants}
-          className="flex flex-col items-center justify-center p-8 bg-zinc-900 border border-zinc-800 rounded-xl"
+          className="flex flex-col items-center justify-center p-8 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl"
         >
-          <div className="w-16 h-16 bg-zinc-800 rounded-full flex items-center justify-center mb-4">
-            <Layers className="h-8 w-8 text-zinc-400" />
+          <div className="w-16 h-16 bg-[var(--background-tertiary)] rounded-full flex items-center justify-center mb-4">
+            <Layers className="h-8 w-8 text-[var(--foreground-tertiary)]" />
           </div>
-          <h3 className="text-lg font-medium text-zinc-300 mb-2">Aucun projet trouvé</h3>
-          <p className="text-zinc-500 text-center mb-6 max-w-md">
+          <h3 className="text-lg font-medium text-[var(--foreground-secondary)] mb-2">Aucun projet trouvé</h3>
+          <p className="text-[var(--foreground-muted)] text-center mb-6 max-w-md">
             {searchQuery || filterStatus
               ? "Aucun projet ne correspond à vos critères de recherche. Essayez d'ajuster vos filtres."
               : "Vous n'avez pas encore de projets. Commencez par en créer un nouveau."}
@@ -158,7 +158,7 @@ export default function ProjectsPage({ projects }: { projects: ProjectWithTasks[
           {!searchQuery && !filterStatus && (
             <Link href="/dashboard/projects/create">
               <motion.button
-                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors cursor-pointer"
+                className="flex items-center gap-2 px-4 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-lg text-sm font-medium text-[var(--primary-foreground)] transition-colors cursor-pointer"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -189,7 +189,7 @@ function ProjectCard({ project, formatDate, getDaysLeft }: ProjectCardProps) {
   return (
     <motion.div
       variants={itemVariants}
-      className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden flex flex-col"
+      className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl overflow-hidden flex flex-col"
     >
       <DeleteProjectModal
         projectId={project.id}
@@ -199,10 +199,10 @@ function ProjectCard({ project, formatDate, getDaysLeft }: ProjectCardProps) {
       />
       <div className="p-6 flex-grow">
         <div className="flex justify-between items-start mb-3">
-          <h3 className="text-lg font-semibold text-white line-clamp-1">
+          <h3 className="text-lg font-semibold text-[var(--foreground)] line-clamp-1">
             <Link
               href={`/dashboard/projects/${project.id}`}
-              className="hover:text-indigo-400 transition-colors"
+              className="hover:text-[var(--primary)] transition-colors"
             >
               {project.name}
             </Link>
@@ -221,33 +221,33 @@ function ProjectCard({ project, formatDate, getDaysLeft }: ProjectCardProps) {
           */}
         </div>
 
-        <p className="text-zinc-400 text-sm line-clamp-2 mb-4">{project.description}</p>
+        <p className="text-[var(--foreground-tertiary)] text-sm line-clamp-2 mb-4">{project.description}</p>
 
         <div className="space-y-4">
           <div className="space-y-1">
             <div className="flex justify-between items-center text-xs">
-              <span className="text-zinc-400">Progression</span>
+              <span className="text-[var(--foreground-tertiary)]">Progression</span>
               <span
                 className={`font-medium ${
                   project.progress >= 75
-                    ? 'text-emerald-400'
+                    ? 'text-[var(--success)]'
                     : project.progress >= 25
-                      ? 'text-amber-400'
-                      : 'text-indigo-400'
+                      ? 'text-[var(--warning)]'
+                      : 'text-[var(--primary)]'
                 }`}
               >
                 {project.progress}%
               </span>
             </div>
 
-            <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
+            <div className="w-full h-2 bg-[var(--background-tertiary)] rounded-full overflow-hidden">
               <div
                 className={`h-full rounded-full ${
                   project.progress >= 75
-                    ? 'bg-emerald-500'
+                    ? 'bg-[var(--success)]'
                     : project.progress >= 25
-                      ? 'bg-amber-500'
-                      : 'bg-indigo-500'
+                      ? 'bg-[var(--warning)]'
+                      : 'bg-[var(--primary)]'
                 }`}
                 style={{ width: `${project.progress}%` }}
               ></div>
@@ -255,8 +255,8 @@ function ProjectCard({ project, formatDate, getDaysLeft }: ProjectCardProps) {
           </div>
 
           <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2 text-sm text-zinc-400">
-              <CalendarClock className="h-4 w-4 text-zinc-500" />
+            <div className="flex items-center gap-2 text-sm text-[var(--foreground-tertiary)]">
+              <CalendarClock className="h-4 w-4 text-[var(--foreground-muted)]" />
               <span className="line-clamp-1">
                 {project.startDate ? formatDate(project.startDate) : 'Non définie'} -
                 {project.endDate ? formatDate(project.endDate) : 'Non définie'}
@@ -264,14 +264,14 @@ function ProjectCard({ project, formatDate, getDaysLeft }: ProjectCardProps) {
             </div>
 
             <div className="flex items-center gap-2 text-sm">
-              <Clock className="h-4 w-4 text-zinc-500" />
+              <Clock className="h-4 w-4 text-[var(--foreground-muted)]" />
               <span
                 className={`${
                   project.endDate
                     ? getDaysLeft(project.endDate) < 7
-                      ? 'text-rose-400'
-                      : 'text-zinc-400'
-                    : 'text-zinc-400'
+                      ? 'text-[var(--error)]'
+                      : 'text-[var(--foreground-tertiary)]'
+                    : 'text-[var(--foreground-tertiary)]'
                 }`}
               >
                 {project.endDate ? getDaysLeft(project.endDate) : 'Non définie'} jours restants
@@ -281,14 +281,14 @@ function ProjectCard({ project, formatDate, getDaysLeft }: ProjectCardProps) {
         </div>
       </div>
 
-      <div className="border-t border-zinc-800 px-6 py-4 flex justify-between items-center">
+      <div className="border-t border-[var(--border)] px-6 py-4 flex justify-between items-center">
         <div className="flex items-center gap-2">
-          <Users className="h-4 w-4 text-zinc-500" />
+          <Users className="h-4 w-4 text-[var(--foreground-muted)]" />
           <div className="flex -space-x-2">
             {project.teamMembers.slice(0, 3).map(member => (
               <div
                 key={member.id}
-                className="h-6 w-6 rounded-full bg-zinc-700 border-2 border-zinc-900 flex items-center justify-center text-xs text-white"
+                className="h-6 w-6 rounded-full bg-[var(--border-secondary)] border-2 border-[var(--background-secondary)] flex items-center justify-center text-xs text-[var(--foreground)]"
                 title={member.fullName}
               >
                 {member.fullName
@@ -298,7 +298,7 @@ function ProjectCard({ project, formatDate, getDaysLeft }: ProjectCardProps) {
               </div>
             ))}
             {project.teamMembers.length > 3 && (
-              <div className="h-6 w-6 rounded-full bg-zinc-800 border-2 border-zinc-900 flex items-center justify-center text-xs text-white">
+              <div className="h-6 w-6 rounded-full bg-[var(--background-tertiary)] border-2 border-[var(--background-secondary)] flex items-center justify-center text-xs text-[var(--foreground)]">
                 +{project.teamMembers.length - 3}
               </div>
             )}
@@ -310,7 +310,7 @@ function ProjectCard({ project, formatDate, getDaysLeft }: ProjectCardProps) {
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className="p-1.5 rounded-md hover:bg-zinc-800 text-zinc-400 hover:text-indigo-400 transition-colors cursor-not-allowed"
+              className="p-1.5 rounded-md hover:bg-[var(--background-tertiary)] text-[var(--foreground-tertiary)] hover:text-[var(--primary)] transition-colors cursor-not-allowed"
             >
               <Edit className="h-4 w-4" />
             </motion.button>
@@ -320,7 +320,7 @@ function ProjectCard({ project, formatDate, getDaysLeft }: ProjectCardProps) {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={handleDeleteProject}
-            className="p-1.5 rounded-md hover:bg-zinc-800 text-zinc-400 hover:text-rose-400 transition-colors cursor-pointer"
+            className="p-1.5 rounded-md hover:bg-[var(--background-tertiary)] text-[var(--foreground-tertiary)] hover:text-[var(--error)] transition-colors cursor-pointer"
           >
             <Trash2 className="h-4 w-4" />
           </motion.button>
