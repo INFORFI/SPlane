@@ -54,16 +54,16 @@ export default function Sidebar({ tasksCount }: SidebarProps) {
 
   return (
     <motion.div
-      className="flex flex-col h-screen bg-zinc-900 text-zinc-200 border-r border-zinc-800 relative shadow-xl"
+      className="flex flex-col h-screen bg-[var(--background-secondary)] text-[var(--foreground-secondary)] border-r border-[var(--border)] relative shadow-xl"
       animate={{
         width: isCollapsed ? '80px' : '240px',
       }}
       transition={{ duration: 0.3, ease: 'easeInOut' }}
     >
       {/* Logo area */}
-      <div className="flex items-center p-4 h-16 border-b border-zinc-800">
+      <div className="flex items-center p-4 h-16 border-b border-[var(--border)]">
         <div className="flex items-center gap-3 overflow-hidden">
-          <div className="flex items-center justify-center w-8 h-8 rounded-md bg-indigo-600 text-white font-medium">
+          <div className="flex items-center justify-center w-8 h-8 rounded-md bg-[var(--primary)] text-[var(--primary-foreground)] font-medium">
             S
           </div>
           <AnimatePresence>
@@ -96,7 +96,7 @@ export default function Sidebar({ tasksCount }: SidebarProps) {
         {/* Quick add button */}
         <Link href="/dashboard/projects/create" className="px-3 mt-6">
           <motion.button
-            className={`flex items-center gap-2 w-full rounded-md p-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium transition-colors cursor-pointer ${isCollapsed ? 'justify-center' : 'justify-between'}`}
+            className={`flex items-center gap-2 w-full rounded-md p-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-[var(--primary-foreground)] font-medium transition-colors cursor-pointer ${isCollapsed ? 'justify-center' : 'justify-between'}`}
             whileTap={{ scale: 0.97 }}
           >
             <div className="flex items-center gap-2">
@@ -119,7 +119,7 @@ export default function Sidebar({ tasksCount }: SidebarProps) {
       </div>
 
       {/* Bottom navigation */}
-      <div className="border-t border-zinc-800 py-4 flex flex-col gap-1">
+      <div className="border-t border-[var(--border)] py-4 flex flex-col gap-1">
         {bottomNavItems.map(item => (
           <NavItem
             key={item.name}
@@ -133,7 +133,7 @@ export default function Sidebar({ tasksCount }: SidebarProps) {
       {/* Toggle button */}
       <button
         onClick={toggleSidebar}
-        className="absolute -right-3 top-20 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-full p-1 shadow-md transition-colors"
+        className="absolute -right-3 top-20 bg-[var(--background-tertiary)] hover:bg-[var(--border-secondary)] text-[var(--foreground-secondary)] rounded-full p-1 shadow-md transition-colors"
         aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
       >
         {isCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
@@ -156,8 +156,8 @@ function NavItem({
       href={item.href}
       className={`flex items-center gap-3 px-3 py-2 mx-2 rounded-md transition-colors relative ${
         isActive
-          ? 'bg-zinc-800 text-indigo-400'
-          : 'text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800/50'
+          ? 'bg-[var(--background-tertiary)] text-[var(--primary)]'
+          : 'text-[var(--foreground-tertiary)] hover:text-[var(--foreground)] hover:bg-[var(--background-tertiary)]/50'
       }`}
     >
       <motion.div
@@ -185,7 +185,7 @@ function NavItem({
       {/* Badge */}
       {item.badge ? (
         <div className={`absolute ${isCollapsed ? 'right-1' : 'right-3'} flex`}>
-          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-indigo-600 text-xs font-medium text-white">
+          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[var(--primary)] text-xs font-medium text-[var(--primary-foreground)]">
             {item.badge}
           </span>
         </div>

@@ -89,31 +89,31 @@ export default function PatchnoteList({ patchnotes }: PatchnoteListProps) {
   return (
     <div className="space-y-6">
       {/* Search and filters */}
-      <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4">
+      <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-4">
         <div className="flex flex-col md:flex-row gap-4">
           {/* Search box */}
           <div className="relative flex-grow">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-zinc-500" />
+              <Search className="h-5 w-5 text-[var(--foreground-muted)]" />
             </div>
             <input
               type="text"
               placeholder="Rechercher des notes de mise à jour..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 bg-[var(--input)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
             />
           </div>
           
           {/* Year filter */}
           <div className="relative min-w-40">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Calendar className="h-5 w-5 text-zinc-500" />
+              <Calendar className="h-5 w-5 text-[var(--foreground-muted)]" />
             </div>
             <select
               value={selectedYear || ''}
               onChange={(e) => setSelectedYear(e.target.value || null)}
-              className="appearance-none w-full pl-10 pr-8 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="appearance-none w-full pl-10 pr-8 py-2 bg-[var(--input)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
             >
               <option value="">Toutes les années</option>
               {years.map(year => (
@@ -121,7 +121,7 @@ export default function PatchnoteList({ patchnotes }: PatchnoteListProps) {
               ))}
             </select>
             <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-              <ChevronRight className="h-5 w-5 text-zinc-500 rotate-90" />
+              <ChevronRight className="h-5 w-5 text-[var(--foreground-muted)] rotate-90" />
             </div>
           </div>
         </div>
@@ -129,12 +129,12 @@ export default function PatchnoteList({ patchnotes }: PatchnoteListProps) {
       
       {/* Patchnotes list */}
       {filteredPatchnotes.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-16 bg-zinc-900 border border-zinc-800 rounded-xl">
-          <div className="p-4 rounded-full bg-zinc-800 mb-4">
-            <Search className="h-6 w-6 text-zinc-500" />
+        <div className="flex flex-col items-center justify-center py-16 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl">
+          <div className="p-4 rounded-full bg-[var(--background-tertiary)] mb-4">
+            <Search className="h-6 w-6 text-[var(--foreground-muted)]" />
           </div>
-          <h3 className="text-lg font-medium text-white mb-2">Aucun résultat</h3>
-          <p className="text-zinc-400 max-w-md text-center">
+          <h3 className="text-lg font-medium text-[var(--foreground)] mb-2">Aucun résultat</h3>
+          <p className="text-[var(--foreground-tertiary)] max-w-md text-center">
             Aucune note de mise à jour ne correspond à votre recherche.
             Essayez de modifier vos critères de recherche.
           </p>
@@ -148,8 +148,8 @@ export default function PatchnoteList({ patchnotes }: PatchnoteListProps) {
         >
           {sortedMonths.map(month => (
             <div key={month} className="space-y-4">
-              <h2 className="text-lg font-medium text-white flex items-center gap-2">
-                <Calendar className="h-5 w-5 text-indigo-400" />
+              <h2 className="text-lg font-medium text-[var(--foreground)] flex items-center gap-2">
+                <Calendar className="h-5 w-5 text-[var(--primary)]" />
                 {month}
               </h2>
               
@@ -158,18 +158,18 @@ export default function PatchnoteList({ patchnotes }: PatchnoteListProps) {
                   <motion.div
                     key={note.id}
                     variants={itemVariants}
-                    className="bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-xl overflow-hidden transition-colors"
+                    className="bg-[var(--background-secondary)] border border-[var(--border)] hover:border-[var(--border-secondary)] rounded-xl overflow-hidden transition-colors"
                   >
                     <Link href={`/dashboard/patchnotes/${note.id}`} className="block">
                       <div className="p-5">
                         <div className="flex justify-between items-start mb-3">
                           <div className="flex items-center gap-3">
-                            <div className="h-10 w-10 flex items-center justify-center rounded-full bg-indigo-500/20 text-indigo-400 text-xl">
+                            <div className="h-10 w-10 flex items-center justify-center rounded-full bg-[var(--primary-muted)] text-[var(--primary)] text-xl">
                               {note.emoji || '✨'}
                             </div>
                             <div>
-                              <h3 className="font-medium text-white">{note.title}</h3>
-                              <p className="text-sm text-zinc-400">{new Date(note.releaseDate).toLocaleDateString('fr-FR', {
+                              <h3 className="font-medium text-[var(--foreground)]">{note.title}</h3>
+                              <p className="text-sm text-[var(--foreground-tertiary)]">{new Date(note.releaseDate).toLocaleDateString('fr-FR', {
                                 day: 'numeric',
                                 month: 'long',
                                 year: 'numeric'
@@ -177,13 +177,13 @@ export default function PatchnoteList({ patchnotes }: PatchnoteListProps) {
                             </div>
                           </div>
                           
-                          <div className="px-2.5 py-1 rounded-full bg-indigo-500/10 text-indigo-400 text-xs font-medium">
+                          <div className="px-2.5 py-1 rounded-full bg-[var(--primary-muted)] text-[var(--primary)] text-xs font-medium">
                             v{note.version}
                           </div>
                         </div>
                         
                         {note.description && (
-                          <p className="text-sm text-zinc-300 mb-4 line-clamp-2">{note.description}</p>
+                          <p className="text-sm text-[var(--foreground-secondary)] mb-4 line-clamp-2">{note.description}</p>
                         )}
                         
                         <div className="flex items-center justify-between">
@@ -192,22 +192,17 @@ export default function PatchnoteList({ patchnotes }: PatchnoteListProps) {
                             {note.content && Object.entries(JSON.parse(note.content)).map(([key, items]: [string, unknown]) => {
                               const itemsArray = items as PatchNoteSection[];
 
-                              console.info("--------------------------------");
-                              console.info("note.content", JSON.parse(note.content));
-                              console.info("Object.entries(JSON.parse(note.content))", Object.entries(JSON.parse(note.content)));
-
-                              console.log("itemsArray", itemsArray);
                               // Skip empty sections
                               if (!itemsArray || itemsArray.length === 0) return null;
                               
                               // Determine icon and color based on section key
                               const getIconColor = (sectionKey: string) => {
                                 switch(sectionKey) {
-                                  case 'news': return 'text-emerald-400 bg-emerald-500/10';
-                                  case 'corrections': return 'text-amber-400 bg-amber-500/10';
-                                  case 'technical-improvements': return 'text-indigo-400 bg-indigo-500/10';
-                                  case 'other-changes': return 'text-purple-400 bg-purple-500/10';
-                                  default: return 'text-zinc-400 bg-zinc-500/10';
+                                  case 'news': return 'text-[var(--success)] bg-[var(--success-muted)]';
+                                  case 'corrections': return 'text-[var(--warning)] bg-[var(--warning-muted)]';
+                                  case 'technical-improvements': return 'text-[var(--primary)] bg-[var(--primary-muted)]';
+                                  case 'other-changes': return 'text-[var(--accent)] bg-[var(--accent-muted)]';
+                                  default: return 'text-[var(--foreground-tertiary)] bg-[var(--background-tertiary)]';
                                 }
                               };
 
@@ -235,7 +230,7 @@ export default function PatchnoteList({ patchnotes }: PatchnoteListProps) {
                             })}
                           </div>
                           
-                          <div className="flex items-center text-indigo-400 text-sm gap-1 group">
+                          <div className="flex items-center text-[var(--primary)] text-sm gap-1 group">
                             <span className="group-hover:underline">Voir les détails</span>
                             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                           </div>

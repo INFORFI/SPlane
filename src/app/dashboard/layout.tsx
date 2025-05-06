@@ -29,18 +29,18 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="flex h-screen bg-zinc-950">
+    <div className="flex h-screen bg-[var(--background)]">
       <Sidebar />
 
       <div className="flex-1 flex flex-col">
         {/* Top navigation */}
-        <header className="h-16 border-b border-zinc-800 bg-zinc-900 flex items-center justify-between px-6">
+        <header className="h-16 border-b border-[var(--border)] bg-[var(--background-secondary)] flex items-center justify-between px-6">
           {/* Search */}
           <div className="relative w-full max-w-md">
             <input
               type="text"
               placeholder="Search..."
-              className="w-full h-9 px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-md text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full h-9 px-4 py-2 bg-[var(--input)] border border-[var(--border-secondary)] rounded-md text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
             />
           </div>
 
@@ -50,16 +50,16 @@ export default async function DashboardLayout({
 
             <div className="flex items-center gap-3">
               <div className="flex flex-col items-end">
-                <span className="text-sm font-medium text-zinc-200">{user?.fullName}</span>
-                <span className="text-xs text-zinc-400">{user?.email}</span>
+                <span className="text-sm font-medium text-[var(--foreground-secondary)]">{user?.fullName}</span>
+                <span className="text-xs text-[var(--foreground-tertiary)]">{user?.email}</span>
               </div>
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-indigo-600 text-white">
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--primary)] text-[var(--primary-foreground)]">
                 <User className="h-5 w-5" />
               </div>
             </div>
 
             <form action={handleLogout}>
-              <button type="submit" className="p-2 rounded-md text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-colors cursor-pointer">
+              <button type="submit" className="p-2 rounded-md text-[var(--foreground-tertiary)] hover:text-[var(--foreground)] hover:bg-[var(--background-tertiary)] transition-colors cursor-pointer">
                 <LogOut className="h-5 w-5" />
               </button>
             </form>
@@ -68,11 +68,11 @@ export default async function DashboardLayout({
 
         {/* Main content */}
         <main
-          className="flex-1 overflow-auto p-6 bg-zinc-950 
+          className="flex-1 overflow-auto p-6 bg-[var(--background)] 
           [&::-webkit-scrollbar]:w-2 
-          [&::-webkit-scrollbar-track]:bg-zinc-900 
-          [&::-webkit-scrollbar-thumb]:bg-zinc-700 
-          [&::-webkit-scrollbar-thumb:hover]:bg-indigo-600"
+          [&::-webkit-scrollbar-track]:bg-[var(--background-secondary)] 
+          [&::-webkit-scrollbar-thumb]:bg-[var(--border-secondary)] 
+          [&::-webkit-scrollbar-thumb:hover]:bg-[var(--primary)]"
         >
           {user.settings.notifications_patch_notes ? <PatchnoteChecker /> : null}
 

@@ -69,13 +69,13 @@ export default function HomepageClient({ dashboardData, calendarData }: Dashboar
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case 'Layers':
-        return <Layers className="h-5 w-5 text-indigo-500" />;
+        return <Layers className="h-5 w-5 text-[var(--primary)]" />;
       case 'CheckCircle':
-        return <CheckCircle className="h-5 w-5 text-emerald-500" />;
+        return <CheckCircle className="h-5 w-5 text-[var(--success)]" />;
       case 'AlertCircle':
-        return <AlertCircle className="h-5 w-5 text-amber-500" />;
+        return <AlertCircle className="h-5 w-5 text-[var(--warning)]" />;
       case 'Users':
-        return <Users className="h-5 w-5 text-purple-500" />;
+        return <Users className="h-5 w-5 text-[var(--accent)]" />;
       default:
         return null;
     }
@@ -96,13 +96,13 @@ export default function HomepageClient({ dashboardData, calendarData }: Dashboar
     >
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-white">Tableau de bord</h1>
-          <p className="text-zinc-400">Bienvenue, Admin User</p>
+          <h1 className="text-2xl font-bold text-[var(--foreground)]">Tableau de bord</h1>
+          <p className="text-[var(--foreground-tertiary)]">Bienvenue, Admin User</p>
         </div>
 
         <Link
           href="/dashboard/projects/create"
-          className="flex items-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors"
+          className="flex items-center gap-2 px-3 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-lg text-sm font-medium text-[var(--primary-foreground)] transition-colors"
         >
           <Plus className="h-4 w-4" />
           Nouveau projet
@@ -123,11 +123,11 @@ export default function HomepageClient({ dashboardData, calendarData }: Dashboar
           {/* Projects section */}
           <motion.div
             variants={itemVariants}
-            className="bg-zinc-900 border border-zinc-800 rounded-xl p-5"
+            className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-5"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-white">Projets en cours</h2>
-              <button className="text-indigo-400 hover:text-indigo-300 text-sm font-medium flex items-center gap-1">
+              <h2 className="text-lg font-semibold text-[var(--foreground)]">Projets en cours</h2>
+              <button className="text-[var(--primary)] hover:text-[var(--primary-hover)] text-sm font-medium flex items-center gap-1">
                 Voir tous
                 <ArrowRight className="h-4 w-4" />
               </button>
@@ -145,11 +145,11 @@ export default function HomepageClient({ dashboardData, calendarData }: Dashboar
           {/* Tasks section */}
           <motion.div
             variants={itemVariants}
-            className="bg-zinc-900 border border-zinc-800 rounded-xl p-5"
+            className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-5"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-white">Tâches à venir</h2>
-              <button className="text-indigo-400 hover:text-indigo-300 text-sm font-medium flex items-center gap-1">
+              <h2 className="text-lg font-semibold text-[var(--foreground)]">Tâches à venir</h2>
+              <button className="text-[var(--primary)] hover:text-[var(--primary-hover)] text-sm font-medium flex items-center gap-1">
                 Voir toutes
                 <ArrowRight className="h-4 w-4" />
               </button>
@@ -171,49 +171,49 @@ export default function HomepageClient({ dashboardData, calendarData }: Dashboar
           {/* Activity Feed */}
           <motion.div
             variants={itemVariants}
-            className="bg-zinc-900 border border-zinc-800 rounded-xl p-5"
+            className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-5"
           >
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-white">Activité récente</h2>
+              <h2 className="text-lg font-semibold text-[var(--foreground)]">Activité récente</h2>
             </div>
 
             <div className="space-y-4">
               <div className="flex gap-3">
-                <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white text-sm font-medium">
+                <div className="h-8 w-8 rounded-full bg-[var(--primary)] flex items-center justify-center text-[var(--primary-foreground)] text-sm font-medium">
                   JD
                 </div>
                 <div>
-                  <p className="text-sm text-white">
+                  <p className="text-sm text-[var(--foreground)]">
                     <span className="font-medium">John Doe</span> a terminé la tâche{' '}
                     <span className="font-medium">Create API endpoints</span>
                   </p>
-                  <p className="text-xs text-zinc-400 mt-1">Il y a 2 heures</p>
+                  <p className="text-xs text-[var(--foreground-tertiary)] mt-1">Il y a 2 heures</p>
                 </div>
               </div>
 
               <div className="flex gap-3">
-                <div className="h-8 w-8 rounded-full bg-purple-600 flex items-center justify-center text-white text-sm font-medium">
+                <div className="h-8 w-8 rounded-full bg-[var(--accent)] flex items-center justify-center text-[var(--accent-foreground)] text-sm font-medium">
                   JS
                 </div>
                 <div>
-                  <p className="text-sm text-white">
+                  <p className="text-sm text-[var(--foreground)]">
                     <span className="font-medium">Jane Smith</span> a commencé la tâche{' '}
                     <span className="font-medium">Implement responsive layout</span>
                   </p>
-                  <p className="text-xs text-zinc-400 mt-1">Il y a 5 heures</p>
+                  <p className="text-xs text-[var(--foreground-tertiary)] mt-1">Il y a 5 heures</p>
                 </div>
               </div>
 
               <div className="flex gap-3">
-                <div className="h-8 w-8 rounded-full bg-emerald-600 flex items-center justify-center text-white text-sm font-medium">
+                <div className="h-8 w-8 rounded-full bg-[var(--success)] flex items-center justify-center text-[var(--success-foreground)] text-sm font-medium">
                   AU
                 </div>
                 <div>
-                  <p className="text-sm text-white">
+                  <p className="text-sm text-[var(--foreground)]">
                     <span className="font-medium">Admin User</span> a créé un nouveau projet{' '}
                     <span className="font-medium">Mobile App Development</span>
                   </p>
-                  <p className="text-xs text-zinc-400 mt-1">Hier</p>
+                  <p className="text-xs text-[var(--foreground-tertiary)] mt-1">Hier</p>
                 </div>
               </div>
             </div>

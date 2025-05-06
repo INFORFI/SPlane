@@ -59,12 +59,12 @@ export default function PatchnotesDropdown({ patchnotes }: PatchnotesDropdownPro
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="p-2 rounded-md text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-colors relative cursor-pointer"
+        className="p-2 rounded-md text-[var(--foreground-tertiary)] hover:text-[var(--foreground)] hover:bg-[var(--background-tertiary)] transition-colors relative cursor-pointer"
         aria-label="Notifications"
       >
         <Bell className="h-5 w-5" />
         {hasUnreadPatchnotes && (
-          <span className="absolute top-1 right-1 w-2 h-2 bg-indigo-500 rounded-full"></span>
+          <span className="absolute top-1 right-1 w-2 h-2 bg-[var(--primary)] rounded-full"></span>
         )}
       </button>
 
@@ -75,12 +75,12 @@ export default function PatchnotesDropdown({ patchnotes }: PatchnotesDropdownPro
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-80 max-h-[70vh] overflow-auto bg-zinc-900 rounded-lg border border-zinc-800 shadow-xl z-50"
+            className="absolute right-0 mt-2 w-80 max-h-[70vh] overflow-auto bg-[var(--background-secondary)] rounded-lg border border-[var(--border)] shadow-xl z-50"
           >
-            <div className="p-3 border-b border-zinc-800">
-              <h3 className="font-medium text-zinc-200">Nouvelles mises à jour</h3>
+            <div className="p-3 border-b border-[var(--border)]">
+              <h3 className="font-medium text-[var(--foreground-secondary)]">Nouvelles mises à jour</h3>
               {hasUnreadPatchnotes && (
-                <p className="text-xs text-zinc-400 mt-1">
+                <p className="text-xs text-[var(--foreground-tertiary)] mt-1">
                   {patchnotes.length} note{patchnotes.length > 1 ? 's' : ''} de mise à jour non lue{patchnotes.length > 1 ? 's' : ''}
                 </p>
               )}
@@ -95,22 +95,22 @@ export default function PatchnotesDropdown({ patchnotes }: PatchnotesDropdownPro
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.1 }}
-                      className="px-3 py-2 hover:bg-zinc-800 cursor-pointer transition-colors"
+                      className="px-3 py-2 hover:bg-[var(--background-tertiary)] cursor-pointer transition-colors"
                       onClick={() => handlePatchnoteClick(note.id)}
                     >
                       <div className="flex items-start gap-3">
-                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-500/20 flex items-center justify-center text-indigo-400">
+                        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[var(--primary-muted)] flex items-center justify-center text-[var(--primary)]">
                           <span>{note.emoji || '✨'}</span>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-zinc-200 flex items-center gap-2">
+                          <p className="text-sm font-medium text-[var(--foreground-secondary)] flex items-center gap-2">
                             {note.title}
-                            <span className="text-xs px-1.5 py-0.5 bg-indigo-500/20 text-indigo-400 rounded-full">
+                            <span className="text-xs px-1.5 py-0.5 bg-[var(--primary-muted)] text-[var(--primary)] rounded-full">
                               v{note.version}
                             </span>
                           </p>
-                          <p className="text-xs text-zinc-400 truncate mt-0.5">{note.description}</p>
-                          <p className="text-xs text-zinc-500 mt-1">{new Date(note.releaseDate).toLocaleDateString('fr-FR', {
+                          <p className="text-xs text-[var(--foreground-tertiary)] truncate mt-0.5">{note.description}</p>
+                          <p className="text-xs text-[var(--foreground-muted)] mt-1">{new Date(note.releaseDate).toLocaleDateString('fr-FR', {
                             day: 'numeric',
                             month: 'long',
                             year: 'numeric'
@@ -122,15 +122,15 @@ export default function PatchnotesDropdown({ patchnotes }: PatchnotesDropdownPro
                 ))
               ) : (
                 <div className="px-4 py-6 text-center">
-                  <p className="text-sm text-zinc-400">Aucune mise à jour non lue</p>
+                  <p className="text-sm text-[var(--foreground-tertiary)]">Aucune mise à jour non lue</p>
                 </div>
               )}
             </div>
             
             {hasUnreadPatchnotes && (
-              <div className="p-2 border-t border-zinc-800">
+              <div className="p-2 border-t border-[var(--border)]">
                 <button 
-                  className="w-full py-2 px-3 bg-indigo-600 hover:bg-indigo-700 rounded-md text-sm font-medium transition-colors"
+                  className="w-full py-2 px-3 bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-md text-sm font-medium text-[var(--primary-foreground)] transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
                   Marquer tout comme lu

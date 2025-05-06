@@ -21,7 +21,7 @@ export default function PatchnoteIndicator({ count, isCollapsed = false }: Patch
       href="/dashboard/patchnotes"
       className={`flex items-center gap-3 px-3 py-2 mx-2 mb-1 rounded-md transition-all ${
         isCollapsed ? 'justify-center' : ''
-      } bg-indigo-500/20 text-indigo-400 hover:bg-indigo-500/30 hover:text-indigo-300 relative`}
+      } bg-[var(--primary-muted)] text-[var(--primary)] hover:bg-[var(--primary-focus)] hover:text-[var(--primary-hover)] relative`}
     >
       <motion.div
         whileHover={{ scale: 1.1 }}
@@ -33,7 +33,7 @@ export default function PatchnoteIndicator({ count, isCollapsed = false }: Patch
         <motion.span
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white"
+          className="absolute -top-1.5 -right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-[var(--error)] text-[10px] font-bold text-[var(--error-foreground)]"
         >
           {count > 9 ? '9+' : count}
         </motion.span>

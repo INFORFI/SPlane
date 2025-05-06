@@ -121,7 +121,7 @@ export default function PatchnoteDetail({ patchnote }: PatchnoteDetailProps) {
       <div className="flex items-center justify-between mb-6">
         <Link 
           href="/dashboard/patchnotes" 
-          className="flex items-center gap-2 text-zinc-400 hover:text-zinc-300 transition-colors"
+          className="flex items-center gap-2 text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)] transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
           <span className="text-sm">Retour aux notes de mise à jour</span>
@@ -129,11 +129,11 @@ export default function PatchnoteDetail({ patchnote }: PatchnoteDetailProps) {
         
         <button
           onClick={copyLinkToClipboard}
-          className="flex items-center gap-2 text-sm text-zinc-400 hover:text-zinc-300 transition-colors bg-zinc-800 hover:bg-zinc-700 px-3 py-1.5 rounded-md"
+          className="flex items-center gap-2 text-sm text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)] transition-colors bg-[var(--background-tertiary)] hover:bg-[var(--border-secondary)] px-3 py-1.5 rounded-md"
         >
           {copiedLink ? (
             <>
-              <CheckCircle className="h-4 w-4 text-emerald-500" />
+              <CheckCircle className="h-4 w-4 text-[var(--success)]" />
               <span>Lien copié</span>
             </>
           ) : (
@@ -150,39 +150,39 @@ export default function PatchnoteDetail({ patchnote }: PatchnoteDetailProps) {
         {/* Header with emoji, title, version */}
         <motion.div 
           variants={itemVariants} 
-          className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 text-center"
+          className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 text-center"
         >
           <div className="flex flex-col items-center">
             {/* Emoji */}
-            <div className="mb-4 w-16 h-16 flex items-center justify-center rounded-full bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 text-3xl">
+            <div className="mb-4 w-16 h-16 flex items-center justify-center rounded-full bg-[var(--primary-muted)] text-[var(--primary)] border border-[var(--primary)]/30 text-3xl">
               {patchnote.emoji || '✨'}
             </div>
             
             {/* Title */}
-            <h1 className="text-3xl font-bold text-white mb-3">{patchnote.title}</h1>
+            <h1 className="text-3xl font-bold text-[var(--foreground)] mb-3">{patchnote.title}</h1>
             
             <div className="flex flex-wrap items-center justify-center gap-3 mb-4">
               {/* Version badge */}
-              <div className="px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-400 text-sm font-medium border border-indigo-500/30">
+              <div className="px-3 py-1 rounded-full bg-[var(--primary-muted)] text-[var(--primary)] text-sm font-medium border border-[var(--primary)]/30">
                 v{patchnote.version}
               </div>
               
               {/* Release date */}
-              <div className="flex items-center gap-1.5 text-sm text-zinc-400">
+              <div className="flex items-center gap-1.5 text-sm text-[var(--foreground-tertiary)]">
                 <CalendarIcon className="h-4 w-4" />
                 <span>{formattedDate}</span>
-                <span className="text-zinc-500">({timeAgo})</span>
+                <span className="text-[var(--foreground-muted)]">({timeAgo})</span>
               </div>
               
               {/* Change count */}
-              <div className="px-3 py-1 rounded-full bg-zinc-800 text-zinc-300 text-sm font-medium">
+              <div className="px-3 py-1 rounded-full bg-[var(--background-tertiary)] text-[var(--foreground-secondary)] text-sm font-medium">
                 {totalChanges} changement{totalChanges > 1 ? 's' : ''}
               </div>
             </div>
             
             {/* Description */}
             {patchnote.description && (
-              <p className="text-zinc-300 max-w-2xl">{patchnote.description}</p>
+              <p className="text-[var(--foreground-secondary)] max-w-2xl">{patchnote.description}</p>
             )}
           </div>
         </motion.div>
@@ -200,47 +200,47 @@ export default function PatchnoteDetail({ patchnote }: PatchnoteDetailProps) {
             <motion.div 
               key={sectionKey}
               variants={itemVariants}
-              className="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden"
+              className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl overflow-hidden"
             >
               {/* Section header - always visible */}
               <div 
-                className="flex items-center justify-between p-5 cursor-pointer hover:bg-zinc-800/50 transition-colors"
+                className="flex items-center justify-between p-5 cursor-pointer hover:bg-[var(--background-tertiary)]/50 transition-colors"
                 onClick={() => toggleSection(sectionKey)}
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-md bg-indigo-500/20 text-indigo-400">
+                  <div className="p-2 rounded-md bg-[var(--primary-muted)] text-[var(--primary)]">
                     {sectionIcons[sectionKey as keyof typeof sectionIcons] || <Info className="h-5 w-5" />}
                   </div>
                   <div>
-                    <h2 className="text-lg font-medium text-white">
+                    <h2 className="text-lg font-medium text-[var(--foreground)]">
                       {sectionTitles[sectionKey as keyof typeof sectionTitles] || sectionKey}
                     </h2>
-                    <p className="text-sm text-zinc-400">{itemsArray.length} élément{itemsArray.length > 1 ? 's' : ''}</p>
+                    <p className="text-sm text-[var(--foreground-tertiary)]">{itemsArray.length} élément{itemsArray.length > 1 ? 's' : ''}</p>
                   </div>
                 </div>
                 
-                <button className="p-1 rounded-md hover:bg-zinc-700 text-zinc-400">
+                <button className="p-1 rounded-md hover:bg-[var(--border-secondary)] text-[var(--foreground-tertiary)]">
                   {isExpanded ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
                 </button>
               </div>
               
               {/* Section content - collapsible */}
               {isExpanded && (
-                <div className="border-t border-zinc-800 divide-y divide-zinc-800">
+                <div className="border-t border-[var(--border)] divide-y divide-[var(--border)]">
                   {itemsArray.map((item, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.1 + (index * 0.05) }}
-                      className="p-5 hover:bg-zinc-800/30 transition-colors"
+                      className="p-5 hover:bg-[var(--background-tertiary)]/30 transition-colors"
                     >
                       <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                         <div className="space-y-2">
-                          <h3 className="text-white font-medium">{item.description}</h3>
+                          <h3 className="text-[var(--foreground)] font-medium">{item.description}</h3>
                           
                           {item.name && (
-                            <p className="text-sm text-zinc-500 font-mono">{item.name}</p>
+                            <p className="text-sm text-[var(--foreground-muted)] font-mono">{item.name}</p>
                           )}
                         </div>
                         
@@ -249,7 +249,7 @@ export default function PatchnoteDetail({ patchnote }: PatchnoteDetailProps) {
                             href={`https://github.com/INFORFI/SPlane/pull/${item.pr_number}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-zinc-300 text-sm transition-all self-start"
+                            className="flex items-center gap-2 px-3 py-1.5 rounded-md bg-[var(--background-tertiary)] hover:bg-[var(--border-secondary)] text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)] text-sm transition-all self-start"
                           >
                             <span>PR #{item.pr_number}</span>
                             <ExternalLink className="h-3.5 w-3.5" />
@@ -269,14 +269,14 @@ export default function PatchnoteDetail({ patchnote }: PatchnoteDetailProps) {
       {Object.values(parsedContent).every((items: any) => !items || items.length === 0) && (
         <motion.div
           variants={itemVariants}
-          className="bg-zinc-900 border border-zinc-800 rounded-xl p-10 text-center"
+          className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-10 text-center"
         >
           <div className="flex flex-col items-center max-w-md mx-auto">
-            <div className="p-4 rounded-full bg-zinc-800 mb-4">
-              <Info className="h-6 w-6 text-zinc-400" />
+            <div className="p-4 rounded-full bg-[var(--background-tertiary)] mb-4">
+              <Info className="h-6 w-6 text-[var(--foreground-tertiary)]" />
             </div>
-            <h3 className="text-lg font-medium text-white mb-2">Aucun détail disponible</h3>
-            <p className="text-zinc-400">
+            <h3 className="text-lg font-medium text-[var(--foreground)] mb-2">Aucun détail disponible</h3>
+            <p className="text-[var(--foreground-tertiary)]">
               Cette note de mise à jour ne contient pas de détails supplémentaires.
             </p>
           </div>

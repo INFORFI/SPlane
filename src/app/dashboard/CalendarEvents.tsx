@@ -135,11 +135,11 @@ export async function getCalendarData(): Promise<CalendarData> {
 function getTaskColorClass(priority: number): string {
   switch (priority) {
     case 3:
-      return 'bg-amber-500'; // High priority
+      return 'bg-[var(--warning)]'; // High priority
     case 2:
-      return 'bg-indigo-500'; // Medium priority
+      return 'bg-[var(--primary)]'; // Medium priority
     default:
-      return 'bg-emerald-500'; // Low priority
+      return 'bg-[var(--success)]'; // Low priority
   }
 }
 

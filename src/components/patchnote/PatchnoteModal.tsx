@@ -113,7 +113,7 @@ export default function PatchNoteModal({
 
   // Set color theme based on emoji
   const getThemeColor = () => {
-    return 'indigo';
+    return 'primary';
   };
 
   const themeColor = getThemeColor();
@@ -129,28 +129,28 @@ export default function PatchNoteModal({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="relative w-full max-w-2xl max-h-[80vh] overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900 shadow-xl"
+            className="relative w-full max-w-2xl max-h-[80vh] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--background-secondary)] shadow-xl"
           >
             {/* Progress indicator for multiple patchnotes */}
             {totalPatchnotesCount > 1 && (
-              <div className="absolute top-0 left-0 right-0 h-1 bg-zinc-800">
+              <div className="absolute top-0 left-0 right-0 h-1 bg-[var(--border)]">
                 <div 
-                  className={`h-full bg-${themeColor}-500 transition-all duration-300 ease-out`}
+                  className="h-full bg-[var(--primary)] transition-all duration-300 ease-out"
                   style={{ width: `${((currentIndex + 1) / totalPatchnotesCount) * 100}%` }}
                 ></div>
               </div>
             )}
 
             {/* Header */}
-            <div className="sticky top-0 z-20 flex items-center justify-between border-b border-zinc-800 bg-zinc-900/90 p-4 backdrop-blur-sm">
+            <div className="sticky top-0 z-20 flex items-center justify-between border-b border-[var(--border)] bg-[var(--background-secondary)]/90 p-4 backdrop-blur-sm">
               <div className="flex items-center gap-3">
-                <div className={`flex h-12 w-12 items-center justify-center rounded-full bg-${themeColor}-500/20 text-${themeColor}-400 border border-${themeColor}-500/30`}>
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--primary-muted)] text-[var(--primary)] border border-[var(--primary)]/30">
                   <span className="text-2xl">{patchNote.emoji || '✨'}</span>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white">{patchNote.title}</h3>
+                  <h3 className="text-xl font-bold text-[var(--foreground)]">{patchNote.title}</h3>
                   <div className="flex items-center gap-2 mt-1">
-                    <p className="text-sm text-zinc-400">
+                    <p className="text-sm text-[var(--foreground-tertiary)]">
                       {new Date(patchNote.releaseDate).toLocaleDateString('fr-FR', {
                         day: 'numeric',
                         month: 'long',
@@ -159,8 +159,8 @@ export default function PatchNoteModal({
                     </p>
                     {totalPatchnotesCount > 1 && (
                       <>
-                        <span className="inline-block h-1 w-1 rounded-full bg-zinc-700"></span>
-                        <span className="text-sm text-zinc-500">{currentIndex + 1}/{totalPatchnotesCount}</span>
+                        <span className="inline-block h-1 w-1 rounded-full bg-[var(--border-secondary)]"></span>
+                        <span className="text-sm text-[var(--foreground-muted)]">{currentIndex + 1}/{totalPatchnotesCount}</span>
                       </>
                     )}
                   </div>
@@ -168,7 +168,7 @@ export default function PatchNoteModal({
               </div>
               <button
                 onClick={handleClose}
-                className="rounded-full p-1.5 text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors cursor-pointer"
+                className="rounded-full p-1.5 text-[var(--foreground-tertiary)] hover:bg-[var(--background-tertiary)] hover:text-[var(--foreground)] transition-colors cursor-pointer"
               >
                 <XCircle className="h-6 w-6" />
               </button>
@@ -179,7 +179,7 @@ export default function PatchNoteModal({
               className="custom-scrollbar overflow-y-auto overflow-x-hidden p-6 max-h-[calc(80vh-130px)]"
               style={{
                 scrollbarWidth: 'thin',
-                scrollbarColor: `rgba(99, 102, 241, 0.5) rgba(39, 39, 42, 0.3)`
+                scrollbarColor: `var(--primary-muted) var(--background-tertiary)`
               }}
             >
               {/* Description */}
@@ -188,10 +188,10 @@ export default function PatchNoteModal({
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 }}
-                  className={`mb-6 rounded-lg border border-${themeColor}-900/30 bg-${themeColor}-950/20 p-4 text-${themeColor}-200`}
+                  className="mb-6 rounded-lg border border-[var(--primary)]/30 bg-[var(--primary-muted)]/20 p-4 text-[var(--foreground-secondary)]"
                 >
                   <div className="flex items-start gap-3">
-                    <Info className={`h-5 w-5 flex-shrink-0 mt-0.5 text-${themeColor}-400`} />
+                    <Info className="h-5 w-5 flex-shrink-0 mt-0.5 text-[var(--primary)]" />
                     <p>{patchNote.description}</p>
                   </div>
                 </motion.div>
@@ -205,11 +205,11 @@ export default function PatchNoteModal({
                   transition={{ delay: 0.2 }}
                   className="flex flex-col items-center justify-center py-12 text-center"
                 >
-                  <div className={`mb-4 rounded-full bg-${themeColor}-500/20 p-3 border border-${themeColor}-500/30`}>
-                    <ExternalLink className={`h-6 w-6 text-${themeColor}-400`} />
+                  <div className="mb-4 rounded-full bg-[var(--primary-muted)] p-3 border border-[var(--primary)]/30">
+                    <ExternalLink className="h-6 w-6 text-[var(--primary)]" />
                   </div>
-                  <h4 className="text-lg font-medium text-zinc-300">Aucun détail disponible</h4>
-                  <p className="mt-2 max-w-md text-sm text-zinc-500">
+                  <h4 className="text-lg font-medium text-[var(--foreground-secondary)]">Aucun détail disponible</h4>
+                  <p className="mt-2 max-w-md text-sm text-[var(--foreground-muted)]">
                     Cette mise à jour ne contient pas de détails spécifiques. Consultez notre documentation pour plus d'informations.
                   </p>
                 </motion.div>
@@ -234,12 +234,12 @@ export default function PatchNoteModal({
                   >
                     <div className="flex items-center gap-2 mb-4">
                       {icon && (
-                        <div className={`p-1.5 rounded-md bg-${themeColor}-500/20 text-${themeColor}-400`}>
+                        <div className="p-1.5 rounded-md bg-[var(--primary-muted)] text-[var(--primary)]">
                           {icon}
                         </div>
                       )}
-                      <h4 className="text-lg font-medium text-white">{title}</h4>
-                      <div className={`ml-1 px-2 py-0.5 text-xs rounded-full bg-${themeColor}-500/20 text-${themeColor}-400`}>
+                      <h4 className="text-lg font-medium text-[var(--foreground)]">{title}</h4>
+                      <div className="ml-1 px-2 py-0.5 text-xs rounded-full bg-[var(--primary-muted)] text-[var(--primary)]">
                         {items.length}
                       </div>
                     </div>
@@ -250,13 +250,13 @@ export default function PatchNoteModal({
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           transition={{ delay: 0.2 + (sectionIndex * 0.05) + (index * 0.03) }}
-                          className="group rounded-lg border border-zinc-800 bg-zinc-900/50 p-4 hover:border-zinc-700 hover:bg-zinc-900 transition-all"
+                          className="group rounded-lg border border-[var(--border)] bg-[var(--background-secondary)]/50 p-4 hover:border-[var(--border-secondary)] hover:bg-[var(--background-secondary)] transition-all"
                         >
                           <div className="flex items-start justify-between gap-4">
                             <div className="space-y-1">
-                              <h5 className="font-medium text-zinc-200">{item.description}</h5>
+                              <h5 className="font-medium text-[var(--foreground-secondary)]">{item.description}</h5>
                               {item.name && (
-                                <p className="text-sm text-zinc-500 font-mono">{item.name}</p>
+                                <p className="text-sm text-[var(--foreground-muted)] font-mono">{item.name}</p>
                               )}
                             </div>
                             {item.pr_number && (
@@ -264,7 +264,7 @@ export default function PatchNoteModal({
                                 href={`https://github.com/INFORFI/SPlane/pull/${item.pr_number}`}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className={`flex items-center gap-1 rounded-full bg-zinc-800 hover:bg-${themeColor}-500/20 px-2.5 py-1 text-xs font-medium text-zinc-400 hover:text-${themeColor}-400 opacity-0 group-hover:opacity-100 transition-all`}
+                                className="flex items-center gap-1 rounded-full bg-[var(--background-tertiary)] hover:bg-[var(--primary-muted)] px-2.5 py-1 text-xs font-medium text-[var(--foreground-tertiary)] hover:text-[var(--primary)] opacity-0 group-hover:opacity-100 transition-all"
                               >
                                 PR #{item.pr_number}
                                 <ExternalLink className="h-3 w-3" />
@@ -280,10 +280,10 @@ export default function PatchNoteModal({
             </div>
 
             {/* Footer */}
-            <div className="sticky bottom-0 border-t border-zinc-800 bg-zinc-900/90 p-4 backdrop-blur-sm">
+            <div className="sticky bottom-0 border-t border-[var(--border)] bg-[var(--background-secondary)]/90 p-4 backdrop-blur-sm">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className={`px-2.5 py-1 rounded-md bg-${themeColor}-500/10 text-${themeColor}-400 text-xs font-medium`}>
+                  <div className="px-2.5 py-1 rounded-md bg-[var(--primary-muted)]/10 text-[var(--primary)] text-xs font-medium">
                     v{patchNote.version}
                   </div>
                 </div>
@@ -292,7 +292,7 @@ export default function PatchNoteModal({
                   {hasNavigation && currentIndex > 0 && (
                     <button
                       onClick={() => handleNavigation('prev')}
-                      className="flex items-center cursor-pointer gap-2 rounded-md bg-zinc-800 px-3 py-2 text-sm font-medium text-zinc-300 hover:bg-zinc-700 transition-colors"
+                      className="flex items-center cursor-pointer gap-2 rounded-md bg-[var(--background-tertiary)] px-3 py-2 text-sm font-medium text-[var(--foreground-secondary)] hover:bg-[var(--border-secondary)] transition-colors"
                     >
                       <ArrowLeft className="h-4 w-4" />
                       <span>Précédent</span>
@@ -304,7 +304,7 @@ export default function PatchNoteModal({
                       () => handleNavigation('next') : 
                       handleClose
                     }
-                    className={`flex items-center cursor-pointer gap-2 rounded-md bg-${themeColor}-600 px-4 py-2 text-sm font-medium text-white hover:bg-${themeColor}-700 transition-colors`}
+                    className="flex items-center cursor-pointer gap-2 rounded-md bg-[var(--primary)] px-4 py-2 text-sm font-medium text-[var(--primary-foreground)] hover:bg-[var(--primary-hover)] transition-colors"
                   >
                     <span>{currentIndex < totalPatchnotesCount - 1 ? 'Suivant' : 'Terminer'}</span>
                     {currentIndex < totalPatchnotesCount - 1 ? 
@@ -331,17 +331,17 @@ if (styleElement) {
     }
     
     .custom-scrollbar::-webkit-scrollbar-track {
-      background: rgba(39, 39, 42, 0.3);
+      background: var(--background-tertiary);
       border-radius: 4px;
     }
     
     .custom-scrollbar::-webkit-scrollbar-thumb {
-      background: rgba(99, 102, 241, 0.5);
+      background: var(--primary-muted);
       border-radius: 4px;
     }
     
     .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-      background: rgba(99, 102, 241, 0.7);
+      background: var(--primary);
     }
   `;
   

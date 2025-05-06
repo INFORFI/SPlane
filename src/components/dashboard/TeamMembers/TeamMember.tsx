@@ -19,11 +19,11 @@ export default function TeamMember({
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium text-zinc-300">Team Members</label>
+      <label className="block text-sm font-medium text-[var(--foreground-secondary)]">Team Members</label>
 
       <div>
         <div
-          className="flex flex-wrap gap-2 min-h-12 p-3 bg-zinc-800 border border-zinc-700 rounded-lg cursor-pointer"
+          className="flex flex-wrap gap-2 min-h-12 p-3 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-lg cursor-pointer"
           onClick={() => setIsTeamSelectOpen(!isTeamSelectOpen)}
           ref={teamSelectorRef}
         >
@@ -33,7 +33,7 @@ export default function TeamMember({
               return user ? (
                 <div
                   key={user.id}
-                  className="flex items-center gap-1 bg-indigo-500/20 text-indigo-400 px-2 py-1 rounded-full text-sm"
+                  className="flex items-center gap-1 bg-[var(--primary-muted)] text-[var(--primary)] px-2 py-1 rounded-full text-sm"
                 >
                   <span>{user.fullName}</span>
                   <button
@@ -42,7 +42,7 @@ export default function TeamMember({
                       e.stopPropagation();
                       toggleTeamMember(user.id);
                     }}
-                    className="text-indigo-400 hover:text-indigo-300"
+                    className="text-[var(--primary)] hover:text-[var(--primary-hover)]"
                   >
                     <X className="h-3 w-3" />
                   </button>
@@ -50,7 +50,7 @@ export default function TeamMember({
               ) : null;
             })
           ) : (
-            <div className="text-zinc-500 py-1">No team members selected</div>
+            <div className="text-[var(--foreground-muted)] py-1">No team members selected</div>
           )}
         </div>
 
@@ -63,7 +63,7 @@ export default function TeamMember({
           onClose={() => setIsTeamSelectOpen(false)}
         />
       </div>
-      <p className="text-zinc-500 text-xs mt-1">
+      <p className="text-[var(--foreground-muted)] text-xs mt-1">
         Les membres du projet auront accès au projet mais ne seront pas assignés automatiquement aux tâches
       </p>
     </div>

@@ -129,13 +129,13 @@ const NewTaskPage = ({
   const getPriorityInfo = (priority: number) => {
     switch (priority) {
       case 3:
-        return { label: 'Haute', color: 'text-rose-500' };
+        return { label: 'Haute', color: 'text-[var(--error)]' };
       case 2:
-        return { label: 'Moyenne', color: 'text-amber-500' };
+        return { label: 'Moyenne', color: 'text-[var(--warning)]' };
       case 1:
-        return { label: 'Basse', color: 'text-emerald-500' };
+        return { label: 'Basse', color: 'text-[var(--success)]' };
       default:
-        return { label: 'Moyenne', color: 'text-amber-500' };
+        return { label: 'Moyenne', color: 'text-[var(--warning)]' };
     }
   };
 
@@ -143,13 +143,13 @@ const NewTaskPage = ({
   const getStatusInfo = (status: TaskStatus) => {
     switch (status) {
       case TaskStatus.COMPLETED:
-        return { label: 'Terminée', color: 'text-emerald-500', bg: 'bg-emerald-500/10' };
+        return { label: 'Terminée', color: 'text-[var(--success)]', bg: 'bg-[var(--success-muted)]' };
       case TaskStatus.IN_PROGRESS:
-        return { label: 'En cours', color: 'text-amber-500', bg: 'bg-amber-500/10' };
+        return { label: 'En cours', color: 'text-[var(--warning)]', bg: 'bg-[var(--warning-muted)]' };
       case TaskStatus.CANCELED:
-        return { label: 'Annulée', color: 'text-zinc-500', bg: 'bg-zinc-500/10' };
+        return { label: 'Annulée', color: 'text-[var(--foreground-muted)]', bg: 'bg-[var(--foreground-muted)]/10' };
       default:
-        return { label: 'À faire', color: 'text-indigo-500', bg: 'bg-indigo-500/10' };
+        return { label: 'À faire', color: 'text-[var(--primary)]', bg: 'bg-[var(--primary-muted)]' };
     }
   };
 
@@ -166,11 +166,11 @@ const NewTaskPage = ({
           href={
             formData.projectId ? `/dashboard/projects/${formData.projectId}` : '/dashboard/tasks'
           }
-          className="text-zinc-400 hover:text-white transition-colors"
+          className="text-[var(--foreground-tertiary)] hover:text-[var(--foreground)] transition-colors"
         >
           <ArrowLeft className="h-5 w-5" />
         </Link>
-        <motion.h1 variants={itemVariants} className="text-2xl font-bold text-white">
+        <motion.h1 variants={itemVariants} className="text-2xl font-bold text-[var(--foreground)]">
           Nouvelle tâche
         </motion.h1>
       </div>
@@ -181,7 +181,7 @@ const NewTaskPage = ({
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
-          className="mb-6 p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-3 text-emerald-400"
+          className="mb-6 p-4 rounded-lg bg-[var(--success-muted)] border border-[var(--success)]/20 flex items-center gap-3 text-[var(--success)]"
         >
           <CheckCircle2 className="h-5 w-5 flex-shrink-0" />
           <span>La tâche a été créée avec succès!</span>
@@ -192,12 +192,12 @@ const NewTaskPage = ({
       <motion.form
         variants={itemVariants}
         onSubmit={handleSubmit}
-        className="bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl overflow-hidden"
+        className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl shadow-xl overflow-hidden"
       >
         {/* Form header */}
-        <div className="bg-zinc-800/50 px-6 py-4 border-b border-zinc-800">
-          <h2 className="text-lg font-medium text-white">Informations de la tâche</h2>
-          <p className="text-sm text-zinc-400">Créez une nouvelle tâche pour votre projet</p>
+        <div className="bg-[var(--background-tertiary)]/50 px-6 py-4 border-b border-[var(--border)]">
+          <h2 className="text-lg font-medium text-[var(--foreground)]">Informations de la tâche</h2>
+          <p className="text-sm text-[var(--foreground-tertiary)]">Créez une nouvelle tâche pour votre projet</p>
         </div>
 
         {/* Form fields */}
@@ -206,8 +206,8 @@ const NewTaskPage = ({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Title field */}
             <div className="space-y-2">
-              <label htmlFor="title" className="block text-sm font-medium text-zinc-300">
-                Titre <span className="text-rose-500">*</span>
+              <label htmlFor="title" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+                Titre <span className="text-[var(--error)]">*</span>
               </label>
               <input
                 id="title"
@@ -216,26 +216,26 @@ const NewTaskPage = ({
                 value={formData.title}
                 onChange={handleChange}
                 placeholder="Nom de la tâche"
-                className={`w-full px-4 py-2.5 bg-zinc-800 border ${errors.title ? 'border-rose-500' : 'border-zinc-700'} rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
+                className={`w-full px-4 py-2.5 bg-[var(--input)] border ${errors.title ? 'border-[var(--error)]' : 'border-[var(--border-secondary)]'} rounded-lg text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent`}
               />
-              {errors.title && <p className="text-rose-500 text-xs mt-1">{errors.title}</p>}
+              {errors.title && <p className="text-[var(--error)] text-xs mt-1">{errors.title}</p>}
             </div>
 
             {/* Project field */}
             <div className="space-y-2">
-              <label htmlFor="projectId" className="block text-sm font-medium text-zinc-300">
-                Projet <span className="text-rose-500">*</span>
+              <label htmlFor="projectId" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+                Projet <span className="text-[var(--error)]">*</span>
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Layers className="h-5 w-5 text-zinc-500" />
+                  <Layers className="h-5 w-5 text-[var(--foreground-muted)]" />
                 </div>
                 <select
                   id="projectId"
                   name="projectId"
                   value={formData.projectId}
                   onChange={handleChange}
-                  className={`w-full pl-10 pr-10 py-2.5 bg-zinc-800 border ${errors.projectId ? 'border-rose-500' : 'border-zinc-700'} rounded-lg text-white appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
+                  className={`w-full pl-10 pr-10 py-2.5 bg-[var(--input)] border ${errors.projectId ? 'border-[var(--error)]' : 'border-[var(--border-secondary)]'} rounded-lg text-[var(--foreground)] appearance-none focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent`}
                 >
                   <option value="">Sélectionner un projet</option>
                   {projects.map(project => (
@@ -245,16 +245,16 @@ const NewTaskPage = ({
                   ))}
                 </select>
                 <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
-                  <ChevronDown className="h-5 w-5 text-zinc-500" />
+                  <ChevronDown className="h-5 w-5 text-[var(--foreground-muted)]" />
                 </div>
               </div>
-              {errors.projectId && <p className="text-rose-500 text-xs mt-1">{errors.projectId}</p>}
+              {errors.projectId && <p className="text-[var(--error)] text-xs mt-1">{errors.projectId}</p>}
             </div>
           </div>
 
           {/* Description field */}
           <div className="space-y-2">
-            <label htmlFor="description" className="block text-sm font-medium text-zinc-300">
+            <label htmlFor="description" className="block text-sm font-medium text-[var(--foreground-secondary)]">
               Description
             </label>
             <textarea
@@ -264,7 +264,7 @@ const NewTaskPage = ({
               onChange={handleChange}
               rows={4}
               placeholder="Description détaillée de la tâche"
-              className="w-full px-4 py-2.5 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2.5 bg-[var(--input)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
             />
           </div>
 
@@ -272,12 +272,12 @@ const NewTaskPage = ({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Deadline field */}
             <div className="space-y-2">
-              <label htmlFor="deadline" className="block text-sm font-medium text-zinc-300">
-                Date limite <span className="text-rose-500">*</span>
+              <label htmlFor="deadline" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+                Date limite <span className="text-[var(--error)]">*</span>
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Calendar className="h-5 w-5 text-zinc-500" />
+                  <Calendar className="h-5 w-5 text-[var(--foreground-muted)]" />
                 </div>
                 <input
                   id="deadline"
@@ -285,15 +285,15 @@ const NewTaskPage = ({
                   type="date"
                   value={formData.deadline}
                   onChange={handleChange}
-                  className={`w-full pl-10 pr-4 py-2.5 bg-zinc-800 border ${errors.deadline ? 'border-rose-500' : 'border-zinc-700'} rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
+                  className={`w-full pl-10 pr-4 py-2.5 bg-[var(--input)] border ${errors.deadline ? 'border-[var(--error)]' : 'border-[var(--border-secondary)]'} rounded-lg text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent`}
                 />
               </div>
-              {errors.deadline && <p className="text-rose-500 text-xs mt-1">{errors.deadline}</p>}
+              {errors.deadline && <p className="text-[var(--error)] text-xs mt-1">{errors.deadline}</p>}
             </div>
 
             {/* Status field */}
             <div className="space-y-2">
-              <label htmlFor="status" className="block text-sm font-medium text-zinc-300">
+              <label htmlFor="status" className="block text-sm font-medium text-[var(--foreground-secondary)]">
                 Statut
               </label>
               <select
@@ -301,7 +301,7 @@ const NewTaskPage = ({
                 name="status"
                 value={formData.status}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full px-4 py-2.5 bg-[var(--input)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
               >
                 {Object.values(TaskStatus).map(status => (
                   <option key={status} value={status}>
@@ -313,7 +313,7 @@ const NewTaskPage = ({
 
             {/* Priority field */}
             <div className="space-y-2">
-              <label htmlFor="priority" className="block text-sm font-medium text-zinc-300">
+              <label htmlFor="priority" className="block text-sm font-medium text-[var(--foreground-secondary)]">
                 Priorité
               </label>
               <select
@@ -321,7 +321,7 @@ const NewTaskPage = ({
                 name="priority"
                 value={formData.priority}
                 onChange={handleChange}
-                className="w-full px-4 py-2.5 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                className="w-full px-4 py-2.5 bg-[var(--input)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
               >
                 <option value={1}>Basse</option>
                 <option value={2}>Moyenne</option>
@@ -339,7 +339,7 @@ const NewTaskPage = ({
 
           {/* General error message */}
           {errors.submit && (
-            <div className="p-3 bg-rose-500/10 border border-rose-500/20 rounded-lg flex items-center gap-3 text-rose-400">
+            <div className="p-3 bg-[var(--error-muted)] border border-[var(--error)]/20 rounded-lg flex items-center gap-3 text-[var(--error)]">
               <AlertCircle className="h-5 w-5 flex-shrink-0" />
               <span className="text-sm">{errors.submit}</span>
             </div>
@@ -347,12 +347,12 @@ const NewTaskPage = ({
         </div>
 
         {/* Form actions */}
-        <div className="px-6 py-4 bg-zinc-800/50 border-t border-zinc-800 flex justify-end gap-3">
+        <div className="px-6 py-4 bg-[var(--background-tertiary)]/50 border-t border-[var(--border)] flex justify-end gap-3">
           <Link
             href={
               formData.projectId ? `/dashboard/projects/${formData.projectId}` : '/dashboard/tasks'
             }
-            className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors"
+            className="px-4 py-2 bg-[var(--background-tertiary)] hover:bg-[var(--border-secondary)] rounded-lg text-sm font-medium text-[var(--foreground-secondary)] transition-colors"
           >
             Annuler
           </Link>
@@ -360,14 +360,14 @@ const NewTaskPage = ({
           <motion.button
             type="submit"
             disabled={isSubmitting}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+            className="flex items-center gap-2 px-4 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-lg text-sm font-medium text-[var(--primary-foreground)] transition-colors disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
             whileHover={{ scale: isSubmitting ? 1 : 1.03 }}
             whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
           >
             {isSubmitting ? (
               <>
                 <svg
-                  className="animate-spin h-4 w-4 text-white"
+                  className="animate-spin h-4 w-4 text-[var(--primary-foreground)]"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -401,17 +401,17 @@ const NewTaskPage = ({
       {/* Task Preview */}
       <motion.div
         variants={itemVariants}
-        className="mt-8 bg-zinc-900 border border-zinc-800 rounded-xl p-6"
+        className="mt-8 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6"
       >
-        <h2 className="text-lg font-medium text-white mb-4">Aperçu de la tâche</h2>
+        <h2 className="text-lg font-medium text-[var(--foreground)] mb-4">Aperçu de la tâche</h2>
 
-        <div className="p-4 border border-zinc-800 rounded-lg bg-zinc-800/50">
+        <div className="p-4 border border-[var(--border)] rounded-lg bg-[var(--background-tertiary)]/50">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
             <div>
-              <h3 className="text-lg font-medium text-white">
+              <h3 className="text-lg font-medium text-[var(--foreground)]">
                 {formData.title || 'Titre de la tâche'}
               </h3>
-              <p className="text-sm text-zinc-400">
+              <p className="text-sm text-[var(--foreground-tertiary)]">
                 {formData.projectId
                   ? projects.find(p => p.id.toString() === formData.projectId.toString())?.name ||
                     'Projet'
@@ -426,25 +426,25 @@ const NewTaskPage = ({
                 {getStatusInfo(formData.status as TaskStatus).label}
               </div>
 
-              <div className="flex items-center gap-1 px-2.5 py-1 bg-zinc-800 rounded-full text-xs">
+              <div className="flex items-center gap-1 px-2.5 py-1 bg-[var(--background-tertiary)] rounded-full text-xs">
                 <div
                   className={`h-2 w-2 rounded-full ${getPriorityInfo(formData.priority).color}`}
                 ></div>
-                <span className="text-zinc-300">{getPriorityInfo(formData.priority).label}</span>
+                <span className="text-[var(--foreground-secondary)]">{getPriorityInfo(formData.priority).label}</span>
               </div>
             </div>
           </div>
 
           {formData.description && (
             <div className="mb-4">
-              <p className="text-zinc-300 text-sm">{formData.description}</p>
+              <p className="text-[var(--foreground-secondary)] text-sm">{formData.description}</p>
             </div>
           )}
 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-sm">
             <div className="flex items-center gap-6">
               {formData.deadline && (
-                <div className="flex items-center gap-2 text-zinc-400">
+                <div className="flex items-center gap-2 text-[var(--foreground-tertiary)]">
                   <Clock className="h-4 w-4" />
                   <span>
                     Échéance:{' '}
@@ -460,14 +460,14 @@ const NewTaskPage = ({
 
             {formData.assignees.length > 0 && (
               <div className="flex items-center gap-2">
-                <User className="h-4 w-4 text-zinc-500" />
+                <User className="h-4 w-4 text-[var(--foreground-muted)]" />
                 <div className="flex -space-x-2">
                   {formData.assignees.map(userId => {
                     const user = users.find(u => u.id === userId);
                     return user ? (
                       <div
                         key={user.id}
-                        className="h-6 w-6 rounded-full bg-indigo-600 border-2 border-zinc-900 flex items-center justify-center text-xs text-white"
+                        className="h-6 w-6 rounded-full bg-[var(--primary)] border-2 border-[var(--background)] flex items-center justify-center text-xs text-[var(--primary-foreground)]"
                         title={user.fullName}
                       >
                         {user.fullName
