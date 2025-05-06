@@ -1,5 +1,812 @@
 @import 'tailwindcss';
 
 button {
-    cursor: pointer;
+  cursor: pointer;
+}
+
+:root {
+  /* Définition des couleurs en RGB pour permettre l'utilisation avec opacity */
+  
+  /* Zinc - Neutral Colors */
+  --zinc-100-rgb: 244, 244, 245;
+  --zinc-200-rgb: 228, 228, 231;
+  --zinc-300-rgb: 212, 212, 216;
+  --zinc-400-rgb: 161, 161, 170;
+  --zinc-500-rgb: 113, 113, 122;
+  --zinc-600-rgb: 82, 82, 91;
+  --zinc-700-rgb: 63, 63, 70;
+  --zinc-800-rgb: 39, 39, 42;
+  --zinc-900-rgb: 24, 24, 27;
+  --zinc-950-rgb: 9, 9, 11;
+  
+  /* Indigo - Primary Brand Colors */
+  --indigo-300-rgb: 165, 180, 252;
+  --indigo-400-rgb: 129, 140, 248;
+  --indigo-500-rgb: 99, 102, 241;
+  --indigo-600-rgb: 79, 70, 229;
+  --indigo-700-rgb: 67, 56, 202;
+  
+  /* Emerald - Success Colors */
+  --emerald-400-rgb: 52, 211, 153;
+  --emerald-500-rgb: 16, 185, 129;
+  --emerald-600-rgb: 5, 150, 105;
+  
+  /* Amber - Warning Colors */
+  --amber-400-rgb: 251, 191, 36;
+  --amber-500-rgb: 245, 158, 11;
+  
+  /* Rose - Error Colors */
+  --rose-300-rgb: 253, 164, 175;
+  --rose-400-rgb: 251, 113, 133;
+  --rose-500-rgb: 244, 63, 94;
+  --rose-600-rgb: 225, 29, 72;
+  --rose-700-rgb: 190, 18, 60;
+  
+  /* Purple - Misc Colors */
+  --purple-500-rgb: 168, 85, 247;
+  --purple-600-rgb: 147, 51, 234;
+
+  /* White & Black */
+  --white-rgb: 255, 255, 255;
+  --black-rgb: 0, 0, 0;
+}
+
+/* Thème sombre - SPLANE par défaut */
+:root, .dark {
+  /* Couleurs de base */
+  --background: rgb(var(--zinc-950-rgb));
+  --background-secondary: rgb(var(--zinc-900-rgb));
+  --background-tertiary: rgb(var(--zinc-800-rgb));
+  
+  --foreground: rgb(var(--white-rgb));
+  --foreground-secondary: rgb(var(--zinc-200-rgb));
+  --foreground-tertiary: rgb(var(--zinc-400-rgb));
+  --foreground-muted: rgb(var(--zinc-500-rgb));
+  
+  /* Bordures */
+  --border: rgb(var(--zinc-800-rgb));
+  --border-secondary: rgb(var(--zinc-700-rgb));
+  
+  /* Couleurs primaires */
+  --primary: rgb(var(--indigo-500-rgb));
+  --primary-foreground: rgb(var(--white-rgb));
+  --primary-hover: rgb(var(--indigo-600-rgb));
+  --primary-active: rgb(var(--indigo-700-rgb));
+  --primary-muted: rgba(var(--indigo-500-rgb), 0.2);
+  --primary-focus: rgba(var(--indigo-500-rgb), 0.3);
+  
+  /* États sémantiques */
+  --success: rgb(var(--emerald-500-rgb));
+  --success-foreground: rgb(var(--white-rgb));
+  --success-muted: rgba(var(--emerald-500-rgb), 0.2);
+  
+  --warning: rgb(var(--amber-500-rgb));
+  --warning-foreground: rgb(var(--black-rgb));
+  --warning-muted: rgba(var(--amber-500-rgb), 0.2);
+  
+  --error: rgb(var(--rose-500-rgb));
+  --error-foreground: rgb(var(--white-rgb));
+  --error-muted: rgba(var(--rose-500-rgb), 0.2);
+  
+  /* Inputs & Controls */
+  --input: rgb(var(--zinc-800-rgb));
+  --input-hover: rgb(var(--zinc-700-rgb));
+  --input-focus: rgb(var(--zinc-700-rgb));
+  --ring: rgb(var(--indigo-500-rgb));
+  
+  /* Misc */
+  --accent: rgb(var(--purple-500-rgb));
+  --accent-foreground: rgb(var(--white-rgb));
+  --accent-muted: rgba(var(--purple-500-rgb), 0.2);
+}
+
+/* Thème clair */
+.light {
+  /* Couleurs de base */
+  --background: rgb(255, 255, 255);
+  --background-secondary: rgb(244, 244, 245);
+  --background-tertiary: rgb(228, 228, 231);
+  
+  --foreground: rgb(24, 24, 27);
+  --foreground-secondary: rgb(63, 63, 70);
+  --foreground-tertiary: rgb(82, 82, 91);
+  --foreground-muted: rgb(113, 113, 122);
+  
+  /* Bordures */
+  --border: rgb(228, 228, 231);
+  --border-secondary: rgb(212, 212, 216);
+  
+  /* Couleurs primaires */
+  --primary: rgb(79, 70, 229);
+  --primary-foreground: rgb(255, 255, 255);
+  --primary-hover: rgb(67, 56, 202);
+  --primary-active: rgb(55, 48, 163);
+  --primary-muted: rgba(79, 70, 229, 0.15);
+  --primary-focus: rgba(79, 70, 229, 0.25);
+  
+  /* États sémantiques */
+  --success: rgb(5, 150, 105);
+  --success-foreground: rgb(255, 255, 255);
+  --success-muted: rgba(5, 150, 105, 0.15);
+  
+  --warning: rgb(245, 158, 11);
+  --warning-foreground: rgb(0, 0, 0);
+  --warning-muted: rgba(245, 158, 11, 0.15);
+  
+  --error: rgb(225, 29, 72);
+  --error-foreground: rgb(255, 255, 255);
+  --error-muted: rgba(225, 29, 72, 0.15);
+  
+  /* Inputs & Controls */
+  --input: rgb(244, 244, 245);
+  --input-hover: rgb(228, 228, 231);
+  --input-focus: rgb(255, 255, 255);
+  --ring: rgb(99, 102, 241);
+  
+  /* Misc */
+  --accent: rgb(147, 51, 234);
+  --accent-foreground: rgb(255, 255, 255);
+  --accent-muted: rgba(147, 51, 234, 0.15);
+}
+
+/* Thème Dracula */
+.dracula {
+  /* Couleurs de base */
+  --background: rgb(40, 42, 54);
+  --background-secondary: rgb(68, 71, 90);
+  --background-tertiary: rgb(68, 71, 90);
+  
+  --foreground: rgb(248, 248, 242);
+  --foreground-secondary: rgba(248, 248, 242, 0.7);
+  --foreground-tertiary: rgb(98, 114, 164);
+  --foreground-muted: rgb(98, 114, 164);
+  
+  /* Bordures */
+  --border: rgb(80, 83, 122);
+  --border-secondary: rgb(98, 114, 164);
+  
+  /* Couleurs primaires */
+  --primary: rgb(189, 147, 249);
+  --primary-foreground: rgb(248, 248, 242);
+  --primary-hover: rgba(189, 147, 249, 0.8);
+  --primary-active: rgba(189, 147, 249, 0.7);
+  --primary-muted: rgba(189, 147, 249, 0.2);
+  --primary-focus: rgba(189, 147, 249, 0.3);
+  
+  /* États sémantiques */
+  --success: rgb(80, 250, 123);
+  --success-foreground: rgb(40, 42, 54);
+  --success-muted: rgba(80, 250, 123, 0.2);
+  
+  --warning: rgb(255, 184, 108);
+  --warning-foreground: rgb(40, 42, 54);
+  --warning-muted: rgba(255, 184, 108, 0.2);
+  
+  --error: rgb(255, 85, 85);
+  --error-foreground: rgb(248, 248, 242);
+  --error-muted: rgba(255, 85, 85, 0.2);
+  
+  /* Inputs & Controls */
+  --input: rgb(68, 71, 90);
+  --input-hover: rgba(68, 71, 90, 0.9);
+  --input-focus: rgb(68, 71, 90);
+  --ring: rgb(255, 121, 198);
+  
+  /* Misc */
+  --accent: rgb(139, 233, 253);
+  --accent-foreground: rgb(40, 42, 54);
+  --accent-muted: rgba(139, 233, 253, 0.2);
+}
+
+/* Thème Dark High Contrast */
+.dark-high-contrast {
+  /* Couleurs de base */
+  --background: rgb(0, 0, 0);
+  --background-secondary: rgb(13, 13, 13);
+  --background-tertiary: rgb(26, 26, 26);
+  
+  --foreground: rgb(255, 255, 255);
+  --foreground-secondary: rgb(255, 255, 255);
+  --foreground-tertiary: rgb(230, 230, 230);
+  --foreground-muted: rgb(200, 200, 200);
+  
+  /* Bordures */
+  --border: rgb(50, 50, 50);
+  --border-secondary: rgb(77, 77, 77);
+  
+  /* Couleurs primaires - bleu plus vif pour meilleur contraste */
+  --primary: rgb(55, 125, 255);
+  --primary-foreground: rgb(255, 255, 255);
+  --primary-hover: rgb(85, 145, 255);
+  --primary-active: rgb(25, 100, 230);
+  --primary-muted: rgba(55, 125, 255, 0.25);
+  --primary-focus: rgba(55, 125, 255, 0.4);
+  
+  /* États sémantiques - couleurs plus vives pour meilleur contraste */
+  --success: rgb(20, 240, 120);
+  --success-foreground: rgb(0, 0, 0);
+  --success-muted: rgba(20, 240, 120, 0.25);
+  
+  --warning: rgb(255, 180, 0);
+  --warning-foreground: rgb(0, 0, 0);
+  --warning-muted: rgba(255, 180, 0, 0.25);
+  
+  --error: rgb(255, 70, 70);
+  --error-foreground: rgb(255, 255, 255);
+  --error-muted: rgba(255, 70, 70, 0.25);
+  
+  /* Inputs & Controls */
+  --input: rgb(26, 26, 26);
+  --input-hover: rgb(38, 38, 38);
+  --input-focus: rgb(50, 50, 50);
+  --ring: rgb(55, 125, 255);
+  
+  /* Misc */
+  --accent: rgb(230, 55, 220);
+  --accent-foreground: rgb(255, 255, 255);
+  --accent-muted: rgba(230, 55, 220, 0.25);
+  
+  /* Color scheme pour les éléments natifs */
+  color-scheme: dark;
+}
+
+.tokyo-night {
+  /* Couleurs de base */
+  --background: rgb(26, 27, 38);
+  --background-secondary: rgb(36, 40, 59);
+  --background-tertiary: rgb(46, 49, 73);
+  
+  --foreground: rgb(169, 177, 214);
+  --foreground-secondary: rgb(192, 202, 245);
+  --foreground-tertiary: rgb(135, 150, 197);
+  --foreground-muted: rgb(86, 95, 137);
+  
+  /* Bordures - Modifiée pour un meilleur contraste */
+  --border: rgb(58, 62, 91);
+  --border-secondary: rgb(72, 82, 120);
+  
+  /* Couleurs primaires */
+  --primary: rgb(125, 207, 255);
+  --primary-foreground: rgb(26, 27, 38);
+  --primary-hover: rgb(143, 212, 255);
+  --primary-active: rgb(105, 187, 235);
+  --primary-muted: rgba(125, 207, 255, 0.2);
+  --primary-focus: rgba(125, 207, 255, 0.3);
+  
+  /* États sémantiques */
+  --success: rgb(158, 206, 106);
+  --success-foreground: rgb(26, 27, 38);
+  --success-muted: rgba(158, 206, 106, 0.2);
+  
+  --warning: rgb(224, 175, 104);
+  --warning-foreground: rgb(26, 27, 38);
+  --warning-muted: rgba(224, 175, 104, 0.2);
+  
+  --error: rgb(247, 118, 142);
+  --error-foreground: rgb(26, 27, 38);
+  --error-muted: rgba(247, 118, 142, 0.2);
+  
+  /* Inputs & Controls */
+  --input: rgb(36, 40, 59);
+  --input-hover: rgb(46, 49, 73);
+  --input-focus: rgb(56, 62, 90);
+  --ring: rgb(187, 154, 247);
+  
+  /* Misc */
+  --accent: rgb(187, 154, 247);
+  --accent-foreground: rgb(26, 27, 38);
+  --accent-muted: rgba(187, 154, 247, 0.2);
+  
+  /* Color scheme pour les éléments natifs */
+  color-scheme: dark;
+}
+
+.catppuccin-mocha {
+  /* Couleurs de base */
+  --background: rgb(30, 30, 46);        /* #1e1e2e */
+  --background-secondary: rgb(36, 39, 58);  /* #24273a */
+  --background-tertiary: rgb(49, 50, 68);   /* #313244 */
+  
+  --foreground: rgb(205, 214, 244);         /* #cdd6f4 */
+  --foreground-secondary: rgb(186, 194, 222); /* #bac2de */
+  --foreground-tertiary: rgb(166, 173, 200);  /* #a6adc8 */
+  --foreground-muted: rgb(127, 132, 156);     /* #7f849c */
+  
+  /* Bordures */
+  --border: rgb(69, 71, 90);             /* #45475a */
+  --border-secondary: rgb(88, 91, 112);  /* #585b70 */
+  
+  /* Couleurs primaires - violet/mauve */
+  --primary: rgb(203, 166, 247);         /* #cba6f7 */
+  --primary-foreground: rgb(30, 30, 46); /* #1e1e2e */
+  --primary-hover: rgb(180, 190, 254);   /* #b4befe */
+  --primary-active: rgb(137, 180, 250);  /* #89b4fa */
+  --primary-muted: rgba(203, 166, 247, 0.2);
+  --primary-focus: rgba(203, 166, 247, 0.3);
+  
+  /* États sémantiques */
+  --success: rgb(166, 227, 161);         /* #a6e3a1 */
+  --success-foreground: rgb(30, 30, 46); /* #1e1e2e */
+  --success-muted: rgba(166, 227, 161, 0.2);
+  
+  --warning: rgb(249, 226, 175);         /* #f9e2af */
+  --warning-foreground: rgb(30, 30, 46); /* #1e1e2e */
+  --warning-muted: rgba(249, 226, 175, 0.2);
+  
+  --error: rgb(243, 139, 168);           /* #f38ba8 */
+  --error-foreground: rgb(30, 30, 46);   /* #1e1e2e */
+  --error-muted: rgba(243, 139, 168, 0.2);
+  
+  /* Inputs & Controls */
+  --input: rgb(49, 50, 68);              /* #313244 */
+  --input-hover: rgb(69, 71, 90);        /* #45475a */
+  --input-focus: rgb(88, 91, 112);       /* #585b70 */
+  --ring: rgb(203, 166, 247);            /* #cba6f7 */
+  
+  /* Misc */
+  --accent: rgb(137, 220, 235);          /* #89dceb */
+  --accent-foreground: rgb(30, 30, 46);  /* #1e1e2e */
+  --accent-muted: rgba(137, 220, 235, 0.2);
+  
+  /* Color scheme pour les éléments natifs */
+  color-scheme: dark;
+}
+
+.night-owl {
+  /* Couleurs de base */
+  --background: rgb(1, 22, 39);          /* #011627 */
+  --background-secondary: rgb(7, 30, 47); /* #071e2f */
+  --background-tertiary: rgb(11, 37, 58); /* #0b253a */
+  
+  --foreground: rgb(214, 222, 235);      /* #d6deeb */
+  --foreground-secondary: rgb(182, 199, 222); /* #b6c7de */
+  --foreground-tertiary: rgb(95, 126, 151); /* #5f7e97 */
+  --foreground-muted: rgb(95, 126, 151); /* #5f7e97 */
+  
+  /* Bordures */
+  --border: rgb(18, 45, 66);             /* #122d42 */
+  --border-secondary: rgb(95, 126, 151); /* #5f7e97 */
+  
+  /* Couleurs primaires - bleu indigo */
+  --primary: rgb(130, 170, 255);         /* #82aaff */
+  --primary-foreground: rgb(1, 22, 39);  /* #011627 */
+  --primary-hover: rgb(155, 185, 255);   /* #9bb9ff */
+  --primary-active: rgb(67, 115, 194);   /* #4373c2 */
+  --primary-muted: rgba(130, 170, 255, 0.2);
+  --primary-focus: rgba(130, 170, 255, 0.3);
+  
+  /* États sémantiques */
+  --success: rgb(34, 218, 110);          /* #22da6e */
+  --success-foreground: rgb(1, 22, 39);  /* #011627 */
+  --success-muted: rgba(34, 218, 110, 0.2);
+  
+  --warning: rgb(239, 219, 114);         /* #efdb72 */
+  --warning-foreground: rgb(1, 22, 39);  /* #011627 */
+  --warning-muted: rgba(239, 219, 114, 0.2);
+  
+  --error: rgb(239, 83, 80);             /* #ef5350 */
+  --error-foreground: rgb(1, 22, 39);    /* #011627 */
+  --error-muted: rgba(239, 83, 80, 0.2);
+  
+  /* Inputs & Controls */
+  --input: rgb(11, 37, 58);              /* #0b253a */
+  --input-hover: rgb(18, 45, 66);        /* #122d42 */
+  --input-focus: rgb(28, 55, 77);        /* #1c374d */
+  --ring: rgb(126, 87, 194);             /* #7e57c2 */
+  
+  /* Misc */
+  --accent: rgb(199, 146, 234);          /* #c792ea */
+  --accent-foreground: rgb(1, 22, 39);   /* #011627 */
+  --accent-muted: rgba(199, 146, 234, 0.2);
+  
+  /* Color scheme pour les éléments natifs */
+  color-scheme: dark;
+}
+
+/* Thème GitHub Light */
+.github-light {
+  /* Couleurs de base */
+  --background: rgb(255, 255, 255);        /* #ffffff */
+  --background-secondary: rgb(246, 248, 250); /* #f6f8fa */
+  --background-tertiary: rgb(239, 241, 243);  /* #eff1f3 */
+  
+  --foreground: rgb(36, 41, 47);            /* #24292f */
+  --foreground-secondary: rgb(87, 96, 106);  /* #57606a */
+  --foreground-tertiary: rgb(101, 109, 118); /* #656d76 */
+  --foreground-muted: rgb(140, 149, 159);    /* #8c959f */
+  
+  /* Bordures */
+  --border: rgb(208, 215, 222);              /* #d0d7de */
+  --border-secondary: rgb(225, 228, 232);    /* #e1e4e8 */
+  
+  /* Couleurs primaires - bleu GitHub */
+  --primary: rgb(31, 111, 235);              /* #1f6feb */
+  --primary-foreground: rgb(255, 255, 255);  /* #ffffff */
+  --primary-hover: rgb(56, 139, 253);        /* #388bfd */
+  --primary-active: rgb(0, 92, 197);         /* #005cc5 */
+  --primary-muted: rgba(31, 111, 235, 0.1);
+  --primary-focus: rgba(31, 111, 235, 0.15);
+  
+  /* États sémantiques */
+  --success: rgb(40, 167, 69);               /* #28a745 */
+  --success-foreground: rgb(255, 255, 255);  /* #ffffff */
+  --success-muted: rgba(40, 167, 69, 0.1);
+  
+  --warning: rgb(249, 197, 19);              /* #f9c513 */
+  --warning-foreground: rgb(36, 41, 47);     /* #24292f */
+  --warning-muted: rgba(249, 197, 19, 0.1);
+  
+  --error: rgb(215, 58, 73);                 /* #d73a49 */
+  --error-foreground: rgb(255, 255, 255);    /* #ffffff */
+  --error-muted: rgba(215, 58, 73, 0.1);
+  
+  /* Inputs & Controls */
+  --input: rgb(246, 248, 250);               /* #f6f8fa */
+  --input-hover: rgb(255, 255, 255);         /* #ffffff */
+  --input-focus: rgb(255, 255, 255);         /* #ffffff */
+  --ring: rgb(31, 111, 235);                 /* #1f6feb */
+  
+  /* Misc */
+  --accent: rgb(130, 80, 223);               /* #8250df - pourpre GitHub */
+  --accent-foreground: rgb(255, 255, 255);   /* #ffffff */
+  --accent-muted: rgba(130, 80, 223, 0.1);
+  
+  /* Color scheme pour les éléments natifs */
+  color-scheme: light;
+}
+
+/* Thème GitHub Dark */
+.github-dark {
+  /* Couleurs de base */
+  --background: rgb(13, 17, 23);             /* #0d1117 */
+  --background-secondary: rgb(22, 27, 34);   /* #161b22 */
+  --background-tertiary: rgb(33, 38, 45);    /* #21262d */
+  
+  --foreground: rgb(230, 237, 243);          /* #e6edf3 */
+  --foreground-secondary: rgb(201, 209, 217); /* #c9d1d9 */
+  --foreground-tertiary: rgb(139, 148, 158);  /* #8b949e */
+  --foreground-muted: rgb(110, 118, 129);     /* #6e7681 */
+  
+  /* Bordures */
+  --border: rgb(48, 54, 61);                  /* #30363d */
+  --border-secondary: rgb(33, 38, 45);        /* #21262d */
+  
+  /* Couleurs primaires - bleu GitHub */
+  --primary: rgb(88, 166, 255);               /* #58a6ff */
+  --primary-foreground: rgb(13, 17, 23);      /* #0d1117 */
+  --primary-hover: rgb(121, 184, 255);        /* #79b8ff */
+  --primary-active: rgb(56, 139, 253);        /* #388bfd */
+  --primary-muted: rgba(88, 166, 255, 0.15);
+  --primary-focus: rgba(88, 166, 255, 0.3);
+  
+  /* États sémantiques */
+  --success: rgb(63, 185, 80);                /* #3fb950 */
+  --success-foreground: rgb(13, 17, 23);      /* #0d1117 */
+  --success-muted: rgba(63, 185, 80, 0.15);
+  
+  --warning: rgb(210, 153, 34);               /* #d29922 */
+  --warning-foreground: rgb(13, 17, 23);      /* #0d1117 */
+  --warning-muted: rgba(210, 153, 34, 0.15);
+  
+  --error: rgb(248, 81, 73);                  /* #f85149 */
+  --error-foreground: rgb(13, 17, 23);        /* #0d1117 */
+  --error-muted: rgba(248, 81, 73, 0.15);
+  
+  /* Inputs & Controls */
+  --input: rgb(13, 17, 23);                   /* #0d1117 */
+  --input-hover: rgb(22, 27, 34);             /* #161b22 */
+  --input-focus: rgb(22, 27, 34);             /* #161b22 */
+  --ring: rgb(88, 166, 255);                  /* #58a6ff */
+  
+  /* Misc */
+  --accent: rgb(187, 128, 255);               /* #bb80ff - pourpre GitHub */
+  --accent-foreground: rgb(13, 17, 23);       /* #0d1117 */
+  --accent-muted: rgba(187, 128, 255, 0.15);
+  
+  /* Color scheme pour les éléments natifs */
+  color-scheme: dark;
+}
+
+/* Thème Matcha */
+.matcha {
+  /* Couleurs de base */
+  --background: rgb(241, 235, 225);      /* #f1ebe1 - Fond crème léger */
+  --background-secondary: rgb(205, 208, 192); /* #cdd0c0 - Crème verdâtre */
+  --background-tertiary: rgb(192, 207, 178); /* #c0cfb2 - Vert pâle */
+  
+  --foreground: rgb(68, 98, 74);         /* #44624a - Vert matcha profond */
+  --foreground-secondary: rgb(73, 89, 42); /* #49592a - Vert olive foncé */
+  --foreground-tertiary: rgb(110, 134, 65); /* #6e8641 - Vert olive moyen */
+  --foreground-muted: rgb(139, 168, 136);  /* #8ba888 - Vert sauge clair */
+  
+  /* Bordures */
+  --border: rgb(139, 168, 136);          /* #8ba888 - Vert sauge clair */
+  --border-secondary: rgb(134, 148, 94);  /* #86945e - Vert olive */
+  
+  /* Couleurs primaires - vert matcha */
+  --primary: rgb(116, 161, 46);          /* #74a12e - Vert matcha vif */
+  --primary-foreground: rgb(255, 255, 255); /* #ffffff - Blanc */
+  --primary-hover: rgb(87, 107, 51);     /* #576b33 - Vert matcha plus foncé */
+  --primary-active: rgb(73, 89, 42);     /* #49592a - Vert olive foncé */
+  --primary-muted: rgba(116, 161, 46, 0.2);
+  --primary-focus: rgba(116, 161, 46, 0.3);
+  
+  /* États sémantiques */
+  --success: rgb(105, 191, 100);         /* #69bf64 - Vert clair */
+  --success-foreground: rgb(255, 255, 255); /* #ffffff - Blanc */
+  --success-muted: rgba(105, 191, 100, 0.2);
+  
+  --warning: rgb(217, 155, 119);         /* #d99b77 - Brun orangé */
+  --warning-foreground: rgb(255, 255, 255); /* #ffffff - Blanc */
+  --warning-muted: rgba(217, 155, 119, 0.2);
+  
+  --error: rgb(191, 105, 100);           /* #bf6964 - Rouge terracotta */
+  --error-foreground: rgb(255, 255, 255); /* #ffffff - Blanc */
+  --error-muted: rgba(191, 105, 100, 0.2);
+  
+  /* Inputs & Controls */
+  --input: rgb(205, 208, 192);           /* #cdd0c0 - Crème verdâtre */
+  --input-hover: rgb(192, 207, 178);     /* #c0cfb2 - Vert pâle */
+  --input-focus: rgb(205, 218, 183);     /* #cdda9a - Vert pâle légèrement plus vif */
+  --ring: rgb(116, 161, 46);             /* #74a12e - Vert matcha vif */
+  
+  /* Misc */
+  --accent: rgb(191, 187, 126);          /* #bfbb7e - Beige verdâtre */
+  --accent-foreground: rgb(73, 89, 42);  /* #49592a - Vert olive foncé */
+  --accent-muted: rgba(191, 187, 126, 0.2);
+  
+  /* Color scheme pour les éléments natifs */
+  color-scheme: light;
+}
+
+/* Thème Houston */
+.houston {
+  /* Couleurs de base */
+  --background: rgb(23, 25, 30);         /* #17191e - fond spatial profond */
+  --background-secondary: rgb(43, 45, 51); /* #2b2d33 */
+  --background-tertiary: rgb(53, 55, 61);  /* #35373d */
+  
+  --foreground: rgb(238, 240, 249);      /* #eef0f9 */
+  --foreground-secondary: rgb(204, 204, 204); /* #cccccc */
+  --foreground-tertiary: rgb(172, 175, 255); /* #acafff */
+  --foreground-muted: rgb(145, 148, 158);    /* #91949e */
+  
+  /* Bordures */
+  --border: rgb(43, 45, 51);             /* #2b2d33 */
+  --border-secondary: rgb(53, 55, 61);   /* #35373d */
+  
+  /* Couleurs primaires - bleu spatial */
+  --primary: rgb(84, 185, 255);          /* #54b9ff */
+  --primary-foreground: rgb(23, 25, 30); /* #17191e */
+  --primary-hover: rgb(121, 212, 255);   /* #79d4ff */
+  --primary-active: rgb(0, 149, 255);    /* #0095ff */
+  --primary-muted: rgba(84, 185, 255, 0.2);
+  --primary-focus: rgba(84, 185, 255, 0.3);
+  
+  /* États sémantiques */
+  --success: rgb(75, 243, 200);          /* #4bf3c8 - vert menthe */
+  --success-foreground: rgb(23, 25, 30); /* #17191e */
+  --success-muted: rgba(75, 243, 200, 0.2);
+  
+  --warning: rgb(255, 212, 147);         /* #ffd493 */
+  --warning-foreground: rgb(23, 25, 30); /* #17191e */
+  --warning-muted: rgba(255, 212, 147, 0.2);
+  
+  --error: rgb(220, 54, 87);             /* #dc3657 */
+  --error-foreground: rgb(238, 240, 249); /* #eef0f9 */
+  --error-muted: rgba(220, 54, 87, 0.2);
+  
+  /* Inputs & Controls */
+  --input: rgb(36, 38, 46);              /* #24262e */
+  --input-hover: rgb(48, 50, 58);        /* #30323a */
+  --input-focus: rgb(53, 55, 61);        /* #35373d */
+  --ring: rgb(172, 175, 255);            /* #acafff */
+  
+  /* Misc */
+  --accent: rgb(172, 175, 255);          /* #acafff - violet doux */
+  --accent-foreground: rgb(23, 25, 30);  /* #17191e */
+  --accent-muted: rgba(172, 175, 255, 0.2);
+  
+  /* Color scheme pour les éléments natifs */
+  color-scheme: dark;
+}
+
+/* Thème Ayu Mirage */
+.ayu-mirage {
+  /* Couleurs de base */
+  --background: rgb(31, 33, 46);         /* #1F212E */
+  --background-secondary: rgb(38, 40, 55); /* #262837 */
+  --background-tertiary: rgb(43, 47, 66);  /* #2B2F42 */
+  
+  --foreground: rgb(207, 225, 249);       /* #CFE1F9 */
+  --foreground-secondary: rgb(171, 187, 207); /* #ABBBCF */
+  --foreground-tertiary: rgb(138, 153, 168);  /* #8A99A8 */
+  --foreground-muted: rgb(111, 126, 146);    /* #6F7E92 */
+  
+  /* Bordures */
+  --border: rgb(43, 47, 66);             /* #2B2F42 */
+  --border-secondary: rgb(65, 69, 89);   /* #414559 */
+  
+  /* Couleurs primaires - bleu/cyan */
+  --primary: rgb(92, 207, 230);          /* #5CCFE6 */
+  --primary-foreground: rgb(31, 33, 46); /* #1F212E */
+  --primary-hover: rgb(120, 220, 232);   /* #78DCE8 */
+  --primary-active: rgb(73, 185, 208);   /* #49B9D0 */
+  --primary-muted: rgba(92, 207, 230, 0.2);
+  --primary-focus: rgba(92, 207, 230, 0.3);
+  
+  /* États sémantiques */
+  --success: rgb(186, 230, 126);         /* #BAE67E */
+  --success-foreground: rgb(31, 33, 46); /* #1F212E */
+  --success-muted: rgba(186, 230, 126, 0.2);
+  
+  --warning: rgb(255, 213, 128);         /* #FFD580 */
+  --warning-foreground: rgb(31, 33, 46); /* #1F212E */
+  --warning-muted: rgba(255, 213, 128, 0.2);
+  
+  --error: rgb(255, 84, 84);             /* #FF5454 */
+  --error-foreground: rgb(31, 33, 46);   /* #1F212E */
+  --error-muted: rgba(255, 84, 84, 0.2);
+  
+  /* Inputs & Controls */
+  --input: rgb(38, 40, 55);              /* #262837 */
+  --input-hover: rgb(43, 47, 66);        /* #2B2F42 */
+  --input-focus: rgb(51, 55, 75);        /* #33374B */
+  --ring: rgb(255, 167, 89);             /* #FFA759 */
+  
+  /* Misc */
+  --accent: rgb(255, 167, 89);           /* #FFA759 */
+  --accent-foreground: rgb(31, 33, 46);  /* #1F212E */
+  --accent-muted: rgba(255, 167, 89, 0.2);
+  
+  /* Color scheme pour les éléments natifs */
+  color-scheme: dark;
+}
+
+/* Utility classes for utiliser dans le layout (dark:class et light:class ne fonctionnent pas avec les balises html ou body) */
+.theme-dark {
+  color-scheme: dark;
+}
+
+.theme-light {
+  color-scheme: light;
+}
+
+.theme-dracula {
+  color-scheme: dark;
+}
+
+/* Classes d'application des variables */
+.bg-primary {
+  background-color: var(--primary);
+}
+
+.bg-primary-muted {
+  background-color: var(--primary-muted);
+}
+
+.bg-success {
+  background-color: var(--success);
+}
+
+.bg-success-muted {
+  background-color: var(--success-muted);
+}
+
+.bg-warning {
+  background-color: var(--warning);
+}
+
+.bg-warning-muted {
+  background-color: var(--warning-muted);
+}
+
+.bg-error {
+  background-color: var(--error);
+}
+
+.bg-error-muted {
+  background-color: var(--error-muted);
+}
+
+.bg-accent {
+  background-color: var(--accent);
+}
+
+.bg-accent-muted {
+  background-color: var(--accent-muted);
+}
+
+.bg-background {
+  background-color: var(--background);
+}
+
+.bg-background-secondary {
+  background-color: var(--background-secondary);
+}
+
+.bg-background-tertiary {
+  background-color: var(--background-tertiary);
+}
+
+.text-foreground {
+  color: var(--foreground);
+}
+
+.text-foreground-secondary {
+  color: var(--foreground-secondary);
+}
+
+.text-foreground-tertiary {
+  color: var(--foreground-tertiary);
+}
+
+.text-foreground-muted {
+  color: var(--foreground-muted);
+}
+
+.text-primary {
+  color: var(--primary);
+}
+
+.text-success {
+  color: var(--success);
+}
+
+.text-warning {
+  color: var(--warning);
+}
+
+.text-error {
+  color: var(--error);
+}
+
+.text-accent {
+  color: var(--accent);
+}
+
+.border-base {
+  border-color: var(--border);
+}
+
+.border-secondary {
+  border-color: var(--border-secondary);
+}
+
+.border-primary {
+  border-color: var(--primary);
+}
+
+.border-accent {
+  border-color: var(--accent);
+}
+
+.ring-primary {
+  --tw-ring-color: var(--ring);
+}
+
+/* Animations et transitions */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(10px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease-out;
+}
+
+/* Transitions pour le changement de thème */
+.theme-transition {
+  transition-property: color, background-color, border-color, outline-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
 }

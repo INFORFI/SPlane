@@ -129,7 +129,7 @@ export default function PatchnoteDetail({ patchnote }: PatchnoteDetailProps) {
         
         <button
           onClick={copyLinkToClipboard}
-          className="flex items-center gap-2 text-sm text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)] transition-colors bg-[var(--background-tertiary)] hover:bg-[var(--border-secondary)] px-3 py-1.5 rounded-md"
+          className="flex items-center gap-2 text-sm text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)] transition-colors bg-[var(--background-tertiary)] hover:bg-[var(--border-secondary)] px-3 py-1.5 rounded-md cursor-pointer"
         >
           {copiedLink ? (
             <>

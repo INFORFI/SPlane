@@ -25,6 +25,7 @@ import { containerVariants, itemVariants } from '@/utils/ItemVariants';
 import type { UserLoggedIn } from '@/action/users/getUserLoggedIn';
 import ProfileTab from '@/components/settings/ProfileTab';
 import NotificationsTab from '@/components/settings/NotificationsTab';
+import ThemeSelector from '@/components/settings/ThemeSelector';
 
 // Mock function for demonstration - replace with actual server action
 const updateUserSettings = async () => {
@@ -493,149 +494,7 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
             )}
             
             {/* Appearance Tab */}
-            {activeTab === 'appearance' && (
-              <div>
-                <h2 className="text-xl font-semibold text-[var(--foreground)] mb-6">Appearance Settings</h2>
-                
-                {success && (
-                  <div className="mb-6 p-3 bg-[var(--success-muted)] border border-[var(--success)] rounded-lg flex items-center gap-3 text-[var(--success)]">
-                    <CheckCircle2 className="h-5 w-5 flex-shrink-0" />
-                    <span className="text-sm">Paramètres d'apparence mis à jour avec succès !</span>
-                  </div>
-                )}
-                
-                <div className="space-y-6">
-                  {/* Theme Selection */}
-                  <div>
-                    <h3 className="text-lg font-medium text-[var(--foreground)] mb-4">Theme</h3>
-                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                      <button
-                        type="button"
-                        onClick={() => handleThemeChange('light')}
-                        className={`p-4 rounded-lg border ${
-                          appearanceSettings.theme === 'light'
-                            ? 'border-[var(--primary)] bg-[var(--primary-muted)] hover:border-[var(--primary-hover)]'
-                            : 'border-[var(--border-secondary)] bg-[var(--background-tertiary)] hover:border-[var(--border)]'
-                        } flex flex-col items-center gap-3 transition-colors`}
-                      >
-                        <div className="h-12 w-12 rounded-full bg-white flex items-center justify-center">
-                          <Sun className="h-6 w-6 text-[var(--primary)]" />
-                        </div>
-                        <span className={appearanceSettings.theme === 'light' ? 'text-[var(--primary)] font-medium' : 'text-[var(--foreground-tertiary)]'}>
-                          Light
-                        </span>
-                      </button>
-                      
-                      <button
-                        type="button"
-                        onClick={() => handleThemeChange('dark')}
-                        className={`p-4 rounded-lg border ${
-                          appearanceSettings.theme === 'dark'
-                            ? 'border-[var(--primary)] bg-[var(--primary-muted)] hover:border-[var(--primary-hover)]'
-                            : 'border-[var(--border-secondary)] bg-[var(--background-tertiary)] hover:border-[var(--border)]'
-                        } flex flex-col items-center gap-3 transition-colors`}
-                      >
-                        <div className="h-12 w-12 rounded-full bg-[var(--background-tertiary)] flex items-center justify-center border border-[var(--border-secondary)]">
-                          <Moon className="h-6 w-6 text-[var(--primary)]" />
-                        </div>
-                        <span className={appearanceSettings.theme === 'dark' ? 'text-[var(--primary)] font-medium' : 'text-[var(--foreground-tertiary)]'}>
-                          Dark
-                        </span>
-                      </button>
-                      
-                      <button
-                        type="button"
-                        onClick={() => handleThemeChange('system')}
-                        className={`p-4 rounded-lg border ${
-                          appearanceSettings.theme === 'system'
-                            ? 'border-[var(--primary)] bg-[var(--primary-muted)] hover:border-[var(--primary-hover)]'
-                            : 'border-[var(--border-secondary)] bg-[var(--background-tertiary)] hover:border-[var(--border)]'
-                        } flex flex-col items-center gap-3 transition-colors`}
-                      >
-                        <div className="h-12 w-12 rounded-full bg-gradient-to-r from-white to-[var(--background-tertiary)] flex items-center justify-center">
-                          <div className="h-5 w-5 bg-[var(--background-tertiary)] rounded-full border-2 border-white"></div>
-                        </div>
-                        <span className={appearanceSettings.theme === 'system' ? 'text-[var(--primary)] font-medium' : 'text-[var(--foreground-tertiary)]'}>
-                          System
-                        </span>
-                      </button>
-                    </div>
-                  </div>
-                  
-                  {/* Display Options */}
-                  <div>
-                    <h3 className="text-lg font-medium text-[var(--foreground)] mb-4">Display Options</h3>
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between p-3 bg-[var(--background-tertiary)] rounded-lg border border-[var(--border-secondary)]">
-                        <div className="flex items-center gap-3">
-                          <div className="flex-shrink-0 h-8 w-8 bg-[var(--background-tertiary)] rounded-lg flex items-center justify-center">
-                            <ChevronRight className="h-5 w-5 text-[var(--foreground-tertiary)]" />
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-medium text-[var(--foreground)]">Compact Mode</h4>
-                            <p className="text-xs text-[var(--foreground-tertiary)]">Reduce padding and spacing throughout the interface</p>
-                          </div>
-                        </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input 
-                            type="checkbox" 
-                            className="sr-only peer"
-                            checked={appearanceSettings.compactMode}
-                            onChange={() => handleToggle('appearance', 'compactMode')}
-                          />
-                          <div className="w-11 h-6 bg-[var(--background-tertiary)] rounded-full peer peer-checked:bg-[var(--primary)] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
-                        </label>
-                      </div>
-                      
-                      <div className="flex items-center justify-between p-3 bg-[var(--background-tertiary)] rounded-lg border border-[var(--border-secondary)]">
-                        <div className="flex items-center gap-3">
-                          <div className="flex-shrink-0 h-8 w-8 bg-[var(--background-tertiary)] rounded-lg flex items-center justify-center">
-                            <ChevronRight className="h-5 w-5 text-[var(--foreground-tertiary)]" />
-                          </div>
-                          <div>
-                            <h4 className="text-sm font-medium text-[var(--foreground)]">High Contrast Mode</h4>
-                            <p className="text-xs text-[var(--foreground-tertiary)]">Increase contrast for better visibility</p>
-                          </div>
-                        </div>
-                        <label className="relative inline-flex items-center cursor-pointer">
-                          <input 
-                            type="checkbox" 
-                            className="sr-only peer"
-                            checked={appearanceSettings.highContrastMode}
-                            onChange={() => handleToggle('appearance', 'highContrastMode')}
-                          />
-                          <div className="w-11 h-6 bg-[var(--background-tertiary)] rounded-full peer peer-checked:bg-[var(--primary)] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all"></div>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="pt-4">
-                    <button
-                      type="button"
-                      onClick={handleAppearanceUpdate}
-                      disabled={isSubmitting}
-                      className="flex items-center justify-center gap-2 w-full sm:w-auto px-6 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-[var(--primary-foreground)] rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-                    >
-                      {isSubmitting ? (
-                        <>
-                          <svg className="animate-spin h-5 w-5 text-[var(--primary-foreground)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          <span>Saving...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Save className="h-5 w-5" />
-                          <span>Save Appearance Settings</span>
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
+            {activeTab === 'appearance' && <ThemeSelector />}
             
             {/* Notifications Tab */}
             {activeTab === 'notifications' && <NotificationsTab settings={user.settings} />}
