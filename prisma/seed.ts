@@ -9,6 +9,7 @@ async function main() {
     await prisma.userTask.deleteMany();
     await prisma.task.deleteMany();
     await prisma.project.deleteMany();
+    await prisma.userSettings.deleteMany();
     await prisma.user.deleteMany();
   }
 
@@ -38,6 +39,12 @@ async function main() {
     },
   });
 
+  await prisma.userSettings.create({
+    data: {
+      userId: admin.id,
+    },
+  });
+
   if (process.env.NODE_ENV === 'production') {
     console.log('🔑 Production environment detected. Skipping user creation.');
     console.log('👑 Admin user created:', admin.email);
@@ -52,11 +59,23 @@ async function main() {
     },
   });
 
+  await prisma.userSettings.create({
+    data: {
+      userId: user1.id,
+    },
+  });
+
   const user2 = await prisma.user.create({
     data: {
       email: 'jane@splane.com',
       passwordHash: userPassword,
       fullName: 'Jane Smith',
+    },
+  });
+
+  await prisma.userSettings.create({
+    data: {
+      userId: user2.id,
     },
   });
 
