@@ -68,6 +68,11 @@
         "name": "testing",
         "description": "Ajout de tests pour les actions server ainsi que d'un workflow de tests pour la validation des pull requests",
         "pr_number": "76"
+      },
+      {
+        "name": "eslint",
+        "description": "Ajout d'un workflow pour la validation du code avec ESLint et Prettier",
+        "pr_number": "78"
       }
     ],
     "other-changes": [
