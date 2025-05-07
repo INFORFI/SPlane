@@ -75,6 +75,11 @@
         "name": "patchnotes",
         "description": "Ajout de la documentation de la feature des `patchnotes`",
         "pr_number": "50"
+      },
+      {
+        "name": "eslint",
+        "description": "👷 Add eslint and prettier workflow",
+        "pr_number": "78"
       }
     ]
   }
