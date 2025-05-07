@@ -9,13 +9,13 @@ jest.mock('@/lib/auth', () => ({
 
 jest.mock('@/lib/prisma', () => {
   const mockUpdate = jest.fn();
-  
+
   return {
     prisma: {
       user: {
-        update: mockUpdate
-      }
-    }
+        update: mockUpdate,
+      },
+    },
   };
 });
 
@@ -32,7 +32,7 @@ describe('updateUser', () => {
 
     expect(result).toEqual({
       success: false,
-      error: 'User not found'
+      error: 'User not found',
     });
     expect(requireAuth).toHaveBeenCalled();
     expect(prisma.user.update).not.toHaveBeenCalled();
@@ -41,7 +41,7 @@ describe('updateUser', () => {
   it('should update user successfully', async () => {
     // Mock authentication to return a user ID
     (requireAuth as jest.Mock).mockResolvedValue(1);
-    
+
     // Mock user update
     const mockUpdatedUser = {
       id: 1,
@@ -54,7 +54,7 @@ describe('updateUser', () => {
 
     expect(result).toEqual({
       success: true,
-      user: mockUpdatedUser
+      user: mockUpdatedUser,
     });
     expect(requireAuth).toHaveBeenCalled();
     expect(prisma.user.update).toHaveBeenCalledWith({
@@ -66,7 +66,7 @@ describe('updateUser', () => {
   it('should handle database errors', async () => {
     // Mock authentication to return a user ID
     (requireAuth as jest.Mock).mockResolvedValue(1);
-    
+
     // Mock database error
     const testError = new Error('Database error');
     (prisma.user.update as jest.Mock).mockRejectedValue(testError);
@@ -85,7 +85,7 @@ describe('updateUser', () => {
   it('should update only provided fields', async () => {
     // Mock authentication to return a user ID
     (requireAuth as jest.Mock).mockResolvedValue(1);
-    
+
     // Mock user update
     const mockUpdatedUser = {
       id: 1,
@@ -107,7 +107,7 @@ describe('updateUser', () => {
   it('should handle empty values', async () => {
     // Mock authentication to return a user ID
     (requireAuth as jest.Mock).mockResolvedValue(1);
-    
+
     // Mock user update with empty values
     const mockUpdatedUser = {
       id: 1,
@@ -125,4 +125,4 @@ describe('updateUser', () => {
       data: { fullName: '', email: '' },
     });
   });
-}); 
+});

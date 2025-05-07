@@ -105,11 +105,11 @@ export default function Sidebar({ tasksCount }: SidebarProps) {
                 {!isCollapsed && (
                   <motion.span
                     initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      exit={{ opacity: 0, x: -10 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      New Project
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -10 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    New Project
                   </motion.span>
                 )}
               </AnimatePresence>

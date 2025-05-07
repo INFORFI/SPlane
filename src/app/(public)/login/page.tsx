@@ -83,7 +83,10 @@ export default function LoginPage() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-1">
-              <label htmlFor="email" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 Email
               </label>
               <div className="relative">
@@ -106,7 +109,10 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-1">
-              <label htmlFor="password" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 Mot de passe
               </label>
               <div className="relative">
@@ -143,7 +149,10 @@ export default function LoginPage() {
                   type="checkbox"
                   className="h-4 w-4 bg-[var(--input)] border-[var(--border-secondary)] rounded text-[var(--primary)] focus:ring-[var(--ring)]"
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-[var(--foreground-tertiary)]">
+                <label
+                  htmlFor="remember-me"
+                  className="ml-2 block text-sm text-[var(--foreground-tertiary)]"
+                >
                   Se souvenir de moi
                 </label>
               </div>

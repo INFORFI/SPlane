@@ -2,7 +2,16 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { X, User as UserIcon, Mail, Shield, Save, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
+import {
+  X,
+  User as UserIcon,
+  Mail,
+  Shield,
+  Save,
+  Loader2,
+  CheckCircle2,
+  AlertCircle,
+} from 'lucide-react';
 import { User, Role } from '@prisma/client';
 import { toast } from 'react-toastify';
 import { createUser, updateUser } from '@/action/users/manageUsers';
@@ -15,7 +24,7 @@ interface AddUserModalProps {
 
 export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProps) {
   const isEditing = !!user;
-  
+
   // Form state
   const [formData, setFormData] = useState({
     id: user?.id || 0,
@@ -25,7 +34,7 @@ export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProp
     password: '',
     confirmPassword: '',
   });
-  
+
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -48,12 +57,10 @@ export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProp
   }, [isOpen, user]);
 
   // Handle input changes
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
-    
+
     // Clear error for this field if any
     if (errors[name]) {
       setErrors(prev => {
@@ -67,51 +74,51 @@ export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProp
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Validate form
     const newErrors: Record<string, string> = {};
-    
+
     if (!formData.email) {
       newErrors.email = "L'email est requis";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = "L'email n'est pas valide";
     }
-    
+
     if (!formData.fullName) {
-      newErrors.fullName = "Le nom complet est requis";
+      newErrors.fullName = 'Le nom complet est requis';
     }
-    
+
     if (!isEditing) {
       // Only validate password for new users
       if (!formData.password) {
-        newErrors.password = "Le mot de passe est requis";
+        newErrors.password = 'Le mot de passe est requis';
       } else if (formData.password.length < 8) {
-        newErrors.password = "Le mot de passe doit contenir au moins 8 caractères";
+        newErrors.password = 'Le mot de passe doit contenir au moins 8 caractères';
       }
-      
+
       if (formData.password !== formData.confirmPassword) {
-        newErrors.confirmPassword = "Les mots de passe ne correspondent pas";
+        newErrors.confirmPassword = 'Les mots de passe ne correspondent pas';
       }
     } else if (formData.password) {
       // If editing and password is provided, validate it
       if (formData.password.length < 8) {
-        newErrors.password = "Le mot de passe doit contenir au moins 8 caractères";
+        newErrors.password = 'Le mot de passe doit contenir au moins 8 caractères';
       }
-      
+
       if (formData.password !== formData.confirmPassword) {
-        newErrors.confirmPassword = "Les mots de passe ne correspondent pas";
+        newErrors.confirmPassword = 'Les mots de passe ne correspondent pas';
       }
     }
-    
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
-    
+
     // Submit form
     try {
       setIsSubmitting(true);
-      
+
       if (isEditing) {
         // Update existing user
         const result = await updateUser({
@@ -121,15 +128,15 @@ export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProp
           role: formData.role,
           password: formData.password || undefined, // Only send password if provided
         });
-        
+
         if (result.success) {
           setSuccess(true);
-          toast.success("Utilisateur mis à jour avec succès");
+          toast.success('Utilisateur mis à jour avec succès');
           setTimeout(() => {
             onClose();
           }, 1500);
         } else {
-          toast.error(result.error || "Une erreur est survenue");
+          toast.error(result.error || 'Une erreur est survenue');
           if (result.fieldErrors) {
             setErrors(result.fieldErrors);
           }
@@ -142,15 +149,15 @@ export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProp
           role: formData.role,
           password: formData.password,
         });
-        
+
         if (result.success) {
           setSuccess(true);
-          toast.success("Utilisateur créé avec succès");
+          toast.success('Utilisateur créé avec succès');
           setTimeout(() => {
             onClose();
           }, 1500);
         } else {
-          toast.error(result.error || "Une erreur est survenue");
+          toast.error(result.error || 'Une erreur est survenue');
           if (result.fieldErrors) {
             setErrors(result.fieldErrors);
           }
@@ -158,7 +165,7 @@ export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProp
       }
     } catch (error) {
       console.error(error);
-      toast.error("Une erreur est survenue");
+      toast.error('Une erreur est survenue');
     } finally {
       setIsSubmitting(false);
     }
@@ -203,7 +210,7 @@ export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProp
             <motion.div
               initial={{ scale: 0.8 }}
               animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 200, damping: 10 }}
+              transition={{ type: 'spring', stiffness: 200, damping: 10 }}
               className="w-16 h-16 bg-[var(--success-muted)] rounded-full flex items-center justify-center mb-4"
             >
               <CheckCircle2 className="h-8 w-8 text-[var(--success)]" />
@@ -221,7 +228,10 @@ export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProp
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Full Name field */}
             <div className="space-y-1">
-              <label htmlFor="fullName" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+              <label
+                htmlFor="fullName"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 Nom complet <span className="text-[var(--error)]">*</span>
               </label>
               <div className="relative">
@@ -248,7 +258,10 @@ export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProp
 
             {/* Email field */}
             <div className="space-y-1">
-              <label htmlFor="email" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 Email <span className="text-[var(--error)]">*</span>
               </label>
               <div className="relative">
@@ -268,14 +281,15 @@ export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProp
                   disabled={isSubmitting}
                 />
               </div>
-              {errors.email && (
-                <p className="text-[var(--error)] text-xs mt-1">{errors.email}</p>
-              )}
+              {errors.email && <p className="text-[var(--error)] text-xs mt-1">{errors.email}</p>}
             </div>
 
             {/* Role field */}
             <div className="space-y-1">
-              <label htmlFor="role" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+              <label
+                htmlFor="role"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 Rôle
               </label>
               <div className="relative">
@@ -298,7 +312,10 @@ export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProp
 
             {/* Password field */}
             <div className="space-y-1">
-              <label htmlFor="password" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 {isEditing ? 'Nouveau mot de passe' : 'Mot de passe'}{' '}
                 {!isEditing && <span className="text-[var(--error)]">*</span>}
               </label>
@@ -326,7 +343,10 @@ export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProp
 
             {/* Confirm Password field */}
             <div className="space-y-1">
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 Confirmer le mot de passe
                 {!isEditing && <span className="text-[var(--error)]">*</span>}
               </label>
@@ -338,7 +358,9 @@ export default function AddUserModal({ user, isOpen, onClose }: AddUserModalProp
                 onChange={handleChange}
                 placeholder="••••••••"
                 className={`w-full px-4 py-2 bg-[var(--background-tertiary)] border ${
-                  errors.confirmPassword ? 'border-[var(--error)]' : 'border-[var(--border-secondary)]'
+                  errors.confirmPassword
+                    ? 'border-[var(--error)]'
+                    : 'border-[var(--border-secondary)]'
                 } rounded-lg text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent`}
                 disabled={isSubmitting}
               />

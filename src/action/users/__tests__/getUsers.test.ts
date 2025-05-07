@@ -4,13 +4,13 @@ import { prisma } from '@/lib/prisma';
 // Mocks
 jest.mock('@/lib/prisma', () => {
   const mockFindMany = jest.fn();
-  
+
   return {
     prisma: {
       user: {
-        findMany: mockFindMany
-      }
-    }
+        findMany: mockFindMany,
+      },
+    },
   };
 });
 
@@ -29,9 +29,9 @@ describe('getUsers', () => {
     const mockUsers = [
       { id: 1, name: 'User 1', email: 'user1@example.com' },
       { id: 2, name: 'User 2', email: 'user2@example.com' },
-      { id: 3, name: 'User 3', email: 'user3@example.com' }
+      { id: 3, name: 'User 3', email: 'user3@example.com' },
     ];
-    
+
     // Set up mock to return users
     (prisma.user.findMany as jest.Mock).mockResolvedValue(mockUsers);
 
@@ -72,4 +72,4 @@ describe('getUsers', () => {
     expect(prisma.user.findMany).toHaveBeenCalledTimes(1);
     expect(console.error).toHaveBeenCalledWith(testError);
   });
-}); 
+});

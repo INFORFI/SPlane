@@ -4,11 +4,11 @@ import { cookies } from 'next/headers';
 // Mock next/headers
 jest.mock('next/headers', () => {
   const mockDelete = jest.fn();
-  
+
   return {
     cookies: jest.fn(() => ({
-      delete: mockDelete
-    }))
+      delete: mockDelete,
+    })),
   };
 });
 
@@ -52,10 +52,7 @@ describe('logout', () => {
       success: false,
       error: 'Une erreur est survenue lors de la déconnexion',
     });
-    expect(console.error).toHaveBeenCalledWith(
-      'Erreur lors de la déconnexion:',
-      mockError
-    );
+    expect(console.error).toHaveBeenCalledWith('Erreur lors de la déconnexion:', mockError);
   });
 
   it('should handle errors from cookieStore.delete', async () => {
@@ -73,10 +70,7 @@ describe('logout', () => {
       success: false,
       error: 'Une erreur est survenue lors de la déconnexion',
     });
-    expect(console.error).toHaveBeenCalledWith(
-      'Erreur lors de la déconnexion:',
-      expect.any(Error)
-    );
+    expect(console.error).toHaveBeenCalledWith('Erreur lors de la déconnexion:', expect.any(Error));
   });
 
   it('should handle unexpected error types', async () => {
@@ -96,4 +90,4 @@ describe('logout', () => {
       'Unexpected error'
     );
   });
-}); 
+});

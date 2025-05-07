@@ -13,7 +13,7 @@ interface PatchnotePageProps {
 
 export async function generateStaticParams() {
   const patchnotes = await getAllPatchnotes();
-  return patchnotes.map((patchnote) => ({
+  return patchnotes.map(patchnote => ({
     id: patchnote.id.toString(),
   }));
 }

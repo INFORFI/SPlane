@@ -22,7 +22,7 @@ jest.mock('@/lib/prisma', () => {
       userTask: {
         deleteMany: mockUserTaskDeleteMany,
       },
-      $transaction: jest.fn(async (callback) => {
+      $transaction: jest.fn(async callback => {
         // Exécute réellement le callback avec l'objet transaction simulé
         return await callback({
           userTask: { deleteMany: mockUserTaskDeleteMany },
@@ -139,7 +139,7 @@ describe('deleteProject', () => {
     expect(prisma.project.findUnique).toHaveBeenCalledWith({
       where: { id: 123 },
     });
-    expect(prisma.$transaction).toHaveBeenCalled(); 
+    expect(prisma.$transaction).toHaveBeenCalled();
 
     // Vérifier que les chemins ont été revalidés
     expect(revalidatePath).toHaveBeenCalledWith('/dashboard/projects');

@@ -24,7 +24,7 @@ jest.mock('@/lib/auth', () => ({
 
 jest.mock('@/lib/prisma', () => {
   const mockFindUnique = jest.fn();
-  
+
   return {
     prisma: {
       user: {
@@ -79,7 +79,7 @@ describe('login', () => {
       passwordHash: 'hashedPassword',
     };
     (prisma.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
-    
+
     // Mock password comparison to fail
     (compare as jest.Mock).mockResolvedValue(false);
 
@@ -101,13 +101,13 @@ describe('login', () => {
       passwordHash: 'hashedPassword',
     };
     (prisma.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
-    
+
     // Mock password comparison to succeed
     (compare as jest.Mock).mockResolvedValue(true);
-    
+
     // Mock token creation
     (createSessionToken as jest.Mock).mockResolvedValue('mock-session-token');
-    
+
     // Mock cookie store
     const mockCookieStore = { set: jest.fn() };
     (cookies as jest.Mock).mockReturnValue(mockCookieStore);
@@ -153,7 +153,7 @@ describe('login', () => {
       passwordHash: 'hashedPassword',
     };
     (prisma.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
-    
+
     // Mock bcrypt error
     (compare as jest.Mock).mockRejectedValue(new Error('Bcrypt error'));
 
@@ -171,10 +171,10 @@ describe('login', () => {
       passwordHash: 'hashedPassword',
     };
     (prisma.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
-    
+
     // Mock password comparison to succeed
     (compare as jest.Mock).mockResolvedValue(true);
-    
+
     // Mock token creation error
     (createSessionToken as jest.Mock).mockRejectedValue(new Error('Token creation error'));
 
@@ -183,4 +183,4 @@ describe('login', () => {
     expect(result).toEqual({ error: 'Une erreur est survenue lors de la connexion' });
     expect(console.error).toHaveBeenCalled();
   });
-}); 
+});

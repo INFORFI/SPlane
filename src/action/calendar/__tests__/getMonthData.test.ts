@@ -1,18 +1,17 @@
 import { getMonthData } from '@/action/calendar/getMonthData';
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth';
-import { formatDate } from '@/utils/dateFormatter';
 
 // Mocks
 jest.mock('@/lib/prisma', () => {
   const mockFindMany = jest.fn();
-  
+
   return {
     prisma: {
       task: {
-        findMany: mockFindMany
-      }
-    }
+        findMany: mockFindMany,
+      },
+    },
   };
 });
 
@@ -22,8 +21,22 @@ jest.mock('@/lib/auth', () => ({
 
 jest.mock('@/utils/dateFormatter', () => ({
   formatDate: jest.fn().mockImplementation(date => {
-    return `${date.getDate()} ${['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 
-      'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'][date.getMonth()]} ${date.getFullYear()}`;
+    return `${date.getDate()} ${
+      [
+        'Janvier',
+        'Février',
+        'Mars',
+        'Avril',
+        'Mai',
+        'Juin',
+        'Juillet',
+        'Août',
+        'Septembre',
+        'Octobre',
+        'Novembre',
+        'Décembre',
+      ][date.getMonth()]
+    } ${date.getFullYear()}`;
   }),
 }));
 
@@ -122,14 +135,14 @@ describe('getMonthData', () => {
         ],
       },
     ];
-    
+
     (prisma.task.findMany as jest.Mock).mockResolvedValue(mockTasks);
 
     const result = await getMonthData(6, 2023, false); // July 2023
 
     expect(result.events).toHaveLength(2);
     expect(result.daysWithEvents).toEqual([10, 15]); // Events on July 10 and 15
-    
+
     // Check first event
     expect(result.events[0]).toEqual({
       id: 1,
@@ -148,7 +161,7 @@ describe('getMonthData', () => {
         },
       ],
     });
-    
+
     // Check second event
     expect(result.events[1]).toEqual({
       id: 2,
@@ -177,22 +190,24 @@ describe('getMonthData', () => {
   it('should filter tasks by user when filterByUser is true', async () => {
     // Mock authenticated user
     (requireAuth as jest.Mock).mockResolvedValue(1);
-    
+
     // Mock tasks
     (prisma.task.findMany as jest.Mock).mockImplementation(() => Promise.resolve([]));
 
     await getMonthData(6, 2023, true);
 
     // Check that the query includes the user filter
-    expect(prisma.task.findMany).toHaveBeenCalledWith(expect.objectContaining({
-      where: expect.objectContaining({
-        userTasks: {
-          some: {
-            userId: 1,
+    expect(prisma.task.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          userTasks: {
+            some: {
+              userId: 1,
+            },
           },
-        },
-      }),
-    }));
+        }),
+      })
+    );
   });
 
   it('should not filter by user when filterByUser is false', async () => {
@@ -203,13 +218,15 @@ describe('getMonthData', () => {
 
     // Check that requireAuth was not called
     expect(requireAuth).not.toHaveBeenCalled();
-    
+
     // Check that the query does not include the user filter
-    expect(prisma.task.findMany).toHaveBeenCalledWith(expect.objectContaining({
-      where: expect.not.objectContaining({
-        userTasks: expect.anything(),
-      }),
-    }));
+    expect(prisma.task.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.not.objectContaining({
+          userTasks: expect.anything(),
+        }),
+      })
+    );
   });
 
   it('should assign correct color classes based on task priority', async () => {
@@ -240,7 +257,7 @@ describe('getMonthData', () => {
         userTasks: [],
       },
     ];
-    
+
     (prisma.task.findMany as jest.Mock).mockResolvedValue(mockTasks);
 
     const result = await getMonthData(6, 2023, false);
@@ -253,7 +270,7 @@ describe('getMonthData', () => {
   it('should handle database errors gracefully', async () => {
     // Mock database error
     (prisma.task.findMany as jest.Mock).mockRejectedValue(new Error('Database error'));
-    
+
     // Spy on console.error
     jest.spyOn(console, 'error').mockImplementation(() => {});
 
@@ -264,4 +281,4 @@ describe('getMonthData', () => {
       expect(error).toBeInstanceOf(Error);
     }
   });
-}); 
+});

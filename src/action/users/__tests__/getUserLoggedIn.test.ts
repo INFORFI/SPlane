@@ -10,13 +10,13 @@ jest.mock('@/lib/auth', () => ({
 
 jest.mock('@/lib/prisma', () => {
   const mockFindUnique = jest.fn();
-  
+
   return {
     prisma: {
       user: {
-        findUnique: mockFindUnique
-      }
-    }
+        findUnique: mockFindUnique,
+      },
+    },
   };
 });
 
@@ -39,7 +39,7 @@ describe('getUserLoggedIn', () => {
   it('should return null if user is not found in database', async () => {
     // Mock authentication to return a user ID
     (requireAuth as jest.Mock).mockResolvedValue(1);
-    
+
     // Mock user not found
     (prisma.user.findUnique as jest.Mock).mockResolvedValue(null);
 
@@ -60,14 +60,14 @@ describe('getUserLoggedIn', () => {
         userTasks: true,
         passwordHash: false,
         settings: true,
-      }
+      },
     });
   });
 
   it('should return user data if user is authenticated and found', async () => {
     // Mock authentication to return a user ID
     (requireAuth as jest.Mock).mockResolvedValue(1);
-    
+
     // Mock user data
     const mockDate = new Date();
     const mockUser = {
@@ -79,19 +79,19 @@ describe('getUserLoggedIn', () => {
       updatedAt: mockDate,
       projects: [
         { id: 1, name: 'Project 1', ownerId: 1 },
-        { id: 2, name: 'Project 2', ownerId: 1 }
+        { id: 2, name: 'Project 2', ownerId: 1 },
       ],
       userTasks: [
         { id: 1, userId: 1, taskId: 1 },
-        { id: 2, userId: 1, taskId: 2 }
+        { id: 2, userId: 1, taskId: 2 },
       ],
       settings: {
         id: 1,
         userId: 1,
-        notifications_patch_notes: true
-      }
+        notifications_patch_notes: true,
+      },
     };
-    
+
     (prisma.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
 
     const result = await getUserLoggedIn();
@@ -111,14 +111,14 @@ describe('getUserLoggedIn', () => {
         userTasks: true,
         passwordHash: false,
         settings: true,
-      }
+      },
     });
   });
 
   it('should handle database errors gracefully', async () => {
     // Mock authentication to return a user ID
     (requireAuth as jest.Mock).mockResolvedValue(1);
-    
+
     // Mock database error
     (prisma.user.findUnique as jest.Mock).mockRejectedValue(new Error('Database error'));
 
@@ -137,7 +137,7 @@ describe('getUserLoggedIn', () => {
   it('should include user settings in the returned data', async () => {
     // Mock authentication to return a user ID
     (requireAuth as jest.Mock).mockResolvedValue(1);
-    
+
     // Mock user data with settings
     const mockUser = {
       id: 1,
@@ -151,10 +151,10 @@ describe('getUserLoggedIn', () => {
       settings: {
         id: 1,
         userId: 1,
-        notifications_patch_notes: true
-      }
+        notifications_patch_notes: true,
+      },
     };
-    
+
     (prisma.user.findUnique as jest.Mock).mockResolvedValue(mockUser);
 
     const result = await getUserLoggedIn();
@@ -163,14 +163,14 @@ describe('getUserLoggedIn', () => {
     expect(result?.settings).toEqual({
       id: 1,
       userId: 1,
-      notifications_patch_notes: true
+      notifications_patch_notes: true,
     });
   });
 
   it('should not expose password hash in the returned data', async () => {
     // Mock authentication to return a user ID
     (requireAuth as jest.Mock).mockResolvedValue(1);
-    
+
     // Mock user data with passwordHash (which should be filtered out)
     const mockUserWithPassword = {
       id: 1,
@@ -182,13 +182,12 @@ describe('getUserLoggedIn', () => {
       projects: [],
       userTasks: [],
       settings: null,
-      passwordHash: 'hashed_password_value'
+      passwordHash: 'hashed_password_value',
     };
-    
-    // The findUnique mock would return data without passwordHash due to select clause
-    const mockUserWithoutPassword = { ...mockUserWithPassword };
-    delete (mockUserWithoutPassword as any).passwordHash;
-    
+
+    const mockUserWithoutPassword = { ...mockUserWithPassword } as Record<string, unknown>;
+    delete mockUserWithoutPassword.passwordHash;
+
     (prisma.user.findUnique as jest.Mock).mockResolvedValue(mockUserWithoutPassword);
 
     const result = await getUserLoggedIn();
@@ -196,4 +195,4 @@ describe('getUserLoggedIn', () => {
     expect(result).toEqual(mockUserWithoutPassword);
     expect(result).not.toHaveProperty('passwordHash');
   });
-}); 
+});

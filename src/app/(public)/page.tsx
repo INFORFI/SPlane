@@ -99,7 +99,9 @@ export default function Home() {
                     <div className="w-3 h-3 rounded-full bg-[var(--error)]"></div>
                     <div className="w-3 h-3 rounded-full bg-[var(--warning)]"></div>
                     <div className="w-3 h-3 rounded-full bg-[var(--success)]"></div>
-                    <div className="ml-4 text-sm text-[var(--foreground-tertiary)]">SPLANE Dashboard</div>
+                    <div className="ml-4 text-sm text-[var(--foreground-tertiary)]">
+                      SPLANE Dashboard
+                    </div>
                   </div>
                   <div className="aspect-video bg-[var(--background)] p-4">
                     <div className="h-full rounded-lg border border-[var(--border)] bg-[var(--background-secondary)] p-4 flex flex-col gap-4">

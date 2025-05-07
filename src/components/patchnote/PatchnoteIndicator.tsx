@@ -10,7 +10,10 @@ interface PatchnoteIndicatorProps {
   isCollapsed?: boolean;
 }
 
-export default function PatchnoteIndicator({ count, isCollapsed = false }: PatchnoteIndicatorProps) {
+export default function PatchnoteIndicator({
+  count,
+  isCollapsed = false,
+}: PatchnoteIndicatorProps) {
   // Don't render anything if there are no unread patchnotes
   if (count <= 0) {
     return null;

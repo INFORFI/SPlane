@@ -34,11 +34,23 @@ export default function TaskDetailsModal({
   const getStatusColor = (status: TaskStatus) => {
     switch (status) {
       case TaskStatus.COMPLETED:
-        return { bg: 'bg-[var(--success-muted)]', text: 'text-[var(--success)]', label: 'Terminée' };
+        return {
+          bg: 'bg-[var(--success-muted)]',
+          text: 'text-[var(--success)]',
+          label: 'Terminée',
+        };
       case TaskStatus.IN_PROGRESS:
-        return { bg: 'bg-[var(--warning-muted)]', text: 'text-[var(--warning)]', label: 'En cours' };
+        return {
+          bg: 'bg-[var(--warning-muted)]',
+          text: 'text-[var(--warning)]',
+          label: 'En cours',
+        };
       case TaskStatus.CANCELED:
-        return { bg: 'bg-[var(--foreground-muted)]/10', text: 'text-[var(--foreground-tertiary)]', label: 'Annulée' };
+        return {
+          bg: 'bg-[var(--foreground-muted)]/10',
+          text: 'text-[var(--foreground-tertiary)]',
+          label: 'Annulée',
+        };
       default:
         return { bg: 'bg-[var(--primary-muted)]', text: 'text-[var(--primary)]', label: 'À faire' };
     }
@@ -100,7 +112,10 @@ export default function TaskDetailsModal({
               <h2 className="text-xl font-semibold text-[var(--foreground)]">Modifier la tâche</h2>
             )}
           </div>
-          <button onClick={onClose} className="text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)] transition-colors">
+          <button
+            onClick={onClose}
+            className="text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)] transition-colors"
+          >
             <XCircle className="h-6 w-6" />
           </button>
         </div>
@@ -116,7 +131,10 @@ export default function TaskDetailsModal({
               onSubmit={handleSubmit}
             >
               <div>
-                <label htmlFor="title" className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1">
+                <label
+                  htmlFor="title"
+                  className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1"
+                >
                   Titre
                 </label>
                 <input
@@ -149,7 +167,10 @@ export default function TaskDetailsModal({
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="status" className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1">
+                  <label
+                    htmlFor="status"
+                    className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1"
+                  >
                     Statut
                   </label>
                   <select
@@ -264,7 +285,9 @@ export default function TaskDetailsModal({
                 <div className="md:col-span-2 space-y-6">
                   {/* Task description */}
                   <div>
-                    <h3 className="text-sm font-medium text-[var(--foreground-tertiary)] mb-2">Description</h3>
+                    <h3 className="text-sm font-medium text-[var(--foreground-tertiary)] mb-2">
+                      Description
+                    </h3>
                     <p className="text-[var(--foreground)]">
                       {task.description || 'Aucune description fournie.'}
                     </p>
@@ -272,7 +295,9 @@ export default function TaskDetailsModal({
 
                   {/* Comments section */}
                   <div>
-                    <h3 className="text-sm font-medium text-[var(--foreground-tertiary)] mb-3">Commentaires</h3>
+                    <h3 className="text-sm font-medium text-[var(--foreground-tertiary)] mb-3">
+                      Commentaires
+                    </h3>
 
                     <div className="space-y-4">
                       <div className="flex gap-3">
@@ -289,7 +314,9 @@ export default function TaskDetailsModal({
                             J&apos;ai commencé à travailler sur cette tâche. Je pense pouvoir la
                             terminer d&apos;ici demain.
                           </p>
-                          <p className="text-xs text-[var(--foreground-muted)] mt-1">Il y a 2 jours</p>
+                          <p className="text-xs text-[var(--foreground-muted)] mt-1">
+                            Il y a 2 jours
+                          </p>
                         </div>
                       </div>
 
@@ -318,7 +345,9 @@ export default function TaskDetailsModal({
                   <div className="bg-[var(--background-tertiary)]/50 rounded-lg p-4 space-y-4">
                     {/* Status */}
                     <div>
-                      <h4 className="text-xs font-medium text-[var(--foreground-muted)] mb-1">STATUT</h4>
+                      <h4 className="text-xs font-medium text-[var(--foreground-muted)] mb-1">
+                        STATUT
+                      </h4>
                       <div
                         className={`inline-flex items-center px-2.5 py-1 rounded-full text-sm font-medium ${status.bg} ${status.text}`}
                       >
@@ -328,7 +357,9 @@ export default function TaskDetailsModal({
 
                     {/* Priority */}
                     <div>
-                      <h4 className="text-xs font-medium text-[var(--foreground-muted)] mb-1">PRIORITÉ</h4>
+                      <h4 className="text-xs font-medium text-[var(--foreground-muted)] mb-1">
+                        PRIORITÉ
+                      </h4>
                       <div className="flex items-center gap-2">
                         <div className={`h-2 w-2 rounded-full ${priority.color}`}></div>
                         <span className="text-sm text-[var(--foreground)]">{priority.label}</span>
@@ -337,7 +368,9 @@ export default function TaskDetailsModal({
 
                     {/* Assignee */}
                     <div>
-                      <h4 className="text-xs font-medium text-[var(--foreground-muted)] mb-1">ASSIGNÉ À</h4>
+                      <h4 className="text-xs font-medium text-[var(--foreground-muted)] mb-1">
+                        ASSIGNÉ À
+                      </h4>
                       {assignedUser ? (
                         <div className="flex items-center gap-2">
                           <div className="h-6 w-6 rounded-full bg-[var(--primary)] flex items-center justify-center text-[var(--primary-foreground)] text-xs">
@@ -346,20 +379,28 @@ export default function TaskDetailsModal({
                               .map(name => name[0])
                               .join('')}
                           </div>
-                          <span className="text-sm text-[var(--foreground)]">{assignedUser.fullName}</span>
+                          <span className="text-sm text-[var(--foreground)]">
+                            {assignedUser.fullName}
+                          </span>
                         </div>
                       ) : (
-                        <span className="text-sm text-[var(--foreground-tertiary)]">Non assignée</span>
+                        <span className="text-sm text-[var(--foreground-tertiary)]">
+                          Non assignée
+                        </span>
                       )}
                     </div>
 
                     {/* Deadline */}
                     {task.deadline && (
                       <div>
-                        <h4 className="text-xs font-medium text-[var(--foreground-muted)] mb-1">DATE LIMITE</h4>
+                        <h4 className="text-xs font-medium text-[var(--foreground-muted)] mb-1">
+                          DATE LIMITE
+                        </h4>
                         <div className="flex items-center gap-2">
                           <Clock className="h-4 w-4 text-[var(--foreground-tertiary)]" />
-                          <span className="text-sm text-[var(--foreground)]">{formatDate(task.deadline)}</span>
+                          <span className="text-sm text-[var(--foreground)]">
+                            {formatDate(task.deadline)}
+                          </span>
                         </div>
                       </div>
                     )}

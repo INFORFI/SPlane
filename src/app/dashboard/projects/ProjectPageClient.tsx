@@ -3,16 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import {
-  Plus,
-  Search,
-  Clock,
-  Trash2,
-  Edit,
-  Users,
-  CalendarClock,
-  Layers,
-} from 'lucide-react';
+import { Plus, Search, Clock, Trash2, Edit, Users, CalendarClock, Layers } from 'lucide-react';
 import { ProjectWithTasks } from '@/action/projects/getProjects';
 import { Task } from '@prisma/client';
 import { itemVariants, containerVariants } from '@/utils/ItemVariants';
@@ -83,7 +74,9 @@ export default function ProjectsPage({ projects }: { projects: ProjectWithTasks[
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-[var(--foreground)]">Projets</h1>
-          <p className="text-[var(--foreground-tertiary)]">Gérez vos projets et suivez leur progression</p>
+          <p className="text-[var(--foreground-tertiary)]">
+            Gérez vos projets et suivez leur progression
+          </p>
         </div>
 
         <Link href="/dashboard/projects/create">
@@ -124,7 +117,6 @@ export default function ProjectsPage({ projects }: { projects: ProjectWithTasks[
             <option value="in-progress">En cours</option>
             <option value="completed">Terminé</option>
           </select>
-
         </div>
       </motion.div>
 
@@ -149,7 +141,9 @@ export default function ProjectsPage({ projects }: { projects: ProjectWithTasks[
           <div className="w-16 h-16 bg-[var(--background-tertiary)] rounded-full flex items-center justify-center mb-4">
             <Layers className="h-8 w-8 text-[var(--foreground-tertiary)]" />
           </div>
-          <h3 className="text-lg font-medium text-[var(--foreground-secondary)] mb-2">Aucun projet trouvé</h3>
+          <h3 className="text-lg font-medium text-[var(--foreground-secondary)] mb-2">
+            Aucun projet trouvé
+          </h3>
           <p className="text-[var(--foreground-muted)] text-center mb-6 max-w-md">
             {searchQuery || filterStatus
               ? "Aucun projet ne correspond à vos critères de recherche. Essayez d'ajuster vos filtres."
@@ -221,7 +215,9 @@ function ProjectCard({ project, formatDate, getDaysLeft }: ProjectCardProps) {
           */}
         </div>
 
-        <p className="text-[var(--foreground-tertiary)] text-sm line-clamp-2 mb-4">{project.description}</p>
+        <p className="text-[var(--foreground-tertiary)] text-sm line-clamp-2 mb-4">
+          {project.description}
+        </p>
 
         <div className="space-y-4">
           <div className="space-y-1">

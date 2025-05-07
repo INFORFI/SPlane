@@ -4,9 +4,17 @@ import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { PatchNote } from '@prisma/client';
 
-type PatchNoteParsed = PatchNote & {
-  parsedContent: any;
+interface PatchNoteContent {
+  changes: Array<{
+    title: string;
+    description: string;
+    type: 'feature' | 'fix' | 'improvement';
+  }>;
 }
+
+type PatchNoteParsed = PatchNote & {
+  parsedContent: PatchNoteContent;
+};
 
 // Check if user has any unread patchnotes
 export async function checkUnreadPatchnotes(userId: number): Promise<PatchNoteParsed[]> {
@@ -22,13 +30,13 @@ export async function checkUnreadPatchnotes(userId: number): Promise<PatchNotePa
         // No view record for this user
         userViews: {
           none: {
-            userId: userId
-          }
-        }
+            userId: userId,
+          },
+        },
       },
       orderBy: {
         releaseDate: 'desc',
-      }
+      },
     });
 
     if (!unreadPatchnotes.length) {
@@ -46,7 +54,7 @@ export async function checkUnreadPatchnotes(userId: number): Promise<PatchNotePa
       content: note.content,
       published: note.published,
       // Parse the content to make it easier to use in the client
-      parsedContent: JSON.parse(note.content)
+      parsedContent: JSON.parse(note.content),
     }));
   } catch (error) {
     console.error('Error checking unread patchnotes:', error);
@@ -66,12 +74,12 @@ export async function markPatchnoteAsRead(patchNoteId: number, userId: number): 
       data: {
         userId: userId,
         patchNoteId: patchNoteId,
-      }
+      },
     });
 
     // Revalidate the dashboard page to update any UI that depends on patchnote status
     revalidatePath('/dashboard');
-    
+
     return true;
   } catch (error) {
     console.error('Error marking patchnote as read:', error);
@@ -84,11 +92,11 @@ export async function getAllPatchnotes(): Promise<PatchNoteParsed[]> {
   try {
     const patchnotes = await prisma.patchNote.findMany({
       where: {
-        published: true
+        published: true,
       },
       orderBy: {
-        releaseDate: 'desc'
-      }
+        releaseDate: 'desc',
+      },
     });
 
     return patchnotes.map(note => ({
@@ -100,7 +108,7 @@ export async function getAllPatchnotes(): Promise<PatchNoteParsed[]> {
       releaseDate: note.releaseDate,
       content: note.content,
       published: note.published,
-      parsedContent: JSON.parse(note.content)
+      parsedContent: JSON.parse(note.content),
     }));
   } catch (error) {
     console.error('Error fetching patchnotes:', error);

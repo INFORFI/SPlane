@@ -4,13 +4,13 @@ import { prisma } from '@/lib/prisma';
 // Mocks
 jest.mock('@/lib/prisma', () => {
   const mockFindMany = jest.fn();
-  
+
   return {
     prisma: {
       task: {
-        findMany: mockFindMany
-      }
-    }
+        findMany: mockFindMany,
+      },
+    },
   };
 });
 
@@ -28,7 +28,7 @@ describe('getAssignedTasks', () => {
     // Mock user and project
     const mockUser = { id: 1, name: 'Test User', email: 'test@example.com' };
     const mockProject = { id: 1, name: 'Test Project', description: 'Test Description' };
-    
+
     // Mock tasks with their details
     const mockTasks = [
       {
@@ -40,9 +40,7 @@ describe('getAssignedTasks', () => {
         deadline: new Date('2025-01-15'),
         projectId: 1,
         project: mockProject,
-        userTasks: [
-          { id: 1, taskId: 1, userId: 1, user: mockUser }
-        ]
+        userTasks: [{ id: 1, taskId: 1, userId: 1, user: mockUser }],
       },
       {
         id: 2,
@@ -53,12 +51,10 @@ describe('getAssignedTasks', () => {
         deadline: new Date('2025-01-10'),
         projectId: 1,
         project: mockProject,
-        userTasks: [
-          { id: 2, taskId: 2, userId: 1, user: mockUser }
-        ]
-      }
+        userTasks: [{ id: 2, taskId: 2, userId: 1, user: mockUser }],
+      },
     ];
-    
+
     (prisma.task.findMany as jest.Mock).mockResolvedValue(mockTasks);
 
     const result = await getAssignedTasks(1);
@@ -80,10 +76,7 @@ describe('getAssignedTasks', () => {
           },
         },
       },
-      orderBy: [
-        { priority: 'desc' },
-        { deadline: 'asc' },
-      ],
+      orderBy: [{ priority: 'desc' }, { deadline: 'asc' }],
     });
   });
 
@@ -101,7 +94,7 @@ describe('getAssignedTasks', () => {
     // Mock user and project
     const mockUser = { id: 1, name: 'Test User', email: 'test@example.com' };
     const mockProject = { id: 1, name: 'Test Project', description: 'Test Description' };
-    
+
     // Create tasks with different priorities and deadlines
     const highPriorityLaterDeadline = {
       id: 1,
@@ -111,9 +104,9 @@ describe('getAssignedTasks', () => {
       deadline: new Date('2025-02-01'),
       projectId: 1,
       project: mockProject,
-      userTasks: [{ id: 1, taskId: 1, userId: 1, user: mockUser }]
+      userTasks: [{ id: 1, taskId: 1, userId: 1, user: mockUser }],
     };
-    
+
     const highPriorityEarlierDeadline = {
       id: 2,
       title: 'High Priority, Earlier Deadline',
@@ -122,9 +115,9 @@ describe('getAssignedTasks', () => {
       deadline: new Date('2025-01-15'),
       projectId: 1,
       project: mockProject,
-      userTasks: [{ id: 2, taskId: 2, userId: 1, user: mockUser }]
+      userTasks: [{ id: 2, taskId: 2, userId: 1, user: mockUser }],
     };
-    
+
     const mediumPriorityEarliestDeadline = {
       id: 3,
       title: 'Medium Priority, Earliest Deadline',
@@ -133,23 +126,15 @@ describe('getAssignedTasks', () => {
       deadline: new Date('2025-01-01'),
       projectId: 1,
       project: mockProject,
-      userTasks: [{ id: 3, taskId: 3, userId: 1, user: mockUser }]
+      userTasks: [{ id: 3, taskId: 3, userId: 1, user: mockUser }],
     };
-    
-    // Mock the tasks in an order that doesn't match the expected sort order
-    const mockTasks = [
-      mediumPriorityEarliestDeadline,
-      highPriorityLaterDeadline,
-      highPriorityEarlierDeadline
-    ];
-    
-    // Mock the sorted order as it would be returned by the database
+
     const sortedTasks = [
-      highPriorityEarlierDeadline,  // HIGH priority, earlier deadline
-      highPriorityLaterDeadline,    // HIGH priority, later deadline
-      mediumPriorityEarliestDeadline // MEDIUM priority, earliest deadline
+      highPriorityEarlierDeadline, // HIGH priority, earlier deadline
+      highPriorityLaterDeadline, // HIGH priority, later deadline
+      mediumPriorityEarliestDeadline, // MEDIUM priority, earliest deadline
     ];
-    
+
     (prisma.task.findMany as jest.Mock).mockResolvedValue(sortedTasks);
 
     const result = await getAssignedTasks(1);
@@ -175,4 +160,4 @@ describe('getAssignedTasks', () => {
       expect.any(Error)
     );
   });
-}); 
+});

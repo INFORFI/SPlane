@@ -19,18 +19,18 @@ export default function DeleteUserModal({ user, isOpen, onClose }: DeleteUserMod
   const handleDelete = async () => {
     try {
       setIsDeleting(true);
-      
+
       const result = await deleteUser(user.id);
-      
+
       if (result.success) {
         toast.success(`${user.fullName} a été supprimé avec succès`);
         onClose();
       } else {
-        toast.error(result.error || "Une erreur est survenue lors de la suppression");
+        toast.error(result.error || 'Une erreur est survenue lors de la suppression');
       }
     } catch (error) {
       console.error(error);
-      toast.error("Une erreur est survenue lors de la suppression");
+      toast.error('Une erreur est survenue lors de la suppression');
     } finally {
       setIsDeleting(false);
     }
@@ -73,7 +73,8 @@ export default function DeleteUserModal({ user, isOpen, onClose }: DeleteUserMod
 
           <div className="bg-[var(--error-muted)] border border-[var(--error)]/20 rounded-lg p-4 text-sm text-[var(--error)]">
             <p>
-              <strong>Attention :</strong> Cette action est irréversible. Les projets et les tâches auxquels ce membre est associé ne seront pas supprimés.
+              <strong>Attention :</strong> Cette action est irréversible. Les projets et les tâches
+              auxquels ce membre est associé ne seront pas supprimés.
             </p>
           </div>
 

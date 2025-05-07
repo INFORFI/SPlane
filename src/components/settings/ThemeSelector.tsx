@@ -15,13 +15,21 @@ export default function ThemeSelector() {
   };
 
   // Preview component for each theme variant
-  const ThemePreview = ({ theme, onClick, isActive }: { theme: Theme; onClick: () => void; isActive: boolean }) => (
-    <motion.button 
+  const ThemePreview = ({
+    theme,
+    onClick,
+    isActive,
+  }: {
+    theme: Theme;
+    onClick: () => void;
+    isActive: boolean;
+  }) => (
+    <motion.button
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       onClick={onClick}
       className={`relative flex flex-col items-center gap-3 overflow-hidden rounded-lg border p-4 transition-all cursor-pointer ${
-        isActive 
+        isActive
           ? 'border-[var(--primary)] bg-[var(--primary-muted)]'
           : 'border-[var(--border-secondary)] bg-[var(--background-tertiary)] hover:border-[var(--border)]'
       }`}
@@ -34,18 +42,28 @@ export default function ThemeSelector() {
       <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-md bg-[var(--background-tertiary)] border border-[var(--border-secondary)]">
         {theme.preview}
       </div>
-      <span className={`text-sm font-medium ${isActive ? 'text-[var(--primary)]' : 'text-[var(--foreground-secondary)]'}`}>
+      <span
+        className={`text-sm font-medium ${isActive ? 'text-[var(--primary)]' : 'text-[var(--foreground-secondary)]'}`}
+      >
         {theme.name}
       </span>
     </motion.button>
   );
 
   // Small theme button for dropdown
-  const ThemeButton = ({ theme, onClick, isActive }: { theme: Theme; onClick: () => void; isActive: boolean }) => (
+  const ThemeButton = ({
+    theme,
+    onClick,
+    isActive,
+  }: {
+    theme: Theme;
+    onClick: () => void;
+    isActive: boolean;
+  }) => (
     <button
       onClick={onClick}
       className={`flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors rounded-md ${
-        isActive 
+        isActive
           ? 'bg-[var(--primary-muted)] text-[var(--primary)]'
           : 'text-[var(--foreground-secondary)] hover:bg-[var(--background-tertiary)] hover:text-[var(--foreground)]'
       }`}
@@ -60,7 +78,7 @@ export default function ThemeSelector() {
     <div className="space-y-6">
       <div>
         <h3 className="text-lg font-medium text-[var(--foreground)] mb-4">Theme</h3>
-        
+
         {/* Mobile/Dropdown view */}
         <div className="block md:hidden relative mb-3">
           <button
@@ -78,10 +96,15 @@ export default function ThemeSelector() {
               viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M19 9l-7 7-7-7"
+              />
             </svg>
           </button>
-          
+
           {isExpanded && (
             <div className="absolute z-10 mt-1 w-full rounded-md border border-[var(--border)] bg-[var(--background-secondary)] shadow-lg">
               <div className="py-1 max-h-60 overflow-auto">
@@ -100,7 +123,7 @@ export default function ThemeSelector() {
             </div>
           )}
         </div>
-        
+
         {/* Desktop grid view */}
         <div className="hidden md:grid grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 gap-4">
           {themes.map(t => (

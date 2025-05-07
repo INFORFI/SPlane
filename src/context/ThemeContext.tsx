@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useState, useEffect, ReactNode } from 'react';
-import { Check, Sun, Moon, Monitor, Palette, Contrast } from 'lucide-react';
+import { Sun, Moon, Monitor, Palette, Contrast } from 'lucide-react';
 
 export type ThemeType = string;
 
@@ -194,7 +194,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('theme');
       if (savedTheme) return savedTheme;
-      
+
       if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
         return 'dark';
       }
@@ -205,7 +205,7 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const root = document.documentElement;
-      
+
       // Handle system theme
       const handleSystemThemeChange = (e: MediaQueryListEvent) => {
         if (theme === 'system') {
@@ -213,30 +213,31 @@ export const ThemeProvider = ({ children }: ThemeProviderProps) => {
           root.className = newTheme;
         }
       };
-      
+
       // Apply theme
       if (theme === 'system') {
-        const isDarkMode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const isDarkMode =
+          window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
         root.className = isDarkMode ? 'dark' : 'light';
-        
-        window.matchMedia('(prefers-color-scheme: dark)')
+
+        window
+          .matchMedia('(prefers-color-scheme: dark)')
           .addEventListener('change', handleSystemThemeChange);
       } else {
         root.className = theme;
       }
-      
+
       localStorage.setItem('theme', theme);
-      
+
       return () => {
-        window.matchMedia('(prefers-color-scheme: dark)')
+        window
+          .matchMedia('(prefers-color-scheme: dark)')
           .removeEventListener('change', handleSystemThemeChange);
       };
     }
   }, [theme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, themes }}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={{ theme, setTheme, themes }}>{children}</ThemeContext.Provider>
   );
 };

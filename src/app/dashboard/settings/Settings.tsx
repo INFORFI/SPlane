@@ -1,23 +1,17 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   User as UserIcon,
   Shield,
   Bell,
   Moon,
-  Sun,
-  Edit,
   Save,
-  Mail,
   Key,
   AlertCircle,
   CheckCircle2,
-  X,
-  Camera,
   LogOut,
-  ChevronRight
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { logout } from '@/action/auth/logout';
@@ -26,13 +20,6 @@ import type { UserLoggedIn } from '@/action/users/getUserLoggedIn';
 import ProfileTab from '@/components/settings/ProfileTab';
 import NotificationsTab from '@/components/settings/NotificationsTab';
 import ThemeSelector from '@/components/settings/ThemeSelector';
-
-// Mock function for demonstration - replace with actual server action
-const updateUserSettings = async () => {
-  // Simulate API call
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  return { success: true };
-};
 
 // Mock function for demonstration - replace with actual server action
 const changeUserPassword = async () => {
@@ -44,115 +31,41 @@ const changeUserPassword = async () => {
 export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('profile');
-  const avatarInputRef = useRef<HTMLInputElement>(null);
 
-  console.log("user", user);
-  
-  // Profile form state
-  const [profileForm, setProfileForm] = useState({
-    fullName: user.fullName,
-    email: user.email,
-  });
-  
   // Password form state
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
   });
-  
-  // Appearance settings
-  const [appearanceSettings, setAppearanceSettings] = useState({
-    theme: 'dark',
-    compactMode: false,
-    highContrastMode: false,
-  });
-  
-  // Notification settings
-  const [notificationSettings, setNotificationSettings] = useState({
-    emailNotifications: true,
-    taskReminders: true,
-    deadlineAlerts: true,
-    teamUpdates: true,
-    patchNotes: true,
-  });
-  
+
   // Form states
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
-  // Handle profile form changes
-  const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setProfileForm(prev => ({ ...prev, [name]: value }));
-  };
-  
+
   // Handle password form changes
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPasswordForm(prev => ({ ...prev, [name]: value }));
   };
-  
-  // Handle toggle settings
-  const handleToggle = (settingType: 'appearance' | 'notification', setting: string) => {
-    if (settingType === 'appearance') {
-      setAppearanceSettings(prev => ({
-        ...prev,
-        [setting]: !prev[setting as keyof typeof prev],
-      }));
-    } else {
-      setNotificationSettings(prev => ({
-        ...prev,
-        [setting]: !prev[setting as keyof typeof prev],
-      }));
-    }
-  };
-  
-  // Handle theme change
-  const handleThemeChange = (theme: string) => {
-    setAppearanceSettings(prev => ({ ...prev, theme }));
-  };
-  
-  // Handle profile update
-  const handleProfileUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setError(null);
-    
-    try {
-      const result = await updateUserSettings();
-      
-      if (result.success) {
-        setSuccess(true);
-        // Reset after 3 seconds
-        setTimeout(() => {
-          setSuccess(false);
-        }, 3000);
-      }
-    } catch (err) {
-      setError('Failed to update profile settings');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-  
+
   // Handle password update
   const handlePasswordUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
-    
+
     // Validate password
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
       setError('Passwords do not match');
       setIsSubmitting(false);
       return;
     }
-    
+
     try {
       const result = await changeUserPassword();
-      
+
       if (result.success) {
         setSuccess(true);
         // Reset form and success message after 3 seconds
@@ -166,78 +79,19 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
         }, 3000);
       }
     } catch (err) {
-      setError('Failed to update password');
+      console.error(err);
+      setError('Erreur lors de la mise à jour du mot de passe');
     } finally {
       setIsSubmitting(false);
     }
   };
-  
-  // Handle appearance settings update
-  const handleAppearanceUpdate = async () => {
-    setIsSubmitting(true);
-    setError(null);
-    
-    try {
-      const result = await updateUserSettings();
-      
-      if (result.success) {
-        setSuccess(true);
-        // Reset after 3 seconds
-        setTimeout(() => {
-          setSuccess(false);
-        }, 3000);
-      }
-    } catch (err) {
-      setError('Failed to update appearance settings');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-  
-  // Handle notification settings update
-  const handleNotificationUpdate = async () => {
-    setIsSubmitting(true);
-    setError(null);
-    
-    try {
-      const result = await updateUserSettings();
-      
-      if (result.success) {
-        setSuccess(true);
-        // Reset after 3 seconds
-        setTimeout(() => {
-          setSuccess(false);
-        }, 3000);
-      }
-    } catch (err) {
-      setError('Failed to update notification settings');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-  
-  // Handle avatar upload
-  const handleAvatarUpload = () => {
-    if (avatarInputRef.current) {
-      avatarInputRef.current.click();
-    }
-  };
-  
-  // Handle file change
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // Handle file upload logic here
-      console.log('File selected:', file);
-    }
-  };
-  
+
   // Handle logout
   const handleLogout = async () => {
     await logout();
     router.push('/login');
   };
-  
+
   return (
     <motion.div
       initial="hidden"
@@ -245,7 +99,10 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
       variants={containerVariants}
       className="space-y-6"
     >
-      <motion.div variants={itemVariants} className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <motion.div
+        variants={itemVariants}
+        className="flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+      >
         <div>
           <h1 className="text-2xl font-bold text-[var(--foreground)]">
             Paramètres du compte
@@ -255,13 +112,18 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
               </span>
               <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-2 w-64 opacity-0 group-hover:opacity-100 transition-opacity duration-200 invisible group-hover:visible z-10">
                 <div className="relative p-2 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-lg shadow-lg text-xs text-[var(--foreground-secondary)]">
-                  <p>Cette page est en cours de développement. Certaines fonctionnalités peuvent ne pas fonctionner correctement.</p>
+                  <p>
+                    Cette page est en cours de développement. Certaines fonctionnalités peuvent ne
+                    pas fonctionner correctement.
+                  </p>
                   <div className="absolute w-2 h-2 bg-[var(--background-tertiary)] border-r border-b border-[var(--border-secondary)] transform rotate-45 left-1/2 -top-1 -ml-1"></div>
                 </div>
               </div>
             </div>
           </h1>
-          <p className="text-[var(--foreground-tertiary)]">Gérez vos préférences et paramètres de compte</p>
+          <p className="text-[var(--foreground-tertiary)]">
+            Gérez vos préférences et paramètres de compte
+          </p>
         </div>
       </motion.div>
 
@@ -285,50 +147,50 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                 {user.role === 'ADMIN' ? 'Administrateur' : 'Utilisateur'}
               </div>
             </div>
-            
+
             <div className="p-2">
               <nav className="space-y-1">
-                <button 
-                  onClick={() => setActiveTab('profile')} 
+                <button
+                  onClick={() => setActiveTab('profile')}
                   className={`flex items-center gap-3 w-full px-4 py-2 rounded-lg text-left transition-colors cursor-pointer ${
-                    activeTab === 'profile' 
-                      ? 'bg-[var(--primary-muted)] text-[var(--primary)]' 
+                    activeTab === 'profile'
+                      ? 'bg-[var(--primary-muted)] text-[var(--primary)]'
                       : 'text-[var(--foreground-tertiary)] hover:bg-[var(--background-tertiary)] hover:text-[var(--foreground)]'
                   }`}
                 >
                   <UserIcon className="h-5 w-5" />
                   <span>Profile</span>
                 </button>
-                
-                <button 
-                  onClick={() => setActiveTab('security')} 
+
+                <button
+                  onClick={() => setActiveTab('security')}
                   className={`flex items-center gap-3 w-full px-4 py-2 rounded-lg text-left transition-colors cursor-pointer ${
-                    activeTab === 'security' 
-                      ? 'bg-[var(--primary-muted)] text-[var(--primary)]' 
+                    activeTab === 'security'
+                      ? 'bg-[var(--primary-muted)] text-[var(--primary)]'
                       : 'text-[var(--foreground-tertiary)] hover:bg-[var(--background-tertiary)] hover:text-[var(--foreground)]'
                   }`}
                 >
                   <Shield className="h-5 w-5" />
                   <span>Security</span>
                 </button>
-                
-                <button 
-                  onClick={() => setActiveTab('appearance')} 
+
+                <button
+                  onClick={() => setActiveTab('appearance')}
                   className={`flex items-center gap-3 w-full px-4 py-2 rounded-lg text-left transition-colors cursor-pointer ${
-                    activeTab === 'appearance' 
-                      ? 'bg-[var(--primary-muted)] text-[var(--primary)]' 
+                    activeTab === 'appearance'
+                      ? 'bg-[var(--primary-muted)] text-[var(--primary)]'
                       : 'text-[var(--foreground-tertiary)] hover:bg-[var(--background-tertiary)] hover:text-[var(--foreground)]'
                   }`}
                 >
                   <Moon className="h-5 w-5" />
                   <span>Appearance</span>
                 </button>
-                
-                <button 
-                  onClick={() => setActiveTab('notifications')} 
+
+                <button
+                  onClick={() => setActiveTab('notifications')}
                   className={`flex items-center gap-3 w-full px-4 py-2 rounded-lg text-left transition-colors cursor-pointer ${
-                    activeTab === 'notifications' 
-                      ? 'bg-[var(--primary-muted)] text-[var(--primary)]' 
+                    activeTab === 'notifications'
+                      ? 'bg-[var(--primary-muted)] text-[var(--primary)]'
                       : 'text-[var(--foreground-tertiary)] hover:bg-[var(--background-tertiary)] hover:text-[var(--foreground)]'
                   }`}
                 >
@@ -337,9 +199,9 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                 </button>
               </nav>
             </div>
-            
+
             <div className="p-4 border-t border-[var(--border)]">
-              <button 
+              <button
                 onClick={handleLogout}
                 className="flex items-center gap-2 w-full px-4 py-2 text-[var(--error)] hover:bg-[var(--error-muted)] rounded-lg transition-colors cursor-pointer"
               >
@@ -349,41 +211,46 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
             </div>
           </div>
         </motion.div>
-        
+
         {/* Main content */}
         <motion.div variants={itemVariants} className="lg:col-span-3">
           <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
             {/* Profile Tab */}
-            {activeTab === 'profile' && (
-              <ProfileTab user={user} />
-            )}
-            
+            {activeTab === 'profile' && <ProfileTab user={user} />}
+
             {/* Security Tab */}
             {activeTab === 'security' && (
               <div>
-                <h2 className="text-xl font-semibold text-[var(--foreground)] mb-6">Security Settings</h2>
-                
+                <h2 className="text-xl font-semibold text-[var(--foreground)] mb-6">
+                  Security Settings
+                </h2>
+
                 {error && (
                   <div className="mb-6 p-3 bg-[var(--error-muted)] border border-[var(--error)] rounded-lg flex items-center gap-3 text-[var(--error)]">
                     <AlertCircle className="h-5 w-5 flex-shrink-0" />
                     <span className="text-sm">{error}</span>
                   </div>
                 )}
-                
+
                 {success && (
                   <div className="mb-6 p-3 bg-[var(--success-muted)] border border-[var(--success)] rounded-lg flex items-center gap-3 text-[var(--success)]">
                     <CheckCircle2 className="h-5 w-5 flex-shrink-0" />
                     <span className="text-sm">Mot de passe mis à jour avec succès !</span>
                   </div>
                 )}
-                
+
                 <div className="space-y-8">
                   {/* Change Password */}
                   <div>
-                    <h3 className="text-lg font-medium text-[var(--foreground)] mb-4">Change Password</h3>
+                    <h3 className="text-lg font-medium text-[var(--foreground)] mb-4">
+                      Change Password
+                    </h3>
                     <form onSubmit={handlePasswordUpdate} className="space-y-4">
                       <div>
-                        <label htmlFor="currentPassword" className="block text-sm font-medium text-[var(--foreground-tertiary)] mb-1">
+                        <label
+                          htmlFor="currentPassword"
+                          className="block text-sm font-medium text-[var(--foreground-tertiary)] mb-1"
+                        >
                           Current Password
                         </label>
                         <div className="relative">
@@ -401,9 +268,12 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                           />
                         </div>
                       </div>
-                      
+
                       <div>
-                        <label htmlFor="newPassword" className="block text-sm font-medium text-[var(--foreground-tertiary)] mb-1">
+                        <label
+                          htmlFor="newPassword"
+                          className="block text-sm font-medium text-[var(--foreground-tertiary)] mb-1"
+                        >
                           New Password
                         </label>
                         <div className="relative">
@@ -420,11 +290,16 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                             placeholder="••••••••"
                           />
                         </div>
-                        <p className="text-xs text-[var(--foreground-tertiary)] mt-1">Password must be at least 8 characters long</p>
+                        <p className="text-xs text-[var(--foreground-tertiary)] mt-1">
+                          Password must be at least 8 characters long
+                        </p>
                       </div>
-                      
+
                       <div>
-                        <label htmlFor="confirmPassword" className="block text-sm font-medium text-[var(--foreground-tertiary)] mb-1">
+                        <label
+                          htmlFor="confirmPassword"
+                          className="block text-sm font-medium text-[var(--foreground-tertiary)] mb-1"
+                        >
                           Confirm New Password
                         </label>
                         <div className="relative">
@@ -442,7 +317,7 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                           />
                         </div>
                       </div>
-                      
+
                       <div className="pt-2">
                         <button
                           type="submit"
@@ -451,9 +326,25 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                         >
                           {isSubmitting ? (
                             <>
-                              <svg className="animate-spin h-5 w-5 text-[var(--primary-foreground)]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                              <svg
+                                className="animate-spin h-5 w-5 text-[var(--primary-foreground)]"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                              >
+                                <circle
+                                  className="opacity-25"
+                                  cx="12"
+                                  cy="12"
+                                  r="10"
+                                  stroke="currentColor"
+                                  strokeWidth="4"
+                                ></circle>
+                                <path
+                                  className="opacity-75"
+                                  fill="currentColor"
+                                  d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                ></path>
                               </svg>
                               <span>Updating...</span>
                             </>
@@ -467,7 +358,7 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                       </div>
                     </form>
                   </div>
-                  
+
                   {/* Security Recommendations */}
                   <div className="p-4 bg-[var(--warning-muted)] border border-[var(--warning)] rounded-lg">
                     <h3 className="flex items-center gap-2 text-[var(--warning)] font-medium mb-2">
@@ -477,25 +368,26 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                     <ul className="text-sm text-[var(--foreground-tertiary)] space-y-2">
                       <li className="flex items-center gap-2">
                         <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)]"></span>
-                        Use a strong, unique password that you don't use elsewhere
+                        Utilisez un mot de passe fort et unique que vous n&apos;utilisez pas
+                        ailleurs
                       </li>
                       <li className="flex items-center gap-2">
                         <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)]"></span>
-                        Enable two-factor authentication when available
+                        Activez l&apos;authentification à deux facteurs lorsque disponible
                       </li>
                       <li className="flex items-center gap-2">
                         <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)]"></span>
-                        Change your password regularly
+                        Changez votre mot de passe régulièrement
                       </li>
                     </ul>
                   </div>
                 </div>
               </div>
             )}
-            
+
             {/* Appearance Tab */}
             {activeTab === 'appearance' && <ThemeSelector />}
-            
+
             {/* Notifications Tab */}
             {activeTab === 'notifications' && <NotificationsTab settings={user.settings} />}
           </div>

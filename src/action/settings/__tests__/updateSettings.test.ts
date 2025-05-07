@@ -11,7 +11,7 @@ jest.mock('@/lib/prisma', () => {
   const mockFindUnique = jest.fn();
   const mockUpdate = jest.fn();
   const mockCreate = jest.fn();
-  
+
   return {
     prisma: {
       user: {
@@ -20,8 +20,8 @@ jest.mock('@/lib/prisma', () => {
       },
       userSettings: {
         create: mockCreate,
-      }
-    }
+      },
+    },
   };
 });
 
@@ -48,7 +48,7 @@ describe('updateSettings', () => {
   it('should return null if user is not found', async () => {
     // Mock authentication to return a user ID
     (requireAuth as jest.Mock).mockResolvedValue(1);
-    
+
     // Mock user not found
     (prisma.user.findUnique as jest.Mock).mockResolvedValue(null);
 
@@ -71,20 +71,20 @@ describe('updateSettings', () => {
   it('should create settings if user has no settings', async () => {
     // Mock authentication to return a user ID
     (requireAuth as jest.Mock).mockResolvedValue(1);
-    
+
     // Mock user found but without settings
     (prisma.user.findUnique as jest.Mock).mockResolvedValue({
       id: 1,
       settings: null,
     });
-    
+
     // Mock create settings
     (prisma.userSettings.create as jest.Mock).mockResolvedValue({
       id: 1,
       userId: 1,
       notifications_patch_notes: true,
     });
-    
+
     // Mock update user
     const mockUpdatedUser = {
       id: 1,
@@ -94,7 +94,7 @@ describe('updateSettings', () => {
         id: 1,
         userId: 1,
         notifications_patch_notes: true,
-      }
+      },
     };
     (prisma.user.update as jest.Mock).mockResolvedValue(mockUpdatedUser);
 
@@ -131,7 +131,7 @@ describe('updateSettings', () => {
   it('should update existing settings', async () => {
     // Mock authentication to return a user ID
     (requireAuth as jest.Mock).mockResolvedValue(1);
-    
+
     // Mock user found with settings
     (prisma.user.findUnique as jest.Mock).mockResolvedValue({
       id: 1,
@@ -141,7 +141,7 @@ describe('updateSettings', () => {
         notifications_patch_notes: false,
       },
     });
-    
+
     // Mock update user
     const mockUpdatedUser = {
       id: 1,
@@ -151,7 +151,7 @@ describe('updateSettings', () => {
         id: 1,
         userId: 1,
         notifications_patch_notes: true,
-      }
+      },
     };
     (prisma.user.update as jest.Mock).mockResolvedValue(mockUpdatedUser);
 
@@ -183,7 +183,7 @@ describe('updateSettings', () => {
   it('should handle database errors gracefully', async () => {
     // Mock authentication to return a user ID
     (requireAuth as jest.Mock).mockResolvedValue(1);
-    
+
     // Mock database error
     (prisma.user.findUnique as jest.Mock).mockRejectedValue(new Error('Database error'));
 
@@ -202,4 +202,4 @@ describe('updateSettings', () => {
     expect(requireAuth).toHaveBeenCalled();
     expect(prisma.user.findUnique).toHaveBeenCalled();
   });
-}); 
+});

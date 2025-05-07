@@ -176,11 +176,23 @@ export default function TasksClient({ tasks }: TasksClientProps) {
   const getStatusInfo = (status: TaskStatus) => {
     switch (status) {
       case TaskStatus.COMPLETED:
-        return { color: 'text-[var(--success)]', bg: 'bg-[var(--success-muted)]', label: 'Completed' };
+        return {
+          color: 'text-[var(--success)]',
+          bg: 'bg-[var(--success-muted)]',
+          label: 'Completed',
+        };
       case TaskStatus.IN_PROGRESS:
-        return { color: 'text-[var(--warning)]', bg: 'bg-[var(--warning-muted)]', label: 'In Progress' };
+        return {
+          color: 'text-[var(--warning)]',
+          bg: 'bg-[var(--warning-muted)]',
+          label: 'In Progress',
+        };
       case TaskStatus.CANCELED:
-        return { color: 'text-[var(--foreground-tertiary)]', bg: 'bg-[var(--foreground-muted)]/10', label: 'Canceled' };
+        return {
+          color: 'text-[var(--foreground-tertiary)]',
+          bg: 'bg-[var(--foreground-muted)]/10',
+          label: 'Canceled',
+        };
       default:
         return { color: 'text-[var(--primary)]', bg: 'bg-[var(--primary-muted)]', label: 'To Do' };
     }
@@ -327,7 +339,9 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                   <div className="flex items-start gap-3">
                     <div
                       className={`h-5 w-5 mt-0.5 rounded-md flex-shrink-0 ${
-                        task.status === TaskStatus.COMPLETED ? 'bg-[var(--success-muted)]' : 'bg-[var(--background-tertiary)]'
+                        task.status === TaskStatus.COMPLETED
+                          ? 'bg-[var(--success-muted)]'
+                          : 'bg-[var(--background-tertiary)]'
                       } border ${
                         task.status === TaskStatus.COMPLETED
                           ? 'border-[var(--success)]'
@@ -356,7 +370,9 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                           <div
                             className={`h-1.5 w-1.5 rounded-full ${getPriorityColor(task.priority)}`}
                           ></div>
-                          <span className="text-[var(--foreground-tertiary)]">{getPriorityLabel(task.priority)}</span>
+                          <span className="text-[var(--foreground-tertiary)]">
+                            {getPriorityLabel(task.priority)}
+                          </span>
                         </div>
                       </div>
 
@@ -417,7 +433,9 @@ export default function TasksClient({ tasks }: TasksClientProps) {
             {searchQuery ? (
               <>
                 <Search className="h-12 w-12 text-[var(--border-secondary)] mb-4" />
-                <h3 className="text-xl font-medium text-[var(--foreground-tertiary)] mb-2">No matching tasks found</h3>
+                <h3 className="text-xl font-medium text-[var(--foreground-tertiary)] mb-2">
+                  No matching tasks found
+                </h3>
                 <p className="text-[var(--foreground-muted)] max-w-md mb-4">
                   Nous n&apos;avons pas trouvé de tâches correspondant à votre recherche &quot;
                   {searchQuery}&quot;.
@@ -455,7 +473,9 @@ export default function TasksClient({ tasks }: TasksClientProps) {
             ) : (
               <>
                 <CheckCircle2 className="h-12 w-12 text-[var(--border-secondary)] mb-4" />
-                <h3 className="text-xl font-medium text-[var(--foreground-tertiary)] mb-2">No tasks assigned to you</h3>
+                <h3 className="text-xl font-medium text-[var(--foreground-tertiary)] mb-2">
+                  No tasks assigned to you
+                </h3>
                 <p className="text-[var(--foreground-muted)] max-w-md mb-4">
                   Vous n&apos;avez pas de tâches assignées à vous. Créez une nouvelle tâche ou
                   demandez à votre équipe de vous assigner des tâches.
@@ -495,7 +515,9 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                   <div
                     className={`h-2 w-2 rounded-full ${getPriorityColor(selectedTask.priority)}`}
                   ></div>
-                  <h2 className="text-xl font-semibold text-[var(--foreground)]">{selectedTask.title}</h2>
+                  <h2 className="text-xl font-semibold text-[var(--foreground)]">
+                    {selectedTask.title}
+                  </h2>
                 </div>
                 <button
                   onClick={() => setSelectedTask(null)}
@@ -509,7 +531,9 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                 <div className="md:col-span-2 space-y-6">
                   {/* Task description */}
                   <div>
-                    <h3 className="text-sm font-medium text-[var(--foreground-tertiary)] mb-2">Description</h3>
+                    <h3 className="text-sm font-medium text-[var(--foreground-tertiary)] mb-2">
+                      Description
+                    </h3>
                     <p className="text-[var(--foreground)]">
                       {selectedTask.description || 'No description provided.'}
                     </p>
@@ -517,13 +541,17 @@ export default function TasksClient({ tasks }: TasksClientProps) {
 
                   {/* Project info */}
                   <div>
-                    <h3 className="text-sm font-medium text-[var(--foreground-tertiary)] mb-2">Project</h3>
+                    <h3 className="text-sm font-medium text-[var(--foreground-tertiary)] mb-2">
+                      Project
+                    </h3>
                     <div className="flex items-center gap-2">
                       <div className="p-2 bg-[var(--background-tertiary)] rounded-md">
                         <Layers className="h-5 w-5 text-[var(--primary)]" />
                       </div>
                       <div>
-                        <p className="text-[var(--foreground)] font-medium">{selectedTask.project.name}</p>
+                        <p className="text-[var(--foreground)] font-medium">
+                          {selectedTask.project.name}
+                        </p>
                         {selectedTask.project.description && (
                           <p className="text-sm text-[var(--foreground-tertiary)]">
                             {selectedTask.project.description}
@@ -535,7 +563,9 @@ export default function TasksClient({ tasks }: TasksClientProps) {
 
                   {/* Task assignees */}
                   <div>
-                    <h3 className="text-sm font-medium text-[var(--foreground-tertiary)] mb-2">Assigned to</h3>
+                    <h3 className="text-sm font-medium text-[var(--foreground-tertiary)] mb-2">
+                      Assigned to
+                    </h3>
                     <div className="space-y-2">
                       {selectedTask.userTasks.map(userTask => (
                         <div
@@ -552,7 +582,9 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                             <p className="text-sm font-medium text-[var(--foreground)]">
                               {userTask.user.fullName}
                             </p>
-                            <p className="text-xs text-[var(--foreground-tertiary)]">{userTask.user.email}</p>
+                            <p className="text-xs text-[var(--foreground-tertiary)]">
+                              {userTask.user.email}
+                            </p>
                           </div>
                         </div>
                       ))}
@@ -564,7 +596,9 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                 <div className="space-y-4">
                   {/* Status */}
                   <div className="p-4 bg-[var(--background-tertiary)] rounded-lg">
-                    <h4 className="text-xs font-medium text-[var(--foreground-muted)] uppercase mb-3">Status</h4>
+                    <h4 className="text-xs font-medium text-[var(--foreground-muted)] uppercase mb-3">
+                      Status
+                    </h4>
                     <div
                       className={`inline-flex items-center px-2.5 py-1 rounded-full text-sm font-medium ${getStatusInfo(selectedTask.status).bg} ${getStatusInfo(selectedTask.status).color}`}
                     >
@@ -574,7 +608,9 @@ export default function TasksClient({ tasks }: TasksClientProps) {
 
                   {/* Priority */}
                   <div className="p-4 bg-[var(--background-tertiary)] rounded-lg">
-                    <h4 className="text-xs font-medium text-[var(--foreground-muted)] uppercase mb-3">Priority</h4>
+                    <h4 className="text-xs font-medium text-[var(--foreground-muted)] uppercase mb-3">
+                      Priority
+                    </h4>
                     <div className="flex items-center gap-2">
                       <div
                         className={`h-2 w-2 rounded-full ${getPriorityColor(selectedTask.priority)}`}
@@ -588,7 +624,9 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                   {/* Deadline */}
                   {selectedTask.deadline && (
                     <div className="p-4 bg-[var(--background-tertiary)] rounded-lg">
-                      <h4 className="text-xs font-medium text-[var(--foreground-muted)] uppercase mb-3">Deadline</h4>
+                      <h4 className="text-xs font-medium text-[var(--foreground-muted)] uppercase mb-3">
+                        Deadline
+                      </h4>
                       <div className="flex items-center gap-2">
                         <CalendarClock className="h-4 w-4 text-[var(--foreground-tertiary)]" />
                         <span

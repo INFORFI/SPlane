@@ -143,13 +143,29 @@ const NewTaskPage = ({
   const getStatusInfo = (status: TaskStatus) => {
     switch (status) {
       case TaskStatus.COMPLETED:
-        return { label: 'Terminée', color: 'text-[var(--success)]', bg: 'bg-[var(--success-muted)]' };
+        return {
+          label: 'Terminée',
+          color: 'text-[var(--success)]',
+          bg: 'bg-[var(--success-muted)]',
+        };
       case TaskStatus.IN_PROGRESS:
-        return { label: 'En cours', color: 'text-[var(--warning)]', bg: 'bg-[var(--warning-muted)]' };
+        return {
+          label: 'En cours',
+          color: 'text-[var(--warning)]',
+          bg: 'bg-[var(--warning-muted)]',
+        };
       case TaskStatus.CANCELED:
-        return { label: 'Annulée', color: 'text-[var(--foreground-muted)]', bg: 'bg-[var(--foreground-muted)]/10' };
+        return {
+          label: 'Annulée',
+          color: 'text-[var(--foreground-muted)]',
+          bg: 'bg-[var(--foreground-muted)]/10',
+        };
       default:
-        return { label: 'À faire', color: 'text-[var(--primary)]', bg: 'bg-[var(--primary-muted)]' };
+        return {
+          label: 'À faire',
+          color: 'text-[var(--primary)]',
+          bg: 'bg-[var(--primary-muted)]',
+        };
     }
   };
 
@@ -197,7 +213,9 @@ const NewTaskPage = ({
         {/* Form header */}
         <div className="bg-[var(--background-tertiary)]/50 px-6 py-4 border-b border-[var(--border)]">
           <h2 className="text-lg font-medium text-[var(--foreground)]">Informations de la tâche</h2>
-          <p className="text-sm text-[var(--foreground-tertiary)]">Créez une nouvelle tâche pour votre projet</p>
+          <p className="text-sm text-[var(--foreground-tertiary)]">
+            Créez une nouvelle tâche pour votre projet
+          </p>
         </div>
 
         {/* Form fields */}
@@ -206,7 +224,10 @@ const NewTaskPage = ({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Title field */}
             <div className="space-y-2">
-              <label htmlFor="title" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 Titre <span className="text-[var(--error)]">*</span>
               </label>
               <input
@@ -223,7 +244,10 @@ const NewTaskPage = ({
 
             {/* Project field */}
             <div className="space-y-2">
-              <label htmlFor="projectId" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+              <label
+                htmlFor="projectId"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 Projet <span className="text-[var(--error)]">*</span>
               </label>
               <div className="relative">
@@ -248,13 +272,18 @@ const NewTaskPage = ({
                   <ChevronDown className="h-5 w-5 text-[var(--foreground-muted)]" />
                 </div>
               </div>
-              {errors.projectId && <p className="text-[var(--error)] text-xs mt-1">{errors.projectId}</p>}
+              {errors.projectId && (
+                <p className="text-[var(--error)] text-xs mt-1">{errors.projectId}</p>
+              )}
             </div>
           </div>
 
           {/* Description field */}
           <div className="space-y-2">
-            <label htmlFor="description" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-[var(--foreground-secondary)]"
+            >
               Description
             </label>
             <textarea
@@ -272,7 +301,10 @@ const NewTaskPage = ({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Deadline field */}
             <div className="space-y-2">
-              <label htmlFor="deadline" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+              <label
+                htmlFor="deadline"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 Date limite <span className="text-[var(--error)]">*</span>
               </label>
               <div className="relative">
@@ -288,12 +320,17 @@ const NewTaskPage = ({
                   className={`w-full pl-10 pr-4 py-2.5 bg-[var(--input)] border ${errors.deadline ? 'border-[var(--error)]' : 'border-[var(--border-secondary)]'} rounded-lg text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent`}
                 />
               </div>
-              {errors.deadline && <p className="text-[var(--error)] text-xs mt-1">{errors.deadline}</p>}
+              {errors.deadline && (
+                <p className="text-[var(--error)] text-xs mt-1">{errors.deadline}</p>
+              )}
             </div>
 
             {/* Status field */}
             <div className="space-y-2">
-              <label htmlFor="status" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+              <label
+                htmlFor="status"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 Statut
               </label>
               <select
@@ -313,7 +350,10 @@ const NewTaskPage = ({
 
             {/* Priority field */}
             <div className="space-y-2">
-              <label htmlFor="priority" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+              <label
+                htmlFor="priority"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 Priorité
               </label>
               <select
@@ -333,7 +373,7 @@ const NewTaskPage = ({
           {/* Assignees field */}
           <TeamMember
             users={users}
-            formData={{...formData, teamMembers: formData.assignees}}
+            formData={{ ...formData, teamMembers: formData.assignees }}
             toggleTeamMember={toggleAssignee}
           />
 
@@ -430,7 +470,9 @@ const NewTaskPage = ({
                 <div
                   className={`h-2 w-2 rounded-full ${getPriorityInfo(formData.priority).color}`}
                 ></div>
-                <span className="text-[var(--foreground-secondary)]">{getPriorityInfo(formData.priority).label}</span>
+                <span className="text-[var(--foreground-secondary)]">
+                  {getPriorityInfo(formData.priority).label}
+                </span>
               </div>
             </div>
           </div>

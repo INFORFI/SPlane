@@ -217,7 +217,9 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <motion.div variants={itemVariants}>
           <h1 className="text-2xl font-bold text-[var(--foreground)]">Calendrier</h1>
-          <p className="text-[var(--foreground-tertiary)]">Gérez vos tâches et suivez les échéances</p>
+          <p className="text-[var(--foreground-tertiary)]">
+            Gérez vos tâches et suivez les échéances
+          </p>
         </motion.div>
 
         <div className="flex gap-2">
@@ -410,7 +412,9 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                           ></div>
                           <div>
                             <div className="font-medium text-[var(--foreground)]">{task.title}</div>
-                            <div className="text-sm text-[var(--foreground-tertiary)]">{task.project.name}</div>
+                            <div className="text-sm text-[var(--foreground-tertiary)]">
+                              {task.project.name}
+                            </div>
                           </div>
                         </div>
 
@@ -482,7 +486,9 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                       }`}
                     >
                       <div className="flex justify-between items-start mb-1">
-                        <h3 className={`font-medium ${isUrgent ? 'text-[var(--error)]' : 'text-[var(--foreground)]'}`}>
+                        <h3
+                          className={`font-medium ${isUrgent ? 'text-[var(--error)]' : 'text-[var(--foreground)]'}`}
+                        >
                           {task.title}
                         </h3>
                         <div
@@ -493,7 +499,9 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                         </div>
                       </div>
 
-                      <p className="text-xs text-[var(--foreground-tertiary)] mb-2">{task.project.name}</p>
+                      <p className="text-xs text-[var(--foreground-tertiary)] mb-2">
+                        {task.project.name}
+                      </p>
 
                       <div className="flex justify-between items-center text-xs">
                         <div
@@ -523,7 +531,9 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
 
           {/* Project Progress */}
           <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
-            <h2 className="text-lg font-semibold text-[var(--foreground)] mb-4">Progression des projets</h2>
+            <h2 className="text-lg font-semibold text-[var(--foreground)] mb-4">
+              Progression des projets
+            </h2>
 
             <div className="space-y-4">
               {/* Group tasks by project and calculate progress */}
@@ -543,7 +553,9 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                 return (
                   <div key={projectId} className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <h3 className="text-sm font-medium text-[var(--foreground)]">{project.name}</h3>
+                      <h3 className="text-sm font-medium text-[var(--foreground)]">
+                        {project.name}
+                      </h3>
                       <span
                         className={`text-xs font-medium ${
                           progress >= 75
