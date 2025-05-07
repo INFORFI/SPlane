@@ -4,13 +4,13 @@ import { prisma } from '@/lib/prisma';
 // Mocks
 jest.mock('@/lib/prisma', () => {
   const mockFindMany = jest.fn();
-  
+
   return {
     prisma: {
       project: {
-        findMany: mockFindMany
-      }
-    }
+        findMany: mockFindMany,
+      },
+    },
   };
 });
 
@@ -51,7 +51,7 @@ describe('getProjects', () => {
     // Mock projects with tasks
     const mockUser1 = { id: 1, name: 'User 1', email: 'user1@example.com' };
     const mockUser2 = { id: 2, name: 'User 2', email: 'user2@example.com' };
-    
+
     const mockProjects = [
       {
         id: 1,
@@ -65,20 +65,16 @@ describe('getProjects', () => {
             title: 'Task 1',
             projectId: 1,
             status: 'COMPLETED',
-            userTasks: [
-              { id: 1, taskId: 1, userId: 1, user: mockUser1 }
-            ]
+            userTasks: [{ id: 1, taskId: 1, userId: 1, user: mockUser1 }],
           },
           {
             id: 2,
             title: 'Task 2',
             projectId: 1,
             status: 'IN_PROGRESS',
-            userTasks: [
-              { id: 2, taskId: 2, userId: 2, user: mockUser2 }
-            ]
-          }
-        ]
+            userTasks: [{ id: 2, taskId: 2, userId: 2, user: mockUser2 }],
+          },
+        ],
       },
       {
         id: 2,
@@ -92,23 +88,19 @@ describe('getProjects', () => {
             title: 'Task 3',
             projectId: 2,
             status: 'COMPLETED',
-            userTasks: [
-              { id: 3, taskId: 3, userId: 1, user: mockUser1 }
-            ]
+            userTasks: [{ id: 3, taskId: 3, userId: 1, user: mockUser1 }],
           },
           {
             id: 4,
             title: 'Task 4',
             projectId: 2,
             status: 'COMPLETED',
-            userTasks: [
-              { id: 4, taskId: 4, userId: 2, user: mockUser2 }
-            ]
-          }
-        ]
-      }
+            userTasks: [{ id: 4, taskId: 4, userId: 2, user: mockUser2 }],
+          },
+        ],
+      },
     ];
-    
+
     (prisma.project.findMany as jest.Mock).mockResolvedValue(mockProjects);
 
     const result = await getProjects();
@@ -121,7 +113,7 @@ describe('getProjects', () => {
   it('should handle projects with no tasks', async () => {
     // Mock project with no tasks
     const mockUser1 = { id: 1, name: 'User 1', email: 'user1@example.com' };
-    
+
     const mockProjects = [
       {
         id: 1,
@@ -129,10 +121,10 @@ describe('getProjects', () => {
         description: 'Test Description',
         ownerId: 1,
         owner: mockUser1,
-        tasks: []
-      }
+        tasks: [],
+      },
     ];
-    
+
     (prisma.project.findMany as jest.Mock).mockResolvedValue(mockProjects);
 
     const result = await getProjects();
@@ -147,7 +139,7 @@ describe('getProjects', () => {
     const mockUser1 = { id: 1, name: 'User 1', email: 'user1@example.com' };
     const mockUser2 = { id: 2, name: 'User 2', email: 'user2@example.com' };
     const mockUser3 = { id: 3, name: 'User 3', email: 'user3@example.com' };
-    
+
     const mockProjects = [
       {
         id: 1,
@@ -163,8 +155,8 @@ describe('getProjects', () => {
             status: 'IN_PROGRESS',
             userTasks: [
               { id: 1, taskId: 1, userId: 1, user: mockUser1 },
-              { id: 2, taskId: 1, userId: 2, user: mockUser2 }
-            ]
+              { id: 2, taskId: 1, userId: 2, user: mockUser2 },
+            ],
           },
           {
             id: 2,
@@ -173,27 +165,29 @@ describe('getProjects', () => {
             status: 'IN_PROGRESS',
             userTasks: [
               { id: 3, taskId: 2, userId: 2, user: mockUser2 },
-              { id: 4, taskId: 2, userId: 3, user: mockUser3 }
-            ]
-          }
-        ]
-      }
+              { id: 4, taskId: 2, userId: 3, user: mockUser3 },
+            ],
+          },
+        ],
+      },
     ];
-    
+
     (prisma.project.findMany as jest.Mock).mockResolvedValue(mockProjects);
 
     const result = await getProjects();
 
     expect(result).toHaveLength(1);
     expect(result[0].teamMembers).toHaveLength(3);
-    expect(result[0].teamMembers).toEqual(expect.arrayContaining([mockUser1, mockUser2, mockUser3]));
+    expect(result[0].teamMembers).toEqual(
+      expect.arrayContaining([mockUser1, mockUser2, mockUser3])
+    );
   });
 
   it('should handle duplicate team members correctly', async () => {
     // Mock project with duplicate team members
     const mockUser1 = { id: 1, name: 'User 1', email: 'user1@example.com' };
     const mockUser2 = { id: 2, name: 'User 2', email: 'user2@example.com' };
-    
+
     const mockProjects = [
       {
         id: 1,
@@ -209,8 +203,8 @@ describe('getProjects', () => {
             status: 'IN_PROGRESS',
             userTasks: [
               { id: 1, taskId: 1, userId: 1, user: mockUser1 },
-              { id: 2, taskId: 1, userId: 2, user: mockUser2 }
-            ]
+              { id: 2, taskId: 1, userId: 2, user: mockUser2 },
+            ],
           },
           {
             id: 2,
@@ -219,13 +213,13 @@ describe('getProjects', () => {
             status: 'IN_PROGRESS',
             userTasks: [
               { id: 3, taskId: 2, userId: 1, user: mockUser1 }, // Duplicate user
-              { id: 4, taskId: 2, userId: 2, user: mockUser2 }  // Duplicate user
-            ]
-          }
-        ]
-      }
+              { id: 4, taskId: 2, userId: 2, user: mockUser2 }, // Duplicate user
+            ],
+          },
+        ],
+      },
     ];
-    
+
     (prisma.project.findMany as jest.Mock).mockResolvedValue(mockProjects);
 
     const result = await getProjects();
@@ -244,4 +238,4 @@ describe('getProjects', () => {
     expect(result).toEqual([]);
     expect(console.error).toHaveBeenCalledWith('Error fetching projects:', expect.any(Error));
   });
-}); 
+});

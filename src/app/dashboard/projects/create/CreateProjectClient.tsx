@@ -205,14 +205,19 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
         {/* Form header */}
         <div className="bg-[var(--background-tertiary)]/50 px-6 py-4 border-b border-[var(--border)]">
           <h2 className="text-lg font-medium text-[var(--foreground)]">Project Information</h2>
-          <p className="text-sm text-[var(--foreground-tertiary)]">Fill in the details to create a new project</p>
+          <p className="text-sm text-[var(--foreground-tertiary)]">
+            Fill in the details to create a new project
+          </p>
         </div>
 
         {/* Form fields */}
         <div className="p-6 space-y-6">
           {/* Project name */}
           <div className="space-y-2">
-            <label htmlFor="name" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-[var(--foreground-secondary)]"
+            >
               Project Name <span className="text-[var(--error)]">*</span>
             </label>
             <input
@@ -229,7 +234,10 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
 
           {/* Project description */}
           <div className="space-y-2">
-            <label htmlFor="description" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-[var(--foreground-secondary)]"
+            >
               Description
             </label>
             <textarea
@@ -247,7 +255,10 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Start date */}
             <div className="space-y-2">
-              <label htmlFor="startDate" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+              <label
+                htmlFor="startDate"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 Start Date <span className="text-[var(--error)]">*</span>
               </label>
               <div className="relative">
@@ -270,7 +281,10 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
 
             {/* End date */}
             <div className="space-y-2">
-              <label htmlFor="endDate" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+              <label
+                htmlFor="endDate"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 End Date
               </label>
               <div className="relative">
@@ -285,7 +299,9 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
                   onChange={handleChange}
                   className={`w-full pl-10 pr-4 py-2.5 bg-[var(--input)] border ${errors.endDate ? 'border-[var(--error)]' : 'border-[var(--border-secondary)]'} rounded-lg text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent`}
                 />
-                {errors.endDate && <p className="text-[var(--error)] text-xs mt-1">{errors.endDate}</p>}
+                {errors.endDate && (
+                  <p className="text-[var(--error)] text-xs mt-1">{errors.endDate}</p>
+                )}
               </div>
             </div>
           </div>
@@ -294,7 +310,10 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
           <div className="space-y-6">
             {/* Project owner */}
             <div className="space-y-2">
-              <label htmlFor="ownerId" className="block text-sm font-medium text-[var(--foreground-secondary)]">
+              <label
+                htmlFor="ownerId"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 Project Owner <span className="text-[var(--error)]">*</span>
               </label>
               <select
@@ -311,7 +330,9 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
                   </option>
                 ))}
               </select>
-              {errors.ownerId && <p className="text-[var(--error)] text-xs mt-1">{errors.ownerId}</p>}
+              {errors.ownerId && (
+                <p className="text-[var(--error)] text-xs mt-1">{errors.ownerId}</p>
+              )}
             </div>
 
             {/* Team members */}
@@ -386,7 +407,9 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
 
         <div className="p-5 border border-[var(--border)] rounded-lg bg-[var(--background-tertiary)]/50">
           <div className="mb-4">
-            <h3 className="text-xl font-semibold text-[var(--foreground)]">{formData.name || 'Project Name'}</h3>
+            <h3 className="text-xl font-semibold text-[var(--foreground)]">
+              {formData.name || 'Project Name'}
+            </h3>
             <p className="text-[var(--foreground-tertiary)] mt-1">
               {formData.description || 'Project description will appear here'}
             </p>

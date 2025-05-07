@@ -6,16 +6,16 @@ import { TaskStatus } from '@prisma/client';
 jest.mock('@/lib/prisma', () => {
   const mockCreate = jest.fn();
   const mockCreateMany = jest.fn();
-  
+
   return {
     prisma: {
       task: {
-        create: mockCreate
+        create: mockCreate,
       },
       userTask: {
-        createMany: mockCreateMany
-      }
-    }
+        createMany: mockCreateMany,
+      },
+    },
   };
 });
 
@@ -273,4 +273,4 @@ describe('createTask', () => {
     expect(prisma.userTask.createMany).toHaveBeenCalled();
     expect(console.error).toHaveBeenCalled();
   });
-}); 
+});

@@ -65,7 +65,7 @@ services:
     depends_on:
       db-setup:
         condition: service_completed_successfully
-    restart: "no"
+    restart: 'no'
     command: sh -c "npx prisma generate && node /app/scripts/import-patchnotes.js"
 
 volumes:

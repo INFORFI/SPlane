@@ -4,13 +4,13 @@ import { prisma } from '@/lib/prisma';
 // Mocks
 jest.mock('@/lib/prisma', () => {
   const mockFindUnique = jest.fn();
-  
+
   return {
     prisma: {
       project: {
-        findUnique: mockFindUnique
-      }
-    }
+        findUnique: mockFindUnique,
+      },
+    },
   };
 });
 
@@ -53,7 +53,7 @@ describe('getProjectById', () => {
     const mockUser1 = { id: 1, name: 'User 1', email: 'user1@example.com' };
     const mockUser2 = { id: 2, name: 'User 2', email: 'user2@example.com' };
     const mockUser3 = { id: 3, name: 'User 3', email: 'user3@example.com' };
-    
+
     const mockProject = {
       id: 1,
       name: 'Test Project',
@@ -67,8 +67,8 @@ describe('getProjectById', () => {
           projectId: 1,
           userTasks: [
             { id: 1, taskId: 1, userId: 1, user: mockUser1 },
-            { id: 2, taskId: 1, userId: 2, user: mockUser2 }
-          ]
+            { id: 2, taskId: 1, userId: 2, user: mockUser2 },
+          ],
         },
         {
           id: 2,
@@ -76,12 +76,12 @@ describe('getProjectById', () => {
           projectId: 1,
           userTasks: [
             { id: 3, taskId: 2, userId: 2, user: mockUser2 },
-            { id: 4, taskId: 2, userId: 3, user: mockUser3 }
-          ]
-        }
-      ]
+            { id: 4, taskId: 2, userId: 3, user: mockUser3 },
+          ],
+        },
+      ],
     };
-    
+
     (prisma.project.findUnique as jest.Mock).mockResolvedValue(mockProject);
 
     const result = await getProjectById(1);
@@ -98,7 +98,7 @@ describe('getProjectById', () => {
     // Mock project with tasks and duplicate users
     const mockUser1 = { id: 1, name: 'User 1', email: 'user1@example.com' };
     const mockUser2 = { id: 2, name: 'User 2', email: 'user2@example.com' };
-    
+
     const mockProject = {
       id: 1,
       name: 'Test Project',
@@ -112,8 +112,8 @@ describe('getProjectById', () => {
           projectId: 1,
           userTasks: [
             { id: 1, taskId: 1, userId: 1, user: mockUser1 },
-            { id: 2, taskId: 1, userId: 2, user: mockUser2 }
-          ]
+            { id: 2, taskId: 1, userId: 2, user: mockUser2 },
+          ],
         },
         {
           id: 2,
@@ -121,12 +121,12 @@ describe('getProjectById', () => {
           projectId: 1,
           userTasks: [
             { id: 3, taskId: 2, userId: 1, user: mockUser1 }, // Duplicate user
-            { id: 4, taskId: 2, userId: 2, user: mockUser2 }  // Duplicate user
-          ]
-        }
-      ]
+            { id: 4, taskId: 2, userId: 2, user: mockUser2 }, // Duplicate user
+          ],
+        },
+      ],
     };
-    
+
     (prisma.project.findUnique as jest.Mock).mockResolvedValue(mockProject);
 
     const result = await getProjectById(1);
@@ -139,16 +139,16 @@ describe('getProjectById', () => {
   it('should handle empty tasks array', async () => {
     // Mock project with no tasks
     const mockUser1 = { id: 1, name: 'User 1', email: 'user1@example.com' };
-    
+
     const mockProject = {
       id: 1,
       name: 'Test Project',
       description: 'Test Description',
       ownerId: 1,
       owner: mockUser1,
-      tasks: []
+      tasks: [],
     };
-    
+
     (prisma.project.findUnique as jest.Mock).mockResolvedValue(mockProject);
 
     const result = await getProjectById(1);
@@ -166,4 +166,4 @@ describe('getProjectById', () => {
     expect(result).toBeNull();
     expect(console.error).toHaveBeenCalledWith('Error fetching project:', expect.any(Error));
   });
-}); 
+});

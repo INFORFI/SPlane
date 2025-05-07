@@ -101,7 +101,10 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
             >
               <ArrowLeft className="h-5 w-5" />
             </Link>
-            <motion.h1 variants={itemVariants} className="text-2xl font-bold text-[var(--foreground)]">
+            <motion.h1
+              variants={itemVariants}
+              className="text-2xl font-bold text-[var(--foreground)]"
+            >
               {project.name}
             </motion.h1>
           </div>
@@ -131,7 +134,9 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
           {/* Project details card */}
           <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 space-y-5">
             <div>
-              <h2 className="text-lg font-semibold text-[var(--foreground)] mb-4">Détails du projet</h2>
+              <h2 className="text-lg font-semibold text-[var(--foreground)] mb-4">
+                Détails du projet
+              </h2>
 
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
@@ -174,7 +179,9 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                   </div>
                   <div>
                     <p className="text-sm text-[var(--foreground-tertiary)]">Propriétaire</p>
-                    <p className="text-sm font-medium text-[var(--foreground)]">{project.owner.fullName}</p>
+                    <p className="text-sm font-medium text-[var(--foreground)]">
+                      {project.owner.fullName}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -236,7 +243,9 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                         .join('')}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-[var(--foreground)]">{member.fullName}</p>
+                      <p className="text-sm font-medium text-[var(--foreground)]">
+                        {member.fullName}
+                      </p>
                       <p className="text-xs text-[var(--foreground-tertiary)]">{member.email}</p>
                     </div>
                   </div>
@@ -344,7 +353,9 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                   className="text-center py-10"
                 >
                   <CheckCircle2 className="h-12 w-12 text-[var(--foreground-muted)] mx-auto mb-3" />
-                  <h3 className="text-lg font-medium text-[var(--foreground-tertiary)] mb-1">Aucune tâche trouvée</h3>
+                  <h3 className="text-lg font-medium text-[var(--foreground-tertiary)] mb-1">
+                    Aucune tâche trouvée
+                  </h3>
                   <p className="text-sm text-[var(--foreground-tertiary)] mb-4 max-w-md mx-auto">
                     {activeTab !== 'all'
                       ? `Il n'y a pas de tâches dans la catégorie "${
@@ -376,7 +387,9 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
             variants={itemVariants}
             className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6"
           >
-            <h2 className="text-lg font-semibold text-[var(--foreground)] mb-4">Activité récente</h2>
+            <h2 className="text-lg font-semibold text-[var(--foreground)] mb-4">
+              Activité récente
+            </h2>
 
             <div className="space-y-4">
               {project.tasks.length > 0 ? (
@@ -396,7 +409,9 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                         a été assigné à la tâche{' '}
                         <span className="font-medium">{project.tasks[0].title}</span>
                       </p>
-                      <p className="text-xs text-[var(--foreground-tertiary)] mt-1">Il y a 2 jours</p>
+                      <p className="text-xs text-[var(--foreground-tertiary)] mt-1">
+                        Il y a 2 jours
+                      </p>
                     </div>
                   </div>
 
@@ -412,7 +427,9 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                         <span className="font-medium">{project.owner.fullName}</span> a créé le
                         projet <span className="font-medium">{project.name}</span>
                       </p>
-                      <p className="text-xs text-[var(--foreground-tertiary)] mt-1">Il y a 5 jours</p>
+                      <p className="text-xs text-[var(--foreground-tertiary)] mt-1">
+                        Il y a 5 jours
+                      </p>
                     </div>
                   </div>
                 </>
@@ -439,7 +456,10 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
 
             <form className="space-y-4">
               <div>
-                <label htmlFor="title" className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1">
+                <label
+                  htmlFor="title"
+                  className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1"
+                >
                   Titre
                 </label>
                 <input
@@ -463,7 +483,10 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
               </div>
 
               <div>
-                <label htmlFor="deadline" className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1">
+                <label
+                  htmlFor="deadline"
+                  className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1"
+                >
                   Date limite
                 </label>
                 <input
@@ -474,7 +497,10 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
               </div>
 
               <div>
-                <label htmlFor="priority" className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1">
+                <label
+                  htmlFor="priority"
+                  className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1"
+                >
                   Priorité
                 </label>
                 <select
@@ -488,7 +514,10 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
               </div>
 
               <div>
-                <label htmlFor="assignee" className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1">
+                <label
+                  htmlFor="assignee"
+                  className="block text-sm font-medium text-[var(--foreground-secondary)] mb-1"
+                >
                   Assigné à
                 </label>
                 <select
@@ -559,11 +588,23 @@ function TaskItem({ task, formatDate, onClick }: TaskItemProps) {
   const getStatusColor = (status: TaskStatus) => {
     switch (status) {
       case TaskStatus.COMPLETED:
-        return { bg: 'bg-[var(--success-muted)]', text: 'text-[var(--success)]', label: 'Terminée' };
+        return {
+          bg: 'bg-[var(--success-muted)]',
+          text: 'text-[var(--success)]',
+          label: 'Terminée',
+        };
       case TaskStatus.IN_PROGRESS:
-        return { bg: 'bg-[var(--warning-muted)]', text: 'text-[var(--warning)]', label: 'En cours' };
+        return {
+          bg: 'bg-[var(--warning-muted)]',
+          text: 'text-[var(--warning)]',
+          label: 'En cours',
+        };
       case TaskStatus.CANCELED:
-        return { bg: 'bg-[var(--foreground-muted)]/10', text: 'text-[var(--foreground-tertiary)]', label: 'Annulée' };
+        return {
+          bg: 'bg-[var(--foreground-muted)]/10',
+          text: 'text-[var(--foreground-tertiary)]',
+          label: 'Annulée',
+        };
       default:
         return { bg: 'bg-[var(--primary-muted)]', text: 'text-[var(--primary)]', label: 'À faire' };
     }
@@ -599,7 +640,9 @@ function TaskItem({ task, formatDate, onClick }: TaskItemProps) {
           <div>
             <h3 className="text-[var(--foreground)] font-medium">{task.title}</h3>
             {task.description && (
-              <p className="text-sm text-[var(--foreground-tertiary)] line-clamp-1">{task.description}</p>
+              <p className="text-sm text-[var(--foreground-tertiary)] line-clamp-1">
+                {task.description}
+              </p>
             )}
           </div>
         </div>

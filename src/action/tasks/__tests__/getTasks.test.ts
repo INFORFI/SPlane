@@ -1,16 +1,21 @@
-import { getTasks, getTasksByProject, getTasksByUser, getTasksByDateRange } from '@/action/tasks/getTasks';
+import {
+  getTasks,
+  getTasksByProject,
+  getTasksByUser,
+  getTasksByDateRange,
+} from '@/action/tasks/getTasks';
 import { prisma } from '@/lib/prisma';
 
 // Mocks
 jest.mock('@/lib/prisma', () => {
   const mockFindMany = jest.fn();
-  
+
   return {
     prisma: {
       task: {
-        findMany: mockFindMany
-      }
-    }
+        findMany: mockFindMany,
+      },
+    },
   };
 });
 
@@ -27,10 +32,10 @@ describe('Task retrieval functions', () => {
   // Mock data
   const mockUser1 = { id: 1, name: 'User 1', email: 'user1@example.com' };
   const mockUser2 = { id: 2, name: 'User 2', email: 'user2@example.com' };
-  
+
   const mockProject1 = { id: 1, name: 'Project 1', ownerId: 1 };
   const mockProject2 = { id: 2, name: 'Project 2', ownerId: 2 };
-  
+
   const mockTasks = [
     {
       id: 1,
@@ -40,9 +45,7 @@ describe('Task retrieval functions', () => {
       projectId: 1,
       deadline: new Date('2023-12-01'),
       project: mockProject1,
-      userTasks: [
-        { id: 1, taskId: 1, userId: 1, user: mockUser1 }
-      ]
+      userTasks: [{ id: 1, taskId: 1, userId: 1, user: mockUser1 }],
     },
     {
       id: 2,
@@ -54,8 +57,8 @@ describe('Task retrieval functions', () => {
       project: mockProject1,
       userTasks: [
         { id: 2, taskId: 2, userId: 1, user: mockUser1 },
-        { id: 3, taskId: 2, userId: 2, user: mockUser2 }
-      ]
+        { id: 3, taskId: 2, userId: 2, user: mockUser2 },
+      ],
     },
     {
       id: 3,
@@ -65,10 +68,8 @@ describe('Task retrieval functions', () => {
       projectId: 2,
       deadline: new Date('2023-12-15'),
       project: mockProject2,
-      userTasks: [
-        { id: 4, taskId: 3, userId: 2, user: mockUser2 }
-      ]
-    }
+      userTasks: [{ id: 4, taskId: 3, userId: 2, user: mockUser2 }],
+    },
   ];
 
   describe('getTasks', () => {
@@ -110,7 +111,7 @@ describe('Task retrieval functions', () => {
     it('should return tasks for a specific project', async () => {
       const projectId = 1;
       const projectTasks = mockTasks.filter(task => task.projectId === projectId);
-      
+
       (prisma.task.findMany as jest.Mock).mockResolvedValue(projectTasks);
 
       const result = await getTasksByProject(projectId);
@@ -136,7 +137,7 @@ describe('Task retrieval functions', () => {
 
     it('should return empty array when project has no tasks', async () => {
       const projectId = 999; // Non-existent project
-      
+
       (prisma.task.findMany as jest.Mock).mockResolvedValue([]);
 
       const result = await getTasksByProject(projectId);
@@ -146,7 +147,7 @@ describe('Task retrieval functions', () => {
 
     it('should return empty array on error', async () => {
       const projectId = 1;
-      
+
       (prisma.task.findMany as jest.Mock).mockRejectedValue(new Error('Database error'));
 
       const result = await getTasksByProject(projectId);
@@ -162,10 +163,8 @@ describe('Task retrieval functions', () => {
   describe('getTasksByUser', () => {
     it('should return tasks assigned to a specific user', async () => {
       const userId = 1;
-      const userTasks = mockTasks.filter(task => 
-        task.userTasks.some(ut => ut.userId === userId)
-      );
-      
+      const userTasks = mockTasks.filter(task => task.userTasks.some(ut => ut.userId === userId));
+
       (prisma.task.findMany as jest.Mock).mockResolvedValue(userTasks);
 
       const result = await getTasksByUser(userId);
@@ -195,7 +194,7 @@ describe('Task retrieval functions', () => {
 
     it('should return empty array when user has no tasks', async () => {
       const userId = 999; // Non-existent user
-      
+
       (prisma.task.findMany as jest.Mock).mockResolvedValue([]);
 
       const result = await getTasksByUser(userId);
@@ -205,7 +204,7 @@ describe('Task retrieval functions', () => {
 
     it('should return empty array on error', async () => {
       const userId = 1;
-      
+
       (prisma.task.findMany as jest.Mock).mockRejectedValue(new Error('Database error'));
 
       const result = await getTasksByUser(userId);
@@ -222,11 +221,11 @@ describe('Task retrieval functions', () => {
     it('should return tasks within a date range', async () => {
       const startDate = new Date('2023-11-01');
       const endDate = new Date('2023-12-01');
-      
-      const rangeTasks = mockTasks.filter(task => 
-        task.deadline >= startDate && task.deadline <= endDate
+
+      const rangeTasks = mockTasks.filter(
+        task => task.deadline >= startDate && task.deadline <= endDate
       );
-      
+
       (prisma.task.findMany as jest.Mock).mockResolvedValue(rangeTasks);
 
       const result = await getTasksByDateRange(startDate, endDate);
@@ -256,7 +255,7 @@ describe('Task retrieval functions', () => {
     it('should return empty array when no tasks in date range', async () => {
       const startDate = new Date('2024-01-01');
       const endDate = new Date('2024-01-31');
-      
+
       (prisma.task.findMany as jest.Mock).mockResolvedValue([]);
 
       const result = await getTasksByDateRange(startDate, endDate);
@@ -267,7 +266,7 @@ describe('Task retrieval functions', () => {
     it('should return empty array on error', async () => {
       const startDate = new Date('2023-11-01');
       const endDate = new Date('2023-12-01');
-      
+
       (prisma.task.findMany as jest.Mock).mockRejectedValue(new Error('Database error'));
 
       const result = await getTasksByDateRange(startDate, endDate);
@@ -279,4 +278,4 @@ describe('Task retrieval functions', () => {
       );
     });
   });
-}); 
+});

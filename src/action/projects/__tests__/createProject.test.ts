@@ -1,4 +1,3 @@
-
 import { createProject } from '@/action/projects/createProject';
 import { requireAuth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
@@ -12,7 +11,6 @@ jest.mock('@/lib/prisma', () => ({
     },
   },
 }));
-
 
 jest.mock('@/lib/auth', () => ({
   requireAuth: jest.fn(),
@@ -52,7 +50,7 @@ describe('createProject', () => {
     (requireAuth as jest.Mock).mockResolvedValue(1);
 
     const input = {
-      name: '',  // Empty name should trigger validation error
+      name: '', // Empty name should trigger validation error
       description: 'Test Description',
       startDate: '2025-01-01',
       ownerId: '1',
@@ -72,7 +70,7 @@ describe('createProject', () => {
     const input = {
       name: 'Test Project',
       description: 'Test Description',
-      startDate: '',  // Empty start date should trigger validation error
+      startDate: '', // Empty start date should trigger validation error
       ownerId: '1',
     };
 
@@ -91,7 +89,7 @@ describe('createProject', () => {
       name: 'Test Project',
       description: 'Test Description',
       startDate: '2025-02-01',
-      endDate: '2025-01-01',  // End date before start date
+      endDate: '2025-01-01', // End date before start date
       ownerId: '1',
     };
 
@@ -132,7 +130,7 @@ describe('createProject', () => {
     expect(result.success).toBe(true);
     expect(result.project).toEqual(mockProject);
     expect(result.message).toBe('Project created successfully');
-    
+
     // Check that Prisma was called with the correct arguments
     expect(prisma.project.create).toHaveBeenCalledWith({
       data: {
@@ -143,7 +141,7 @@ describe('createProject', () => {
         ownerId: 1,
       },
     });
-    
+
     // Verify path revalidation was called
     expect(revalidatePath).toHaveBeenCalledWith('/dashboard/projects');
   });
@@ -151,7 +149,7 @@ describe('createProject', () => {
   it('should handle Prisma errors', async () => {
     // Mock authentication to return a user ID
     (requireAuth as jest.Mock).mockResolvedValue(1);
-    
+
     // Mock Prisma to throw an error
     (prisma.project.create as jest.Mock).mockRejectedValue(new Error('Database error'));
 

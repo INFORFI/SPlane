@@ -328,13 +328,13 @@ describe('User Management Functions', () => {
       (prisma.user.findUnique as jest.Mock)
         .mockResolvedValueOnce({ id: 1, role: Role.ADMIN })
         .mockResolvedValueOnce({ id: 2, email: 'user@example.com' });
-      
+
       // Mock transaction execution
       const mockUserTaskDeleteMany = jest.fn().mockResolvedValue({});
       const mockProjectUpdateMany = jest.fn().mockResolvedValue({});
       const mockUserDelete = jest.fn().mockResolvedValue({});
-      
-      (prisma.$transaction as jest.Mock).mockImplementation(async (callback) => {
+
+      (prisma.$transaction as jest.Mock).mockImplementation(async callback => {
         return await callback({
           userTask: { deleteMany: mockUserTaskDeleteMany },
           project: { updateMany: mockProjectUpdateMany },
@@ -374,4 +374,4 @@ describe('User Management Functions', () => {
       expect(console.error).toHaveBeenCalled();
     });
   });
-}); 
+});

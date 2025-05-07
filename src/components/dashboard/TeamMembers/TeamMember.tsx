@@ -19,7 +19,9 @@ export default function TeamMember({
 
   return (
     <div className="space-y-2">
-      <label className="block text-sm font-medium text-[var(--foreground-secondary)]">Team Members</label>
+      <label className="block text-sm font-medium text-[var(--foreground-secondary)]">
+        Team Members
+      </label>
 
       <div>
         <div
@@ -64,7 +66,8 @@ export default function TeamMember({
         />
       </div>
       <p className="text-[var(--foreground-muted)] text-xs mt-1">
-        Les membres du projet auront accès au projet mais ne seront pas assignés automatiquement aux tâches
+        Les membres du projet auront accès au projet mais ne seront pas assignés automatiquement aux
+        tâches
       </p>
     </div>
   );

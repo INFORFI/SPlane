@@ -2,16 +2,16 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Plus, 
-  Search, 
-  User as UserIcon, 
-  Mail, 
-  Calendar, 
-  Shield, 
-  MoreHorizontal, 
-  Edit, 
-  Trash2, 
+import {
+  Plus,
+  Search,
+  User as UserIcon,
+  Mail,
+  Calendar,
+  Shield,
+  MoreHorizontal,
+  Edit,
+  Trash2,
 } from 'lucide-react';
 import { User } from '@prisma/client';
 import { toast } from 'react-toastify';
@@ -33,7 +33,7 @@ export default function TeamClient({ users, currentUserId }: TeamClientProps) {
   const [currentUserData] = useState<User | undefined>(
     users.find(user => user.id === currentUserId)
   );
-  
+
   // Check if current user is admin
   const isAdmin = currentUserData?.role === 'ADMIN';
 
@@ -43,7 +43,7 @@ export default function TeamClient({ users, currentUserId }: TeamClientProps) {
     let matchesRole = true;
 
     if (searchQuery) {
-      matchesSearch = 
+      matchesSearch =
         user.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         user.email.toLowerCase().includes(searchQuery.toLowerCase());
     }
@@ -58,10 +58,10 @@ export default function TeamClient({ users, currentUserId }: TeamClientProps) {
   // Handle user deletion
   const handleDeleteUser = (user: User) => {
     if (user.id === currentUserId) {
-      toast.error("Vous ne pouvez pas supprimer votre propre compte");
+      toast.error('Vous ne pouvez pas supprimer votre propre compte');
       return;
     }
-    
+
     setSelectedUser(user);
     setShowDeleteModal(true);
   };
@@ -77,7 +77,7 @@ export default function TeamClient({ users, currentUserId }: TeamClientProps) {
     return new Date(date).toLocaleDateString('fr-FR', {
       day: '2-digit',
       month: 'short',
-      year: 'numeric'
+      year: 'numeric',
     });
   };
 
@@ -92,7 +92,9 @@ export default function TeamClient({ users, currentUserId }: TeamClientProps) {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <motion.div variants={itemVariants}>
           <h1 className="text-2xl font-bold text-[var(--foreground)]">Équipe</h1>
-          <p className="text-[var(--foreground-tertiary)]">Gérez les membres de votre équipe SPLANE</p>
+          <p className="text-[var(--foreground-tertiary)]">
+            Gérez les membres de votre équipe SPLANE
+          </p>
         </motion.div>
 
         {isAdmin && (
@@ -166,7 +168,9 @@ export default function TeamClient({ users, currentUserId }: TeamClientProps) {
           <div className="w-16 h-16 bg-[var(--background-tertiary)] rounded-full flex items-center justify-center mb-4">
             <UserIcon className="h-8 w-8 text-[var(--foreground-tertiary)]" />
           </div>
-          <h3 className="text-lg font-medium text-[var(--foreground-secondary)] mb-2">Aucun membre trouvé</h3>
+          <h3 className="text-lg font-medium text-[var(--foreground-secondary)] mb-2">
+            Aucun membre trouvé
+          </h3>
           <p className="text-[var(--foreground-muted)] text-center mb-6 max-w-md">
             {searchQuery || roleFilter !== 'all'
               ? "Aucun membre ne correspond à vos critères de recherche. Essayez d'ajuster vos filtres."
@@ -223,13 +227,13 @@ interface TeamMemberCardProps {
   onDelete: (user: User) => void;
 }
 
-function TeamMemberCard({ 
-  user, 
-  isCurrentUser, 
-  isAdmin, 
-  formatDate, 
-  onEdit, 
-  onDelete 
+function TeamMemberCard({
+  user,
+  isCurrentUser,
+  isAdmin,
+  formatDate,
+  onEdit,
+  onDelete,
 }: TeamMemberCardProps) {
   const [showActions, setShowActions] = useState(false);
 
@@ -247,7 +251,7 @@ function TeamMemberCard({
           Vous
         </div>
       )}
-      
+
       <div className="p-6 flex-grow">
         <div className="flex justify-between items-start mb-4">
           <div className="flex items-center gap-3">
@@ -285,7 +289,7 @@ function TeamMemberCard({
                     exit={{ opacity: 0, y: -10 }}
                     className="absolute right-0 top-10 w-32 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-md shadow-lg overflow-hidden z-10"
                   >
-                    <button 
+                    <button
                       onClick={() => {
                         setShowActions(false);
                         onEdit(user);
@@ -295,7 +299,7 @@ function TeamMemberCard({
                       <Edit className="h-4 w-4" />
                       <span>Modifier</span>
                     </button>
-                    <button 
+                    <button
                       onClick={() => {
                         setShowActions(false);
                         onDelete(user);
@@ -314,17 +318,19 @@ function TeamMemberCard({
 
         <div className="space-y-3">
           <div className="flex items-center gap-2 text-sm">
-            <Shield className={`h-4 w-4 ${user.role === 'ADMIN' ? 'text-[var(--warning)]' : 'text-[var(--primary)]'}`} />
-            <span className={`${user.role === 'ADMIN' ? 'text-[var(--warning)]' : 'text-[var(--primary)]'} font-medium`}>
+            <Shield
+              className={`h-4 w-4 ${user.role === 'ADMIN' ? 'text-[var(--warning)]' : 'text-[var(--primary)]'}`}
+            />
+            <span
+              className={`${user.role === 'ADMIN' ? 'text-[var(--warning)]' : 'text-[var(--primary)]'} font-medium`}
+            >
               {user.role === 'ADMIN' ? 'Administrateur' : 'Utilisateur'}
             </span>
           </div>
 
           <div className="flex items-center gap-2 text-sm text-[var(--foreground-tertiary)]">
             <Calendar className="h-4 w-4 text-[var(--foreground-muted)]" />
-            <span>
-              Membre depuis {formatDate(user.createdAt)}
-            </span>
+            <span>Membre depuis {formatDate(user.createdAt)}</span>
           </div>
         </div>
       </div>

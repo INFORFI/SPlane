@@ -1,4 +1,8 @@
-import { checkUnreadPatchnotes, markPatchnoteAsRead, getAllPatchnotes } from '@/action/patchnote/patchnote';
+import {
+  checkUnreadPatchnotes,
+  markPatchnoteAsRead,
+  getAllPatchnotes,
+} from '@/action/patchnote/patchnote';
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 
@@ -6,16 +10,16 @@ import { revalidatePath } from 'next/cache';
 jest.mock('@/lib/prisma', () => {
   const mockFindMany = jest.fn();
   const mockCreate = jest.fn();
-  
+
   return {
     prisma: {
       patchNote: {
-        findMany: mockFindMany
+        findMany: mockFindMany,
       },
       patchNoteView: {
-        create: mockCreate
-      }
-    }
+        create: mockCreate,
+      },
+    },
   };
 });
 
@@ -36,7 +40,7 @@ describe('Patch Note Functions', () => {
   describe('checkUnreadPatchnotes', () => {
     it('should return empty array if userId is not provided', async () => {
       const result = await checkUnreadPatchnotes(0);
-      
+
       expect(result).toEqual([]);
       expect(prisma.patchNote.findMany).not.toHaveBeenCalled();
     });
@@ -44,22 +48,22 @@ describe('Patch Note Functions', () => {
     it('should return empty array if no unread patchnotes are found', async () => {
       // Mock empty result
       (prisma.patchNote.findMany as jest.Mock).mockResolvedValue([]);
-      
+
       const result = await checkUnreadPatchnotes(1);
-      
+
       expect(result).toEqual([]);
       expect(prisma.patchNote.findMany).toHaveBeenCalledWith({
         where: {
           published: true,
           userViews: {
             none: {
-              userId: 1
-            }
-          }
+              userId: 1,
+            },
+          },
         },
         orderBy: {
           releaseDate: 'desc',
-        }
+        },
       });
     });
 
@@ -74,7 +78,7 @@ describe('Patch Note Functions', () => {
           emoji: '🚀',
           releaseDate: new Date('2023-01-01'),
           content: JSON.stringify({ sections: [{ title: 'New Features', items: ['Feature 1'] }] }),
-          published: true
+          published: true,
         },
         {
           id: 2,
@@ -84,20 +88,22 @@ describe('Patch Note Functions', () => {
           emoji: null, // Test default emoji
           releaseDate: new Date('2023-02-01'),
           content: JSON.stringify({ sections: [{ title: 'Bug Fixes', items: ['Fix 1'] }] }),
-          published: true
-        }
+          published: true,
+        },
       ];
-      
+
       (prisma.patchNote.findMany as jest.Mock).mockResolvedValue(mockPatchnotes);
-      
+
       const result = await checkUnreadPatchnotes(1);
-      
+
       expect(result).toHaveLength(2);
       expect(result[0].id).toBe(1);
       expect(result[0].emoji).toBe('🚀');
-      expect(result[0].releaseDate.toISOString()).toBe("2023-01-01T00:00:00.000Z");
-      expect(result[0].parsedContent).toEqual({ sections: [{ title: 'New Features', items: ['Feature 1'] }] });
-      
+      expect(result[0].releaseDate.toISOString()).toBe('2023-01-01T00:00:00.000Z');
+      expect(result[0].parsedContent).toEqual({
+        sections: [{ title: 'New Features', items: ['Feature 1'] }],
+      });
+
       expect(result[1].id).toBe(2);
       expect(result[1].emoji).toBe('✨'); // Default emoji
     });
@@ -105,11 +111,14 @@ describe('Patch Note Functions', () => {
     it('should handle errors and return empty array', async () => {
       // Mock error
       (prisma.patchNote.findMany as jest.Mock).mockRejectedValue(new Error('Database error'));
-      
+
       const result = await checkUnreadPatchnotes(1);
-      
+
       expect(result).toEqual([]);
-      expect(console.error).toHaveBeenCalledWith('Error checking unread patchnotes:', expect.any(Error));
+      expect(console.error).toHaveBeenCalledWith(
+        'Error checking unread patchnotes:',
+        expect.any(Error)
+      );
     });
 
     it('should handle invalid JSON content', async () => {
@@ -123,14 +132,14 @@ describe('Patch Note Functions', () => {
           emoji: '🐛',
           releaseDate: new Date('2023-01-01'),
           content: '{invalid-json',
-          published: true
-        }
+          published: true,
+        },
       ];
-      
+
       (prisma.patchNote.findMany as jest.Mock).mockResolvedValue(mockPatchnotes);
-      
+
       const result = await checkUnreadPatchnotes(1);
-      
+
       expect(result).toEqual([]);
       expect(console.error).toHaveBeenCalled();
     });
@@ -141,7 +150,7 @@ describe('Patch Note Functions', () => {
       const result1 = await markPatchnoteAsRead(0, 1);
       const result2 = await markPatchnoteAsRead(1, 0);
       const result3 = await markPatchnoteAsRead(0, 0);
-      
+
       expect(result1).toBe(false);
       expect(result2).toBe(false);
       expect(result3).toBe(false);
@@ -154,17 +163,17 @@ describe('Patch Note Functions', () => {
         id: 1,
         userId: 1,
         patchNoteId: 1,
-        viewedAt: new Date()
+        viewedAt: new Date(),
       });
-      
+
       const result = await markPatchnoteAsRead(1, 1);
-      
+
       expect(result).toBe(true);
       expect(prisma.patchNoteView.create).toHaveBeenCalledWith({
         data: {
           userId: 1,
           patchNoteId: 1,
-        }
+        },
       });
       expect(revalidatePath).toHaveBeenCalledWith('/dashboard');
     });
@@ -172,11 +181,14 @@ describe('Patch Note Functions', () => {
     it('should handle errors and return false', async () => {
       // Mock error
       (prisma.patchNoteView.create as jest.Mock).mockRejectedValue(new Error('Database error'));
-      
+
       const result = await markPatchnoteAsRead(1, 1);
-      
+
       expect(result).toBe(false);
-      expect(console.error).toHaveBeenCalledWith('Error marking patchnote as read:', expect.any(Error));
+      expect(console.error).toHaveBeenCalledWith(
+        'Error marking patchnote as read:',
+        expect.any(Error)
+      );
       expect(revalidatePath).not.toHaveBeenCalled();
     });
   });
@@ -193,7 +205,7 @@ describe('Patch Note Functions', () => {
           emoji: '🚀',
           releaseDate: new Date('2023-01-01'),
           content: JSON.stringify({ sections: [{ title: 'New Features', items: ['Feature 1'] }] }),
-          published: true
+          published: true,
         },
         {
           id: 2,
@@ -203,35 +215,37 @@ describe('Patch Note Functions', () => {
           emoji: null,
           releaseDate: new Date('2023-02-01'),
           content: JSON.stringify({ sections: [{ title: 'Bug Fixes', items: ['Fix 1'] }] }),
-          published: true
-        }
+          published: true,
+        },
       ];
-      
+
       (prisma.patchNote.findMany as jest.Mock).mockResolvedValue(mockPatchnotes);
-      
+
       const result = await getAllPatchnotes();
-      
+
       expect(result).toHaveLength(2);
       expect(result[0].id).toBe(1);
-      expect(result[0].parsedContent).toEqual({ sections: [{ title: 'New Features', items: ['Feature 1'] }] });
+      expect(result[0].parsedContent).toEqual({
+        sections: [{ title: 'New Features', items: ['Feature 1'] }],
+      });
       expect(result[1].emoji).toBe('✨'); // Default emoji
-      
+
       expect(prisma.patchNote.findMany).toHaveBeenCalledWith({
         where: {
-          published: true
+          published: true,
         },
         orderBy: {
-          releaseDate: 'desc'
-        }
+          releaseDate: 'desc',
+        },
       });
     });
 
     it('should handle errors and return empty array', async () => {
       // Mock error
       (prisma.patchNote.findMany as jest.Mock).mockRejectedValue(new Error('Database error'));
-      
+
       const result = await getAllPatchnotes();
-      
+
       expect(result).toEqual([]);
       expect(console.error).toHaveBeenCalledWith('Error fetching patchnotes:', expect.any(Error));
     });
@@ -247,16 +261,16 @@ describe('Patch Note Functions', () => {
           emoji: '🐛',
           releaseDate: new Date('2023-01-01'),
           content: '{invalid-json',
-          published: true
-        }
+          published: true,
+        },
       ];
-      
+
       (prisma.patchNote.findMany as jest.Mock).mockResolvedValue(mockPatchnotes);
-      
+
       const result = await getAllPatchnotes();
-      
+
       expect(result).toEqual([]);
       expect(console.error).toHaveBeenCalled();
     });
   });
-}); 
+});

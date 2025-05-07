@@ -1,13 +1,13 @@
-import { getUserLoggedIn } from "@/action/users/getUserLoggedIn";
-import UserSettingsPage from "./Settings";
-import { redirect } from "next/navigation";
+import { getUserLoggedIn } from '@/action/users/getUserLoggedIn';
+import UserSettingsPage from './Settings';
+import { redirect } from 'next/navigation';
 
 export default async function SettingsPage() {
-    const user = await getUserLoggedIn();
+  const user = await getUserLoggedIn();
 
-    if (!user) {
-        redirect("/login");
-    }
+  if (!user) {
+    redirect('/login');
+  }
 
-    return <UserSettingsPage user={user} />
+  return <UserSettingsPage user={user} />;
 }

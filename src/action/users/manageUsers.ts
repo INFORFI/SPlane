@@ -39,36 +39,36 @@ export async function createUser(input: CreateUserInput): Promise<UserOperationR
     // Check if the current user has admin privileges
     const currentUserId = await requireAuth();
     if (!currentUserId) {
-      return { 
-        success: false, 
-        error: "Vous devez être connecté pour effectuer cette action" 
+      return {
+        success: false,
+        error: 'Vous devez être connecté pour effectuer cette action',
       };
     }
 
     const currentUser = await prisma.user.findUnique({
       where: { id: currentUserId },
-      select: { role: true }
+      select: { role: true },
     });
 
     if (!currentUser || currentUser.role !== Role.ADMIN) {
-      return { 
-        success: false, 
-        error: "Vous n'avez pas les droits d'administrateur nécessaires" 
+      return {
+        success: false,
+        error: "Vous n'avez pas les droits d'administrateur nécessaires",
       };
     }
 
     // Check if email is already taken
     const existingUser = await prisma.user.findUnique({
-      where: { email: input.email }
+      where: { email: input.email },
     });
 
     if (existingUser) {
       return {
         success: false,
-        error: "Un utilisateur avec cet email existe déjà",
+        error: 'Un utilisateur avec cet email existe déjà',
         fieldErrors: {
-          email: "Cette adresse email est déjà utilisée"
-        }
+          email: 'Cette adresse email est déjà utilisée',
+        },
       };
     }
 
@@ -81,8 +81,8 @@ export async function createUser(input: CreateUserInput): Promise<UserOperationR
         email: input.email,
         fullName: input.fullName,
         passwordHash,
-        role: input.role
-      }
+        role: input.role,
+      },
     });
 
     // Revalidate relevant paths
@@ -92,9 +92,9 @@ export async function createUser(input: CreateUserInput): Promise<UserOperationR
     return { success: true };
   } catch (error) {
     console.error('Error creating user:', error);
-    return { 
-      success: false, 
-      error: "Une erreur est survenue lors de la création de l'utilisateur" 
+    return {
+      success: false,
+      error: "Une erreur est survenue lors de la création de l'utilisateur",
     };
   }
 }
@@ -107,49 +107,49 @@ export async function updateUser(input: UpdateUserInput): Promise<UserOperationR
     // Check if the current user has admin privileges
     const currentUserId = await requireAuth();
     if (!currentUserId) {
-      return { 
-        success: false, 
-        error: "Vous devez être connecté pour effectuer cette action" 
+      return {
+        success: false,
+        error: 'Vous devez être connecté pour effectuer cette action',
       };
     }
 
     const currentUser = await prisma.user.findUnique({
       where: { id: currentUserId },
-      select: { role: true }
+      select: { role: true },
     });
 
     if (!currentUser || currentUser.role !== Role.ADMIN) {
-      return { 
-        success: false, 
-        error: "Vous n'avez pas les droits d'administrateur nécessaires" 
+      return {
+        success: false,
+        error: "Vous n'avez pas les droits d'administrateur nécessaires",
       };
     }
 
     // Check if the user exists
     const existingUser = await prisma.user.findUnique({
-      where: { id: input.id }
+      where: { id: input.id },
     });
 
     if (!existingUser) {
       return {
         success: false,
-        error: "L'utilisateur n'existe pas"
+        error: "L'utilisateur n'existe pas",
       };
     }
 
     // Check if email is already taken by another user
     if (input.email !== existingUser.email) {
       const userWithEmail = await prisma.user.findUnique({
-        where: { email: input.email }
+        where: { email: input.email },
       });
 
       if (userWithEmail) {
         return {
           success: false,
-          error: "Un autre utilisateur utilise déjà cette adresse email",
+          error: 'Un autre utilisateur utilise déjà cette adresse email',
           fieldErrors: {
-            email: "Cette adresse email est déjà utilisée"
-          }
+            email: 'Cette adresse email est déjà utilisée',
+          },
         };
       }
     }
@@ -158,7 +158,7 @@ export async function updateUser(input: UpdateUserInput): Promise<UserOperationR
     const updateData: Prisma.UserUpdateInput = {
       email: input.email,
       fullName: input.fullName,
-      role: input.role
+      role: input.role,
     };
 
     // Hash and update password if provided
@@ -169,7 +169,7 @@ export async function updateUser(input: UpdateUserInput): Promise<UserOperationR
     // Update the user
     await prisma.user.update({
       where: { id: input.id },
-      data: updateData
+      data: updateData,
     });
 
     // Revalidate relevant paths
@@ -179,9 +179,9 @@ export async function updateUser(input: UpdateUserInput): Promise<UserOperationR
     return { success: true };
   } catch (error) {
     console.error('Error updating user:', error);
-    return { 
-      success: false, 
-      error: "Une erreur est survenue lors de la mise à jour de l'utilisateur" 
+    return {
+      success: false,
+      error: "Une erreur est survenue lors de la mise à jour de l'utilisateur",
     };
   }
 }
@@ -194,21 +194,21 @@ export async function deleteUser(userId: number): Promise<UserOperationResponse>
     // Check if the current user has admin privileges
     const currentUserId = await requireAuth();
     if (!currentUserId) {
-      return { 
-        success: false, 
-        error: "Vous devez être connecté pour effectuer cette action" 
+      return {
+        success: false,
+        error: 'Vous devez être connecté pour effectuer cette action',
       };
     }
 
     const currentUser = await prisma.user.findUnique({
       where: { id: currentUserId },
-      select: { role: true }
+      select: { role: true },
     });
 
     if (!currentUser || currentUser.role !== Role.ADMIN) {
-      return { 
-        success: false, 
-        error: "Vous n'avez pas les droits d'administrateur nécessaires" 
+      return {
+        success: false,
+        error: "Vous n'avez pas les droits d'administrateur nécessaires",
       };
     }
 
@@ -216,39 +216,39 @@ export async function deleteUser(userId: number): Promise<UserOperationResponse>
     if (userId === currentUserId) {
       return {
         success: false,
-        error: "Vous ne pouvez pas supprimer votre propre compte"
+        error: 'Vous ne pouvez pas supprimer votre propre compte',
       };
     }
 
     // Check if the user exists
     const user = await prisma.user.findUnique({
-      where: { id: userId }
+      where: { id: userId },
     });
 
     if (!user) {
       return {
         success: false,
-        error: "L'utilisateur n'existe pas"
+        error: "L'utilisateur n'existe pas",
       };
     }
 
     // Use a transaction to handle cascading operations
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async tx => {
       // Remove user from tasks
       await tx.userTask.deleteMany({
-        where: { userId }
+        where: { userId },
       });
-      
+
       // Handle projects owned by this user (optional: transfer or delete)
       // For this example, we'll transfer projects to the admin user
       await tx.project.updateMany({
         where: { ownerId: userId },
-        data: { ownerId: currentUserId }
+        data: { ownerId: currentUserId },
       });
-      
+
       // Delete the user
       await tx.user.delete({
-        where: { id: userId }
+        where: { id: userId },
       });
     });
 
@@ -259,9 +259,9 @@ export async function deleteUser(userId: number): Promise<UserOperationResponse>
     return { success: true };
   } catch (error) {
     console.error('Error deleting user:', error);
-    return { 
-      success: false, 
-      error: "Une erreur est survenue lors de la suppression de l'utilisateur" 
+    return {
+      success: false,
+      error: "Une erreur est survenue lors de la suppression de l'utilisateur",
     };
   }
 }

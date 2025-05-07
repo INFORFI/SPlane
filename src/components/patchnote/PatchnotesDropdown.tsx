@@ -33,7 +33,7 @@ export default function PatchnotesDropdown({ patchnotes }: PatchnotesDropdownPro
 
   const handlePatchnoteClick = async (patchnoteId: number) => {
     setIsOpen(false);
-    
+
     // Mark the patchnote as read when clicked
     try {
       await markPatchnoteAsRead(patchnoteId, 0); // The second argument will be replaced server-side
@@ -68,17 +68,20 @@ export default function PatchnotesDropdown({ patchnotes }: PatchnotesDropdownPro
             className="absolute right-0 mt-2 w-80 max-h-[70vh] overflow-auto bg-[var(--background-secondary)] rounded-lg border border-[var(--border)] shadow-xl z-50"
           >
             <div className="p-3 border-b border-[var(--border)]">
-              <h3 className="font-medium text-[var(--foreground-secondary)]">Nouvelles mises à jour</h3>
+              <h3 className="font-medium text-[var(--foreground-secondary)]">
+                Nouvelles mises à jour
+              </h3>
               {hasUnreadPatchnotes && (
                 <p className="text-xs text-[var(--foreground-tertiary)] mt-1">
-                  {patchnotes.length} note{patchnotes.length > 1 ? 's' : ''} de mise à jour non lue{patchnotes.length > 1 ? 's' : ''}
+                  {patchnotes.length} note{patchnotes.length > 1 ? 's' : ''} de mise à jour non lue
+                  {patchnotes.length > 1 ? 's' : ''}
                 </p>
               )}
             </div>
 
             <div className="py-2">
               {hasUnreadPatchnotes ? (
-                patchnotes.map((note) => (
+                patchnotes.map(note => (
                   <Link href={`/dashboard/patchnotes/${note.id}`} key={note.id}>
                     <motion.div
                       key={note.id}
@@ -99,12 +102,16 @@ export default function PatchnotesDropdown({ patchnotes }: PatchnotesDropdownPro
                               v{note.version}
                             </span>
                           </p>
-                          <p className="text-xs text-[var(--foreground-tertiary)] truncate mt-0.5">{note.description}</p>
-                          <p className="text-xs text-[var(--foreground-muted)] mt-1">{new Date(note.releaseDate).toLocaleDateString('fr-FR', {
-                            day: 'numeric',
-                            month: 'long',
-                            year: 'numeric'
-                          })}</p>
+                          <p className="text-xs text-[var(--foreground-tertiary)] truncate mt-0.5">
+                            {note.description}
+                          </p>
+                          <p className="text-xs text-[var(--foreground-muted)] mt-1">
+                            {new Date(note.releaseDate).toLocaleDateString('fr-FR', {
+                              day: 'numeric',
+                              month: 'long',
+                              year: 'numeric',
+                            })}
+                          </p>
                         </div>
                       </div>
                     </motion.div>
@@ -112,14 +119,16 @@ export default function PatchnotesDropdown({ patchnotes }: PatchnotesDropdownPro
                 ))
               ) : (
                 <div className="px-4 py-6 text-center">
-                  <p className="text-sm text-[var(--foreground-tertiary)]">Aucune mise à jour non lue</p>
+                  <p className="text-sm text-[var(--foreground-tertiary)]">
+                    Aucune mise à jour non lue
+                  </p>
                 </div>
               )}
             </div>
-            
+
             {hasUnreadPatchnotes && (
               <div className="p-2 border-t border-[var(--border)]">
-                <button 
+                <button
                   className="w-full py-2 px-3 bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-md text-sm font-medium text-[var(--primary-foreground)] transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
@@ -132,4 +141,4 @@ export default function PatchnotesDropdown({ patchnotes }: PatchnotesDropdownPro
       </AnimatePresence>
     </div>
   );
-} 
+}

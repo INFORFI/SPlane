@@ -4,13 +4,13 @@ import { prisma } from '@/lib/prisma';
 // Mocks
 jest.mock('@/lib/prisma', () => {
   const mockUpdate = jest.fn();
-  
+
   return {
     prisma: {
       task: {
-        update: mockUpdate
-      }
-    }
+        update: mockUpdate,
+      },
+    },
   };
 });
 
@@ -71,10 +71,7 @@ describe('changeTaskStatus', () => {
 
     expect(result.success).toBe(false);
     expect(result.error).toBe('Failed to update task status');
-    expect(console.error).toHaveBeenCalledWith(
-      'Failed to update task status:',
-      expect.any(Error)
-    );
+    expect(console.error).toHaveBeenCalledWith('Failed to update task status:', expect.any(Error));
   });
 
   it('should handle non-numeric taskId', async () => {
@@ -88,9 +85,7 @@ describe('changeTaskStatus', () => {
 
   it('should handle invalid status value', async () => {
     // Mock database error for invalid status
-    (prisma.task.update as jest.Mock).mockRejectedValue(
-      new Error('Invalid status value')
-    );
+    (prisma.task.update as jest.Mock).mockRejectedValue(new Error('Invalid status value'));
 
     const result = await changeTaskStatus('123', 'INVALID_STATUS');
 
@@ -101,17 +96,12 @@ describe('changeTaskStatus', () => {
 
   it('should handle database errors', async () => {
     // Mock general database error
-    (prisma.task.update as jest.Mock).mockRejectedValue(
-      new Error('Database connection error')
-    );
+    (prisma.task.update as jest.Mock).mockRejectedValue(new Error('Database connection error'));
 
     const result = await changeTaskStatus('123', 'COMPLETED');
 
     expect(result.success).toBe(false);
     expect(result.error).toBe('Failed to update task status');
-    expect(console.error).toHaveBeenCalledWith(
-      'Failed to update task status:',
-      expect.any(Error)
-    );
+    expect(console.error).toHaveBeenCalledWith('Failed to update task status:', expect.any(Error));
   });
-}); 
+});

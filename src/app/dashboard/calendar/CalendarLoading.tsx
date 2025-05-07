@@ -54,7 +54,10 @@ export default function CalendarLoading() {
             <div className="h-6 w-36 bg-[var(--background-tertiary)] rounded-md animate-pulse mb-4"></div>
             <div className="space-y-3">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="h-20 bg-[var(--background-tertiary)] rounded-lg animate-pulse"></div>
+                <div
+                  key={i}
+                  className="h-20 bg-[var(--background-tertiary)] rounded-lg animate-pulse"
+                ></div>
               ))}
             </div>
           </div>

@@ -8,25 +8,23 @@ interface PatchnoteModalContainerProps {
   patchnote: PatchNote[];
 }
 
-export default function PatchnoteModalContainer({
-  patchnote,
-}: PatchnoteModalContainerProps) {
+export default function PatchnoteModalContainer({ patchnote }: PatchnoteModalContainerProps) {
   const [showModal, setShowModal] = useState(false);
   const [currentPatchnoteIndex, setCurrentPatchnoteIndex] = useState(0);
-  
+
   // When the component mounts, show the modal
   useEffect(() => {
     // Small delay to ensure the modal appears after the page has loaded
     const timer = setTimeout(() => {
       setShowModal(true);
     }, 500);
-    
+
     return () => clearTimeout(timer);
   }, []);
-  
+
   // Get current patchnote
   const currentPatchnote = patchnote[currentPatchnoteIndex];
-  
+
   // Handle closing the modal
   const handleClose = () => {
     // If we have more patchnotes to show, show the next one
@@ -37,18 +35,18 @@ export default function PatchnoteModalContainer({
       setShowModal(false);
     }
   };
-  
+
   // Handle marking the patchnote as read
   const handleMarkAsRead = async (patchnoteId: number) => {
     //await markAsReadAction(patchnoteId);
     console.log('markAsReadAction', patchnoteId);
   };
-  
+
   // If the modal is not shown or we don't have any patchnotes, don't render anything
   if (!showModal || !patchnote.length) {
     return null;
   }
-  
+
   // Render the modal for the current patchnote
   return (
     <PatchNoteModal

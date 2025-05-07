@@ -39,7 +39,7 @@ describe('countUserTasks', () => {
   it('should return the count of tasks for authenticated user', async () => {
     // Mock authentication to return a user ID
     (requireAuth as jest.Mock).mockResolvedValue(1);
-    
+
     // Mock task count to return 5
     (prisma.userTask.count as jest.Mock).mockResolvedValue(5);
 
@@ -57,7 +57,7 @@ describe('countUserTasks', () => {
   it('should return 0 if no tasks are found', async () => {
     // Mock authentication to return a user ID
     (requireAuth as jest.Mock).mockResolvedValue(1);
-    
+
     // Mock task count to return 0
     (prisma.userTask.count as jest.Mock).mockResolvedValue(0);
 
@@ -73,7 +73,7 @@ describe('countUserTasks', () => {
   });
 
   it('should handle database errors and return 0', async () => {
-    (requireAuth as jest.Mock).mockResolvedValue(1); 
+    (requireAuth as jest.Mock).mockResolvedValue(1);
 
     const result = await countUserTasks();
 
@@ -85,4 +85,4 @@ describe('countUserTasks', () => {
       },
     });
   });
-}); 
+});

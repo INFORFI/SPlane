@@ -22,7 +22,9 @@ export default function ProjectCard({
       <div className="flex justify-between items-start">
         <div>
           <h3 className="font-semibold text-lg text-[var(--foreground)]">{project.name}</h3>
-          <p className="text-[var(--foreground-tertiary)] text-sm line-clamp-2 mt-1">{project.description}</p>
+          <p className="text-[var(--foreground-tertiary)] text-sm line-clamp-2 mt-1">
+            {project.description}
+          </p>
         </div>
         <span
           className={`px-2.5 py-1 text-xs font-medium rounded-full ${

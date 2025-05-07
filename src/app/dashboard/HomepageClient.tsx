@@ -134,7 +134,7 @@ export default function HomepageClient({ dashboardData, calendarData }: Dashboar
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {dashboardData.projects.map((project) => (
+              {dashboardData.projects.map(project => (
                 <Link href={`/dashboard/projects/${project.id}`} key={project.id}>
                   <ProjectCard project={project} />
                 </Link>
@@ -156,7 +156,7 @@ export default function HomepageClient({ dashboardData, calendarData }: Dashboar
             </div>
 
             <div className="space-y-1">
-              {dashboardData.tasks.map((task) => (
+              {dashboardData.tasks.map(task => (
                 <TaskItem key={task.id} task={task} />
               ))}
             </div>

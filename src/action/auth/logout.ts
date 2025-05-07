@@ -9,13 +9,13 @@ import { cookies } from 'next/headers';
 export async function logout() {
   try {
     const cookieStore = await cookies();
-    
+
     // Suppression du cookie de session
     cookieStore.delete({
       name: 'session_token',
       path: '/',
     });
-    
+
     return { success: true };
   } catch (error) {
     console.error('Erreur lors de la déconnexion:', error);

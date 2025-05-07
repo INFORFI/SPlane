@@ -13,7 +13,6 @@ export default async function DashboardLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-
   const user = await getUserLoggedIn();
 
   if (!user) {
@@ -23,7 +22,7 @@ export default async function DashboardLayout({
   const unreadPatchnotes = await checkUnreadPatchnotes(user?.id);
 
   async function handleLogout() {
-    "use server";
+    'use server';
     await logout();
     redirect('/login');
   }
@@ -50,7 +49,9 @@ export default async function DashboardLayout({
 
             <div className="flex items-center gap-3">
               <div className="flex flex-col items-end">
-                <span className="text-sm font-medium text-[var(--foreground-secondary)]">{user?.fullName}</span>
+                <span className="text-sm font-medium text-[var(--foreground-secondary)]">
+                  {user?.fullName}
+                </span>
                 <span className="text-xs text-[var(--foreground-tertiary)]">{user?.email}</span>
               </div>
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--primary)] text-[var(--primary-foreground)]">
@@ -59,7 +60,10 @@ export default async function DashboardLayout({
             </div>
 
             <form action={handleLogout}>
-              <button type="submit" className="p-2 rounded-md text-[var(--foreground-tertiary)] hover:text-[var(--foreground)] hover:bg-[var(--background-tertiary)] transition-colors cursor-pointer">
+              <button
+                type="submit"
+                className="p-2 rounded-md text-[var(--foreground-tertiary)] hover:text-[var(--foreground)] hover:bg-[var(--background-tertiary)] transition-colors cursor-pointer"
+              >
                 <LogOut className="h-5 w-5" />
               </button>
             </form>

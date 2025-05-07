@@ -4,13 +4,13 @@ import { prisma } from '@/lib/prisma';
 // Mocks
 jest.mock('@/lib/prisma', () => {
   const mockFindUnique = jest.fn();
-  
+
   return {
     prisma: {
       patchNote: {
-        findUnique: mockFindUnique
-      }
-    }
+        findUnique: mockFindUnique,
+      },
+    },
   };
 });
 
@@ -34,7 +34,7 @@ describe('getPatchnote', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    
+
     // Setup mock to return the patchnote
     (prisma.patchNote.findUnique as jest.Mock).mockResolvedValue(mockPatchnote);
 
@@ -56,7 +56,7 @@ describe('getPatchnote', () => {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    
+
     // Setup mock to return the patchnote
     (prisma.patchNote.findUnique as jest.Mock).mockResolvedValue(mockPatchnote);
 
@@ -82,9 +82,7 @@ describe('getPatchnote', () => {
 
   it('should handle invalid id format gracefully', async () => {
     // Setup mock to throw an error for invalid id
-    (prisma.patchNote.findUnique as jest.Mock).mockRejectedValue(
-      new Error('Invalid id format')
-    );
+    (prisma.patchNote.findUnique as jest.Mock).mockRejectedValue(new Error('Invalid id format'));
 
     const result = await getPatchnote('invalid-id');
 
@@ -109,4 +107,4 @@ describe('getPatchnote', () => {
       expect.any(Error)
     );
   });
-}); 
+});

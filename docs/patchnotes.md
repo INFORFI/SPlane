@@ -42,13 +42,14 @@ PR (dev) → main → publish-patchnote.yml → PR de publication → main → p
 
 ### 3️⃣ Finalisation (après fusion de la PR de publication)
 
-Le fichier de `docker-compose.prod.yml` contient un service pour **importer directement dans la db** les `patchnotes`, grâce au script `import-patchnotes.js` disponible dans le dossier `scripts/`.  (plus de détails sur le script, [plus bas](#-scripts-dimportation))
+Le fichier de `docker-compose.prod.yml` contient un service pour **importer directement dans la db** les `patchnotes`, grâce au script `import-patchnotes.js` disponible dans le dossier `scripts/`. (plus de détails sur le script, [plus bas](#-scripts-dimportation))
 
 ## 🗂️ Structure du système
 
 ### 📂 Format des fichiers
 
 **Fichier temporaire** (patchnote-draft.json) :
+
 ```json
 {
   "version": "",
@@ -67,6 +68,7 @@ Le fichier de `docker-compose.prod.yml` contient un service pour **importer dire
 ```
 
 **Fichier final** (docs/patchnotes/vX.Y.Z.json) :
+
 ```json
 {
   "version": "1.2.0",
@@ -96,7 +98,7 @@ model PatchNote {
   releaseDate DateTime  @default(now())
   content     String    // Contenu JSON structuré des notes
   published   Boolean   @default(false)
-  
+
   userViews   PatchNoteView[]
 }
 
@@ -105,10 +107,10 @@ model PatchNoteView {
   userId      Int
   patchNoteId Int
   viewedAt    DateTime  @default(now())
-  
+
   user        User      @relation(fields: [userId], references: [id])
   patchNote   PatchNote @relation(fields: [patchNoteId], references: [id])
-  
+
   @@unique([userId, patchNoteId])
 }
 ```
@@ -124,6 +126,7 @@ model PatchNoteView {
 ### 🖌️ Rendu du patchnote
 
 La modal présente :
+
 - 🎨 Un en-tête avec l'emoji et le titre
 - 📋 Les modifications organisées par catégories
 - ✅ Un bouton pour fermer et continuer
@@ -145,7 +148,7 @@ Le système utilise le versionnement sémantique (SemVer) :
 
 ## 💻 Scripts d'importation
 
-Le script `import-patchnotes.js` est utilisé lors du déploiement pour importer les patchnotes dans la base de données comme  :
+Le script `import-patchnotes.js` est utilisé lors du déploiement pour importer les patchnotes dans la base de données comme :
 
 1. Lit tous les fichiers JSON dans `docs/patchnotes/`
 2. Vérifie si le patchnote existe déjà en base

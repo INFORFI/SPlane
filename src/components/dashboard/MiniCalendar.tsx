@@ -222,7 +222,9 @@ export default function MiniCalendar({ calendarData }: MiniCalendarProps) {
 
           <div className="mt-6 space-y-3">
             <div className="flex justify-between items-center">
-              <h4 className="text-sm font-medium text-[var(--foreground)]">{getSelectedDayLabel()}</h4>
+              <h4 className="text-sm font-medium text-[var(--foreground)]">
+                {getSelectedDayLabel()}
+              </h4>
               {selectedDay && (
                 <button
                   onClick={() => setSelectedDay(null)}
@@ -243,7 +245,9 @@ export default function MiniCalendar({ calendarData }: MiniCalendarProps) {
                     >
                       <div className={`h-2 w-2 rounded-full ${event.colorClass}`}></div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-medium text-[var(--foreground)] truncate">{event.title}</p>
+                        <p className="text-xs font-medium text-[var(--foreground)] truncate">
+                          {event.title}
+                        </p>
                         <div className="flex items-center justify-between">
                           <p className="text-xs text-[var(--foreground-tertiary)]">
                             {selectedDay
