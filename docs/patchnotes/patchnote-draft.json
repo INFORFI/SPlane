@@ -63,7 +63,13 @@
         "pr_number": "72"
       }
     ],
-    "technical-improvements": [],
+    "technical-improvements": [
+      {
+        "name": "testing",
+        "description": "🔨 Add tests",
+        "pr_number": "76"
+      }
+    ],
     "other-changes": [
       {
         "name": "patchnotes",
