@@ -1,12 +1,15 @@
 'use server';
 
-import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
-import { PatchNote } from '@/components/patchnote/PatchnoteModal';
+import { PatchNote } from '@prisma/client';
+
+type PatchNoteParsed = PatchNote & {
+  parsedContent: any;
+}
 
 // Check if user has any unread patchnotes
-export async function checkUnreadPatchnotes(userId: number): Promise<PatchNote[]> {
+export async function checkUnreadPatchnotes(userId: number): Promise<PatchNoteParsed[]> {
   if (!userId) {
     return [];
   }
@@ -39,8 +42,9 @@ export async function checkUnreadPatchnotes(userId: number): Promise<PatchNote[]
       title: note.title,
       description: note.description,
       emoji: note.emoji || '✨',
-      releaseDate: note.releaseDate.toISOString(),
+      releaseDate: note.releaseDate,
       content: note.content,
+      published: note.published,
       // Parse the content to make it easier to use in the client
       parsedContent: JSON.parse(note.content)
     }));
@@ -76,7 +80,7 @@ export async function markPatchnoteAsRead(patchNoteId: number, userId: number): 
 }
 
 // Get all patchnotes
-export async function getAllPatchnotes(): Promise<PatchNote[]> {
+export async function getAllPatchnotes(): Promise<PatchNoteParsed[]> {
   try {
     const patchnotes = await prisma.patchNote.findMany({
       where: {
@@ -93,8 +97,9 @@ export async function getAllPatchnotes(): Promise<PatchNote[]> {
       title: note.title,
       description: note.description,
       emoji: note.emoji || '✨',
-      releaseDate: note.releaseDate.toISOString(),
+      releaseDate: note.releaseDate,
       content: note.content,
+      published: note.published,
       parsedContent: JSON.parse(note.content)
     }));
   } catch (error) {
