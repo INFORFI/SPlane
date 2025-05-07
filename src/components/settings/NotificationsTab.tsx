@@ -24,6 +24,7 @@ export default function NotificationsTab({ settings }: { settings: UserSettings 
         });
 
         setIsSubmitting(false);
+        setSuccess(true);
     }
 
     return (
@@ -133,7 +134,7 @@ export default function NotificationsTab({ settings }: { settings: UserSettings 
                           </div>
                           <div>
                             <h4 className="text-sm font-medium text-[var(--foreground)]">Patch Notes</h4>
-                            <p className="text-xs text-[var(--foreground-tertiary)]">Recevoir les dernières mise à jour de l'application directement lors de votre connexion sur splane</p>
+                            <p className="text-xs text-[var(--foreground-tertiary)]">Recevoir les dernières mise à jour de l&apos;application directement lors de votre connexion sur splane</p>
                           </div>
                         </div>
                         <label className="relative inline-flex items-center cursor-pointer">

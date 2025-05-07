@@ -1,7 +1,6 @@
 import { getMonthData } from '@/action/calendar/getMonthData';
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth';
-import { formatDate } from '@/utils/dateFormatter';
 
 // Mocks
 jest.mock('@/lib/prisma', () => {

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Search, Calendar, ChevronRight, ArrowRight, Filter, Newspaper, Bug, Wrench, Plus } from 'lucide-react';
+import { Search, Calendar, ChevronRight, ArrowRight, Newspaper, Bug, Wrench, Plus } from 'lucide-react';
 import { PatchNote } from '@prisma/client';
 import { PatchNoteSection } from '@/components/patchnote/PatchnoteModal';
 
@@ -154,7 +154,7 @@ export default function PatchnoteList({ patchnotes }: PatchnoteListProps) {
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {groupedPatchnotes[month].map((note, index) => (
+                {groupedPatchnotes[month].map((note) => (
                   <motion.div
                     key={note.id}
                     variants={itemVariants}

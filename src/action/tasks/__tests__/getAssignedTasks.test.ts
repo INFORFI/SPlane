@@ -135,15 +135,7 @@ describe('getAssignedTasks', () => {
       project: mockProject,
       userTasks: [{ id: 3, taskId: 3, userId: 1, user: mockUser }]
     };
-    
-    // Mock the tasks in an order that doesn't match the expected sort order
-    const mockTasks = [
-      mediumPriorityEarliestDeadline,
-      highPriorityLaterDeadline,
-      highPriorityEarlierDeadline
-    ];
-    
-    // Mock the sorted order as it would be returned by the database
+     
     const sortedTasks = [
       highPriorityEarlierDeadline,  // HIGH priority, earlier deadline
       highPriorityLaterDeadline,    // HIGH priority, later deadline

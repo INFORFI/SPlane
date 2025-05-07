@@ -10,7 +10,6 @@ import {
   FileText,
   Github
 } from 'lucide-react';
-import { PatchNote } from '@prisma/client';
 
 // Animation variants
 const containerVariants = {

@@ -4,8 +4,16 @@ import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { PatchNote } from '@prisma/client';
 
+interface PatchNoteContent {
+  changes: Array<{
+    title: string;
+    description: string;
+    type: 'feature' | 'fix' | 'improvement';
+  }>;
+}
+
 type PatchNoteParsed = PatchNote & {
-  parsedContent: any;
+  parsedContent: PatchNoteContent;
 }
 
 // Check if user has any unread patchnotes

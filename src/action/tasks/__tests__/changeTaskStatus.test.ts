@@ -1,6 +1,5 @@
 import changeTaskStatus from '@/action/tasks/changeTaskStatus';
 import { prisma } from '@/lib/prisma';
-import { TaskStatus } from '@prisma/client';
 
 // Mocks
 jest.mock('@/lib/prisma', () => {

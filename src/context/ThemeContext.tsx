@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext, useState, useEffect, ReactNode } from 'react';
-import { Check, Sun, Moon, Monitor, Palette, Contrast } from 'lucide-react';
+import { Sun, Moon, Monitor, Palette, Contrast } from 'lucide-react';
 
 export type ThemeType = string;
 

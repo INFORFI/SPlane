@@ -6,12 +6,10 @@ import { PatchNote } from '@prisma/client';
 
 interface PatchnoteModalContainerProps {
   patchnote: PatchNote[];
-  markAsReadAction: (patchnoteId: number) => Promise<void>;
 }
 
 export default function PatchnoteModalContainer({
   patchnote,
-  markAsReadAction
 }: PatchnoteModalContainerProps) {
   const [showModal, setShowModal] = useState(false);
   const [currentPatchnoteIndex, setCurrentPatchnoteIndex] = useState(0);

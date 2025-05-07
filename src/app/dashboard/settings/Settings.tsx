@@ -1,23 +1,17 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
   User as UserIcon,
   Shield,
   Bell,
   Moon,
-  Sun,
-  Edit,
   Save,
-  Mail,
   Key,
   AlertCircle,
   CheckCircle2,
-  X,
-  Camera,
   LogOut,
-  ChevronRight
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { logout } from '@/action/auth/logout';
@@ -26,13 +20,6 @@ import type { UserLoggedIn } from '@/action/users/getUserLoggedIn';
 import ProfileTab from '@/components/settings/ProfileTab';
 import NotificationsTab from '@/components/settings/NotificationsTab';
 import ThemeSelector from '@/components/settings/ThemeSelector';
-
-// Mock function for demonstration - replace with actual server action
-const updateUserSettings = async () => {
-  // Simulate API call
-  await new Promise(resolve => setTimeout(resolve, 1000));
-  return { success: true };
-};
 
 // Mock function for demonstration - replace with actual server action
 const changeUserPassword = async () => {
@@ -44,99 +31,25 @@ const changeUserPassword = async () => {
 export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState('profile');
-  const avatarInputRef = useRef<HTMLInputElement>(null);
-
-  console.log("user", user);
-  
-  // Profile form state
-  const [profileForm, setProfileForm] = useState({
-    fullName: user.fullName,
-    email: user.email,
-  });
-  
+ 
   // Password form state
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: '',
     newPassword: '',
     confirmPassword: '',
-  });
-  
-  // Appearance settings
-  const [appearanceSettings, setAppearanceSettings] = useState({
-    theme: 'dark',
-    compactMode: false,
-    highContrastMode: false,
-  });
-  
-  // Notification settings
-  const [notificationSettings, setNotificationSettings] = useState({
-    emailNotifications: true,
-    taskReminders: true,
-    deadlineAlerts: true,
-    teamUpdates: true,
-    patchNotes: true,
-  });
+  }); 
   
   // Form states
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
-  // Handle profile form changes
-  const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setProfileForm(prev => ({ ...prev, [name]: value }));
-  };
-  
+   
   // Handle password form changes
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setPasswordForm(prev => ({ ...prev, [name]: value }));
-  };
-  
-  // Handle toggle settings
-  const handleToggle = (settingType: 'appearance' | 'notification', setting: string) => {
-    if (settingType === 'appearance') {
-      setAppearanceSettings(prev => ({
-        ...prev,
-        [setting]: !prev[setting as keyof typeof prev],
-      }));
-    } else {
-      setNotificationSettings(prev => ({
-        ...prev,
-        [setting]: !prev[setting as keyof typeof prev],
-      }));
-    }
-  };
-  
-  // Handle theme change
-  const handleThemeChange = (theme: string) => {
-    setAppearanceSettings(prev => ({ ...prev, theme }));
-  };
-  
-  // Handle profile update
-  const handleProfileUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setError(null);
-    
-    try {
-      const result = await updateUserSettings();
-      
-      if (result.success) {
-        setSuccess(true);
-        // Reset after 3 seconds
-        setTimeout(() => {
-          setSuccess(false);
-        }, 3000);
-      }
-    } catch (err) {
-      setError('Failed to update profile settings');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-  
+  };  
+
   // Handle password update
   const handlePasswordUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -166,71 +79,12 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
         }, 3000);
       }
     } catch (err) {
-      setError('Failed to update password');
+      console.error(err);
+      setError('Erreur lors de la mise à jour du mot de passe');
     } finally {
       setIsSubmitting(false);
     }
-  };
-  
-  // Handle appearance settings update
-  const handleAppearanceUpdate = async () => {
-    setIsSubmitting(true);
-    setError(null);
-    
-    try {
-      const result = await updateUserSettings();
-      
-      if (result.success) {
-        setSuccess(true);
-        // Reset after 3 seconds
-        setTimeout(() => {
-          setSuccess(false);
-        }, 3000);
-      }
-    } catch (err) {
-      setError('Failed to update appearance settings');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-  
-  // Handle notification settings update
-  const handleNotificationUpdate = async () => {
-    setIsSubmitting(true);
-    setError(null);
-    
-    try {
-      const result = await updateUserSettings();
-      
-      if (result.success) {
-        setSuccess(true);
-        // Reset after 3 seconds
-        setTimeout(() => {
-          setSuccess(false);
-        }, 3000);
-      }
-    } catch (err) {
-      setError('Failed to update notification settings');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-  
-  // Handle avatar upload
-  const handleAvatarUpload = () => {
-    if (avatarInputRef.current) {
-      avatarInputRef.current.click();
-    }
-  };
-  
-  // Handle file change
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      // Handle file upload logic here
-      console.log('File selected:', file);
-    }
-  };
+  }; 
   
   // Handle logout
   const handleLogout = async () => {
@@ -477,15 +331,15 @@ export default function UserSettingsPage({ user }: { user: UserLoggedIn }) {
                     <ul className="text-sm text-[var(--foreground-tertiary)] space-y-2">
                       <li className="flex items-center gap-2">
                         <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)]"></span>
-                        Use a strong, unique password that you don't use elsewhere
+                        Utilisez un mot de passe fort et unique que vous n&apos;utilisez pas ailleurs
                       </li>
                       <li className="flex items-center gap-2">
                         <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)]"></span>
-                        Enable two-factor authentication when available
+                        Activez l&apos;authentification à deux facteurs lorsque disponible
                       </li>
                       <li className="flex items-center gap-2">
                         <span className="h-1.5 w-1.5 rounded-full bg-[var(--warning)]"></span>
-                        Change your password regularly
+                        Changez votre mot de passe régulièrement
                       </li>
                     </ul>
                   </div>

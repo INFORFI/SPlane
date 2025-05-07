@@ -12,7 +12,6 @@ import {
   Info, 
   CalendarIcon, 
   Share2, 
-  Copy, 
   ChevronDown, 
   ChevronUp
 } from 'lucide-react';
@@ -266,7 +265,7 @@ export default function PatchnoteDetail({ patchnote }: PatchnoteDetailProps) {
       </div>
       
       {/* If no sections with content */}
-      {Object.values(parsedContent).every((items: any) => !items || items.length === 0) && (
+      {Object.values(parsedContent).every((items: unknown) => !items || (items as unknown[]).length === 0) && (
         <motion.div
           variants={itemVariants}
           className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-10 text-center"

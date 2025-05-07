@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { XCircle, ExternalLink, ChevronRight, Info, Clock, Tag, CheckCircle, ArrowLeft, ArrowRight } from 'lucide-react';
+import { XCircle, ExternalLink, Info, Clock, Tag, CheckCircle, ArrowLeft, ArrowRight } from 'lucide-react';
 import { PatchNote } from '@prisma/client';
 
 // Types
@@ -88,16 +88,6 @@ export default function PatchNoteModal({
     }
   };
 
-  // Format release date
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('fr-FR', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    });
-  };
-
   // Calculate if a section has content
   const getSectionItemCount = (sectionKey: keyof PatchNoteSections) => {
     return parsedContent?.[sectionKey]?.length || 0;
@@ -111,12 +101,6 @@ export default function PatchNoteModal({
     getSectionItemCount('other-changes') > 0
   );
 
-  // Set color theme based on emoji
-  const getThemeColor = () => {
-    return 'primary';
-  };
-
-  const themeColor = getThemeColor();
   const hasNavigation = totalPatchnotesCount > 1 && onNavigate;
 
   return (
@@ -210,7 +194,7 @@ export default function PatchNoteModal({
                   </div>
                   <h4 className="text-lg font-medium text-[var(--foreground-secondary)]">Aucun détail disponible</h4>
                   <p className="mt-2 max-w-md text-sm text-[var(--foreground-muted)]">
-                    Cette mise à jour ne contient pas de détails spécifiques. Consultez notre documentation pour plus d'informations.
+                    Cette mise à jour ne contient pas de détails spécifiques. Consultez notre documentation pour plus d&apos;informations.
                   </p>
                 </motion.div>
               )}
@@ -226,7 +210,7 @@ export default function PatchNoteModal({
                 
                 return (
                   <motion.div 
-                    key={key} 
+                    key={key}
                     className="mb-8"
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}

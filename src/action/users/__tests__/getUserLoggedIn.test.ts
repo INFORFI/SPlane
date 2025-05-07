@@ -185,9 +185,8 @@ describe('getUserLoggedIn', () => {
       passwordHash: 'hashed_password_value'
     };
     
-    // The findUnique mock would return data without passwordHash due to select clause
-    const mockUserWithoutPassword = { ...mockUserWithPassword };
-    delete (mockUserWithoutPassword as any).passwordHash;
+    const mockUserWithoutPassword = { ...mockUserWithPassword } as Record<string, unknown>;
+    delete mockUserWithoutPassword.passwordHash;
     
     (prisma.user.findUnique as jest.Mock).mockResolvedValue(mockUserWithoutPassword);
 

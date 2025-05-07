@@ -31,16 +31,6 @@ export default function PatchnotesDropdown({ patchnotes }: PatchnotesDropdownPro
     };
   }, []);
 
-  // Format release date
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('fr-FR', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    });
-  };
-
   const handlePatchnoteClick = async (patchnoteId: number) => {
     setIsOpen(false);
     
