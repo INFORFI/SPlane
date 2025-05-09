@@ -18,7 +18,7 @@ import {
 import { ProjectWithDetails } from '@/action/projects/getProjectById';
 import { TaskStatus } from '@prisma/client';
 import { containerVariants, itemVariants } from '@/utils/ItemVariants';
-import TaskDetailsModal from '@/components/projects/TasskDetailsModal';
+import TaskDetailsModal from '@/components/projects/TaskDetailsModal';
 import { TaskWithProject } from '@/action/tasks/getTasks';
 import DeleteProjectModal from '@/components/projects/DeleteProjectModal';
 

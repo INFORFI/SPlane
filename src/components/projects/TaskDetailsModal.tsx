@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { XCircle, Clock, Calendar, CheckCircle2, Edit, Trash2, Plus } from 'lucide-react';
 import { TaskStatus, Task, User as UserType, UserTask } from '@prisma/client';
+import changeTaskStatus from '@/action/tasks/changeTaskStatus';
+import updateTask from '@/action/tasks/updateTask';
 
-interface TaskDetailsModalProps {
+type TaskDetailsModalProps = {
   task: Task & {
     userTasks: (UserTask & {
       user: UserType;
@@ -21,6 +23,7 @@ export default function TaskDetailsModal({
   formatDate,
 }: TaskDetailsModalProps) {
   const [isEditing, setIsEditing] = useState(false);
+  const [currentStatus, setCurrentStatus] = useState<TaskStatus>(task.status);
   const [taskForm, setTaskForm] = useState({
     title: task.title,
     description: task.description || '',
@@ -30,7 +33,6 @@ export default function TaskDetailsModal({
     assigneeId: task.userTasks[0]?.userId || '',
   });
 
-  // Get status color and text
   const getStatusColor = (status: TaskStatus) => {
     switch (status) {
       case TaskStatus.COMPLETED:
@@ -56,7 +58,6 @@ export default function TaskDetailsModal({
     }
   };
 
-  // Get priority indicator
   const getPriority = (priority: number) => {
     switch (priority) {
       case 3:
@@ -68,11 +69,10 @@ export default function TaskDetailsModal({
     }
   };
 
-  const status = getStatusColor(task.status);
+  const status = getStatusColor(currentStatus);
   const priority = getPriority(task.priority);
   const assignedUser = task.userTasks[0]?.user;
 
-  // Handle form changes
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
@@ -80,12 +80,45 @@ export default function TaskDetailsModal({
     setTaskForm(prev => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would call your API to update the task
-    console.log('Task form submitted:', taskForm);
-    setIsEditing(false);
+    
+    try {
+      // Prepare data for the update
+      const updateData = {
+        title: taskForm.title,
+        description: taskForm.description || null,
+        deadline: taskForm.deadline ? new Date(taskForm.deadline) : null,
+        status: taskForm.status as TaskStatus,
+        priority: Number(taskForm.priority),
+        assigneeId: taskForm.assigneeId.toString() || undefined,
+      };
+      
+      // Call the server action to update the task
+      const result = await updateTask(task.id, updateData);
+      
+      if (result.success) {
+        // Update the local state to reflect changes
+        setCurrentStatus(updateData.status);
+        // Exit edit mode
+        setIsEditing(false);
+      } else {
+        // Handle error (could add toast notification here)
+        console.error('Failed to update task:', result.error);
+      }
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
+  };
+
+  const handleStatusChange = async (newStatus: TaskStatus) => {
+    setCurrentStatus(newStatus);
+    
+    const result = await changeTaskStatus(task.id, newStatus);
+    
+    if (!result.success) {
+      setCurrentStatus(task.status);
+    }
   };
 
   return (
@@ -93,7 +126,7 @@ export default function TaskDetailsModal({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50"
+      className="fixed inset-0 bg-[var(--background)]/60 flex items-center justify-center p-4 z-50"
       onClick={onClose}
     >
       <motion.div
@@ -418,11 +451,12 @@ export default function TaskDetailsModal({
                       <span>Modifier</span>
                     </motion.button>
 
-                    {task.status !== TaskStatus.COMPLETED ? (
+                    {currentStatus !== TaskStatus.COMPLETED ? (
                       <motion.button
                         className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[var(--success-muted)] hover:bg-[var(--success-muted)]/70 text-[var(--success)] rounded-lg text-sm font-medium transition-colors"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
+                        onClick={() => handleStatusChange(TaskStatus.COMPLETED)}
                       >
                         <CheckCircle2 className="h-4 w-4" />
                         <span>Marquer terminée</span>
@@ -432,6 +466,7 @@ export default function TaskDetailsModal({
                         className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[var(--primary-muted)] hover:bg-[var(--primary-muted)]/70 text-[var(--primary)] rounded-lg text-sm font-medium transition-colors"
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
+                        onClick={() => handleStatusChange(TaskStatus.TODO)}
                       >
                         <CheckCircle2 className="h-4 w-4" />
                         <span>Marquer non terminée</span>
