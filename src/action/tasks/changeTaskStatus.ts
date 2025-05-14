@@ -3,10 +3,10 @@
 import { prisma } from '@/lib/prisma';
 import { TaskStatus } from '@prisma/client';
 
-export default async function changeTaskStatus(taskId: string, status: string) {
+export default async function changeTaskStatus(taskId: string | number, status: string) {
   try {
     // Convert taskId from string to number
-    const taskIdNumber = parseInt(taskId, 10);
+    const taskIdNumber = typeof taskId === 'string' ? parseInt(taskId, 10) : taskId;
 
     // Convert status string to TaskStatus enum
     const taskStatus = status as TaskStatus;

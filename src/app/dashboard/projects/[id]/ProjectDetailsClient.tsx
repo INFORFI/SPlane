@@ -8,7 +8,6 @@ import {
   Trash2,
   Calendar,
   Clock,
-  Users,
   User,
   CheckCircle2,
   MessageSquare,
@@ -18,9 +17,10 @@ import {
 import { ProjectWithDetails } from '@/action/projects/getProjectById';
 import { TaskStatus } from '@prisma/client';
 import { containerVariants, itemVariants } from '@/utils/ItemVariants';
-import TaskDetailsModal from '@/components/projects/TasskDetailsModal';
+import TaskDetailsModal from '@/components/projects/TaskDetailsModal';
 import { TaskWithProject } from '@/action/tasks/getTasks';
 import DeleteProjectModal from '@/components/projects/DeleteProjectModal';
+import TeamMemberSection from '@/components/projects/TeamMemberSection';
 
 interface ProjectDetailsClientProps {
   project: ProjectWithDetails;
@@ -224,40 +224,7 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
           </div>
 
           {/* Team members */}
-          <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold text-[var(--foreground)]">Équipe</h2>
-            </div>
-
-            <div className="space-y-3">
-              {project.teamMembers.length > 0 ? (
-                project.teamMembers.map(member => (
-                  <div
-                    key={member.id}
-                    className="flex items-center gap-3 p-2 hover:bg-[var(--background-tertiary)]/50 rounded-lg transition-colors"
-                  >
-                    <div className="h-9 w-9 rounded-full bg-[var(--primary)] flex items-center justify-center text-[var(--primary-foreground)] text-sm font-medium">
-                      {member.fullName
-                        .split(' ')
-                        .map(name => name[0])
-                        .join('')}
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-[var(--foreground)]">
-                        {member.fullName}
-                      </p>
-                      <p className="text-xs text-[var(--foreground-tertiary)]">{member.email}</p>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="text-center py-6">
-                  <Users className="h-8 w-8 text-[var(--foreground-muted)] mx-auto mb-2" />
-                  <p className="text-sm text-[var(--foreground-muted)]">Aucun membre assigné</p>
-                </div>
-              )}
-            </div>
-          </div>
+          <TeamMemberSection project={project} />
         </motion.div>
 
         {/* Tasks panel */}
@@ -573,18 +540,15 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
   );
 }
 
-// Task item component to display individual tasks
-interface TaskItemProps {
+type TaskItemProps = {
   task: TaskWithProject;
   formatDate: (date: Date | null) => string;
   onClick: () => void;
-}
+};
 
 function TaskItem({ task, formatDate, onClick }: TaskItemProps) {
-  // Get the assigned user if any
   const assignedUser = task.userTasks[0]?.user;
 
-  // Get status color and text with CSS variables
   const getStatusColor = (status: TaskStatus) => {
     switch (status) {
       case TaskStatus.COMPLETED:
