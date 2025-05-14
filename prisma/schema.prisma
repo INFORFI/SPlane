@@ -58,6 +58,7 @@ model User {
   userTasks    UserTask[]
   patchNoteViews PatchNoteView[]
   settings     UserSettings?
+  activities   Activity[]
 
   @@map("users")
 }
@@ -122,4 +123,26 @@ model UserTask {
 
   @@unique([userId, taskId])
   @@map("user_tasks")
+}
+
+enum ActivityType {
+  TASK_CREATED
+  TASK_COMPLETED
+  TASK_STARTED
+  PROJECT_CREATED
+  PROJECT_UPDATED
+}
+
+model Activity {
+  id          Int         @id @default(autoincrement())
+  userId      Int         @map("user_id")
+  type        ActivityType
+  content     String
+  entityId    Int         @map("entity_id")
+  entityType  String      @map("entity_type")
+  createdAt   DateTime    @default(now()) @map("created_at")
+  
+  user        User        @relation(fields: [userId], references: [id])
+
+  @@map("activities")
 }
