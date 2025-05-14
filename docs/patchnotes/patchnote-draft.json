@@ -59,6 +59,11 @@
         "name": "guided-tour",
         "description": "Ajout d'un tour guidé pour les nouveaux utilisateurs",
         "pr_number": "82"
+      },
+      {
+        "name": "activity-feed",
+        "description": "✨ Add activity feed",
+        "pr_number": "84"
       }
     ],
     "corrections": [
