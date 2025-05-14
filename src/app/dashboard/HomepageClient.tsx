@@ -106,7 +106,7 @@ export default function HomepageClient({ dashboardData, calendarData }: Dashboar
         <div className="flex items-center gap-2">
           <button 
             onClick={startTour}
-            className="flex items-center gap-2 px-3 py-2 bg-[var(--background-secondary)] hover:bg-[var(--background-tertiary)] border border-[var(--border)] rounded-lg text-sm font-medium transition-colors"
+            className="flex items-center gap-2 px-3 py-2 bg-[var(--background-secondary)] hover:bg-[var(--background-tertiary)] border border-[var(--border)] rounded-lg text-sm font-medium transition-colors text-[var(--foreground-tertiary)]"
           >
             <HelpCircle className="h-4 w-4" />
             Guide
