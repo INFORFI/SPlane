@@ -44,9 +44,11 @@ export default function ActivityFeed() {
             Aucune activité récente
           </p>
         ) : (
-          activities.map((activity) => (
+          activities.map(activity => (
             <div key={activity.id} className="flex gap-3">
-              <div className={`h-8 w-8 rounded-full bg-[var(--${activity.userColor})] flex items-center justify-center text-[var(--${activity.userColor}-foreground)] text-sm font-medium`}>
+              <div
+                className={`h-8 w-8 rounded-full bg-[var(--${activity.userColor})] flex items-center justify-center text-[var(--${activity.userColor}-foreground)] text-sm font-medium`}
+              >
                 {activity.userInitials}
               </div>
               <div>

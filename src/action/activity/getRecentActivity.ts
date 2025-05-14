@@ -58,4 +58,4 @@ export async function getRecentActivity(limit: number = 3): Promise<ActivityData
     console.error('Erreur lors de la récupération des activités:', error);
     return [];
   }
-} 
+}
