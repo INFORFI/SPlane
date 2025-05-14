@@ -57,7 +57,7 @@
       },
       {
         "name": "guided-tour",
-        "description": "✨ Add guided tour feature",
+        "description": "Ajout d'un tour guidé pour les nouveaux utilisateurs",
         "pr_number": "82"
       }
     ],
