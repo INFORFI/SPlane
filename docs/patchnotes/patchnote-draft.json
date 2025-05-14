@@ -54,6 +54,11 @@
         "name": "task",
         "description": "Ajout d'un tracker de tâches dans la page des projets avec la possibilité de marquer les tâches comme terminées",
         "pr_number": "80"
+      },
+      {
+        "name": "guided-tour",
+        "description": "✨ Add guided tour feature",
+        "pr_number": "82"
       }
     ],
     "corrections": [
