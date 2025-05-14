@@ -1,11 +1,12 @@
 import { createTask } from '@/action/tasks/createTask';
 import { prisma } from '@/lib/prisma';
-import { TaskStatus } from '@prisma/client';
+import { ActivityType, TaskStatus } from '@prisma/client';
 
 // Mocks
 jest.mock('@/lib/prisma', () => {
   const mockCreate = jest.fn();
   const mockCreateMany = jest.fn();
+  const mockActivityCreate = jest.fn();
 
   return {
     prisma: {
@@ -15,9 +16,16 @@ jest.mock('@/lib/prisma', () => {
       userTask: {
         createMany: mockCreateMany,
       },
+      activity: {
+        create: mockActivityCreate,
+      },
     },
   };
 });
+
+jest.mock('@/lib/auth', () => ({
+  requireAuth: jest.fn().mockResolvedValue('mock-user-id'),
+}));
 
 describe('createTask', () => {
   beforeEach(() => {
@@ -36,7 +44,7 @@ describe('createTask', () => {
       title: 'Test Task',
       description: 'Test Description',
       deadline: new Date('2025-01-01'),
-      status: 'TODO' as TaskStatus,
+      status: TaskStatus.TODO,
       priority: 1,
       projectId: 1,
     };
@@ -46,7 +54,7 @@ describe('createTask', () => {
       title: 'Test Task',
       description: 'Test Description',
       deadline: '2025-01-01',
-      status: 'TODO' as TaskStatus,
+      status: TaskStatus.TODO,
       priority: 1,
       projectId: 1,
     };
@@ -59,12 +67,21 @@ describe('createTask', () => {
         title: 'Test Task',
         description: 'Test Description',
         deadline: expect.any(Date),
-        status: 'TODO',
+        status: TaskStatus.TODO,
         priority: 1,
         projectId: 1,
       },
     });
     expect(prisma.userTask.createMany).not.toHaveBeenCalled();
+    expect(prisma.activity.create).toHaveBeenCalledWith({
+      data: {
+        userId: 'mock-user-id',
+        content: `Création de la tâche Test Task`,
+        entityId: mockTask.id,
+        entityType: 'task',
+        type: ActivityType.TASK_CREATED,
+      },
+    });
   });
 
   it('should create a task with assignees', async () => {
@@ -74,7 +91,7 @@ describe('createTask', () => {
       title: 'Test Task',
       description: 'Test Description',
       deadline: new Date('2025-01-01'),
-      status: 'TODO' as TaskStatus,
+      status: TaskStatus.TODO,
       priority: 1,
       projectId: 1,
     };
@@ -85,7 +102,7 @@ describe('createTask', () => {
       title: 'Test Task',
       description: 'Test Description',
       deadline: '2025-01-01',
-      status: 'TODO' as TaskStatus,
+      status: TaskStatus.TODO,
       priority: 1,
       projectId: 1,
       assignees: [1, 2],
@@ -99,7 +116,7 @@ describe('createTask', () => {
         title: 'Test Task',
         description: 'Test Description',
         deadline: expect.any(Date),
-        status: 'TODO',
+        status: TaskStatus.TODO,
         priority: 1,
         projectId: 1,
       },
@@ -110,6 +127,15 @@ describe('createTask', () => {
         { taskId: 1, userId: 2 },
       ],
     });
+    expect(prisma.activity.create).toHaveBeenCalledWith({
+      data: {
+        userId: 'mock-user-id',
+        content: `Création de la tâche Test Task`,
+        entityId: mockTask.id,
+        entityType: 'task',
+        type: ActivityType.TASK_CREATED,
+      },
+    });
   });
 
   it('should handle string projectId conversion', async () => {
@@ -119,7 +145,7 @@ describe('createTask', () => {
       title: 'Test Task',
       description: 'Test Description',
       deadline: new Date('2025-01-01'),
-      status: 'TODO' as TaskStatus,
+      status: TaskStatus.TODO,
       priority: 1,
       projectId: 2,
     };
@@ -129,7 +155,7 @@ describe('createTask', () => {
       title: 'Test Task',
       description: 'Test Description',
       deadline: '2025-01-01',
-      status: 'TODO' as TaskStatus,
+      status: TaskStatus.TODO,
       priority: 1,
       projectId: '2', // String projectId
     };
@@ -142,11 +168,12 @@ describe('createTask', () => {
         title: 'Test Task',
         description: 'Test Description',
         deadline: expect.any(Date),
-        status: 'TODO',
+        status: TaskStatus.TODO,
         priority: 1,
         projectId: 2, // Should be converted to number
       },
     });
+    expect(prisma.activity.create).toHaveBeenCalled();
   });
 
   it('should handle empty description', async () => {
@@ -156,7 +183,7 @@ describe('createTask', () => {
       title: 'Test Task',
       description: null,
       deadline: new Date('2025-01-01'),
-      status: 'TODO' as TaskStatus,
+      status: TaskStatus.TODO,
       priority: 1,
       projectId: 1,
     };
@@ -166,7 +193,7 @@ describe('createTask', () => {
       title: 'Test Task',
       description: '', // Empty description
       deadline: '2025-01-01',
-      status: 'TODO' as TaskStatus,
+      status: TaskStatus.TODO,
       priority: 1,
       projectId: 1,
     };
@@ -179,11 +206,12 @@ describe('createTask', () => {
         title: 'Test Task',
         description: null,
         deadline: expect.any(Date),
-        status: 'TODO',
+        status: TaskStatus.TODO,
         priority: 1,
         projectId: 1,
       },
     });
+    expect(prisma.activity.create).toHaveBeenCalled();
   });
 
   it('should handle empty deadline', async () => {
@@ -193,7 +221,7 @@ describe('createTask', () => {
       title: 'Test Task',
       description: 'Test Description',
       deadline: null,
-      status: 'TODO' as TaskStatus,
+      status: TaskStatus.TODO,
       priority: 1,
       projectId: 1,
     };
@@ -203,7 +231,7 @@ describe('createTask', () => {
       title: 'Test Task',
       description: 'Test Description',
       deadline: '', // Empty deadline
-      status: 'TODO' as TaskStatus,
+      status: TaskStatus.TODO,
       priority: 1,
       projectId: 1,
     };
@@ -216,11 +244,12 @@ describe('createTask', () => {
         title: 'Test Task',
         description: 'Test Description',
         deadline: null,
-        status: 'TODO',
+        status: TaskStatus.TODO,
         priority: 1,
         projectId: 1,
       },
     });
+    expect(prisma.activity.create).toHaveBeenCalled();
   });
 
   it('should handle database errors during task creation', async () => {
@@ -231,7 +260,7 @@ describe('createTask', () => {
       title: 'Test Task',
       description: 'Test Description',
       deadline: '2025-01-01',
-      status: 'TODO' as TaskStatus,
+      status: TaskStatus.TODO,
       priority: 1,
       projectId: 1,
     };
@@ -249,7 +278,7 @@ describe('createTask', () => {
       title: 'Test Task',
       description: 'Test Description',
       deadline: new Date('2025-01-01'),
-      status: 'TODO' as TaskStatus,
+      status: TaskStatus.TODO,
       priority: 1,
       projectId: 1,
     };
@@ -260,7 +289,7 @@ describe('createTask', () => {
       title: 'Test Task',
       description: 'Test Description',
       deadline: '2025-01-01',
-      status: 'TODO' as TaskStatus,
+      status: TaskStatus.TODO,
       priority: 1,
       projectId: 1,
       assignees: [1, 2],

@@ -4,6 +4,7 @@
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth';
 import { revalidatePath } from 'next/cache';
+import { ActivityType } from '@prisma/client';
 
 type CreateProjectInput = {
   name: string;
@@ -51,6 +52,17 @@ export async function createProject(input: CreateProjectInput) {
         startDate,
         endDate,
         ownerId,
+      },
+    });
+
+    // Create activity
+    await prisma.activity.create({
+      data: {
+        userId: userId,
+        type: ActivityType.PROJECT_CREATED,
+        content: `Création du projet ${input.name}`,
+        entityId: project.id,
+        entityType: 'project',
       },
     });
 
