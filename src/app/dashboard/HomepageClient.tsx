@@ -21,6 +21,7 @@ import Link from 'next/link';
 import { itemVariants } from '@/utils/ItemVariants';
 import type { CalendarData } from '@/app/dashboard/CalendarEvents';
 import { useTour } from '@/hook/useTour';
+import ActivityFeed from '@/components/dashboard/ActivityFeed';
 
 // Animation variants
 const containerVariants = {
@@ -193,56 +194,7 @@ export default function HomepageClient({ dashboardData, calendarData }: Dashboar
           <MiniCalendar calendarData={calendarData} id="dashboard-calendar" />
 
           {/* Activity Feed */}
-          <motion.div
-            variants={itemVariants}
-            className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-5"
-            id="dashboard-activity"
-          >
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-[var(--foreground)]">Activité récente</h2>
-            </div>
-
-            <div className="space-y-4">
-              <div className="flex gap-3">
-                <div className="h-8 w-8 rounded-full bg-[var(--primary)] flex items-center justify-center text-[var(--primary-foreground)] text-sm font-medium">
-                  JD
-                </div>
-                <div>
-                  <p className="text-sm text-[var(--foreground)]">
-                    <span className="font-medium">John Doe</span> a terminé la tâche{' '}
-                    <span className="font-medium">Create API endpoints</span>
-                  </p>
-                  <p className="text-xs text-[var(--foreground-tertiary)] mt-1">Il y a 2 heures</p>
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <div className="h-8 w-8 rounded-full bg-[var(--accent)] flex items-center justify-center text-[var(--accent-foreground)] text-sm font-medium">
-                  JS
-                </div>
-                <div>
-                  <p className="text-sm text-[var(--foreground)]">
-                    <span className="font-medium">Jane Smith</span> a commencé la tâche{' '}
-                    <span className="font-medium">Implement responsive layout</span>
-                  </p>
-                  <p className="text-xs text-[var(--foreground-tertiary)] mt-1">Il y a 5 heures</p>
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                <div className="h-8 w-8 rounded-full bg-[var(--success)] flex items-center justify-center text-[var(--success-foreground)] text-sm font-medium">
-                  AU
-                </div>
-                <div>
-                  <p className="text-sm text-[var(--foreground)]">
-                    <span className="font-medium">Admin User</span> a créé un nouveau projet{' '}
-                    <span className="font-medium">Mobile App Development</span>
-                  </p>
-                  <p className="text-xs text-[var(--foreground-tertiary)] mt-1">Hier</p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+          <ActivityFeed />
         </div>
       </div>
     </motion.div>
