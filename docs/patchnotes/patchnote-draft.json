@@ -49,6 +49,11 @@
         "name": "lightmode",
         "description": "Ajout de plusieurs thèmes pour le panel",
         "pr_number": "74"
+      },
+      {
+        "name": "task",
+        "description": "✨ Add task tracker in project page",
+        "pr_number": "80"
       }
     ],
     "corrections": [
