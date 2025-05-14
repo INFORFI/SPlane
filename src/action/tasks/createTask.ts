@@ -1,7 +1,8 @@
 'use server';
 
-import { TaskStatus } from '@prisma/client';
+import { ActivityType, TaskStatus } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
+import { requireAuth } from '@/lib/auth';
 
 type CreateTaskInput = {
   title: string;
@@ -15,6 +16,12 @@ type CreateTaskInput = {
 
 export const createTask = async (input: CreateTaskInput) => {
   try {
+    const userId = await requireAuth();
+
+    if (!userId) {
+      return null;
+    }
+
     // Convert projectId to number if it's a string
     const projectId =
       typeof input.projectId === 'string' ? parseInt(input.projectId) : input.projectId;
@@ -40,6 +47,17 @@ export const createTask = async (input: CreateTaskInput) => {
         })),
       });
     }
+
+    // Create activity
+    await prisma.activity.create({
+      data: {
+        userId: userId,
+        content: `Création de la tâche ${input.title}`,
+        entityId: newTask.id,
+        entityType: 'task',
+        type: ActivityType.TASK_CREATED,
+      },
+    });
 
     return newTask;
   } catch (error) {

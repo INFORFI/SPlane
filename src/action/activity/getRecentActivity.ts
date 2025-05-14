@@ -14,43 +14,48 @@ export type ActivityData = {
 };
 
 export async function getRecentActivity(limit: number = 3): Promise<ActivityData[]> {
-  const activities = await prisma.activity.findMany({
-    include: {
-      user: true,
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-    take: limit,
-  });
+  try {
+    const activities = await prisma.activity.findMany({
+      include: {
+        user: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      take: limit,
+    });
 
-  // Générer des couleurs cohérentes basées sur le type d'activité
-  const colorMap = {
-    TASK_COMPLETED: 'primary',
-    TASK_STARTED: 'accent',
-    PROJECT_CREATED: 'success',
-    TASK_CREATED: 'warning',
-    PROJECT_UPDATED: 'secondary',
-  };
-
-  return activities.map(activity => {
-    const userInitials = activity.user.fullName
-      .split(' ')
-      .map(part => part.charAt(0))
-      .join('')
-      .toUpperCase();
-
-    // Déterminer la couleur basée sur le type d'activité
-    const activityType = activity.type as keyof typeof colorMap;
-    const userColor = colorMap[activityType] || 'primary';
-
-    return {
-      id: activity.id,
-      userInitials,
-      userName: activity.user.fullName,
-      content: activity.content,
-      timeAgo: formatDistanceToNow(activity.createdAt, { addSuffix: true, locale: fr }),
-      userColor,
+    // Générer des couleurs cohérentes basées sur le type d'activité
+    const colorMap = {
+      TASK_COMPLETED: 'primary',
+      TASK_STARTED: 'accent',
+      PROJECT_CREATED: 'success',
+      TASK_CREATED: 'warning',
+      PROJECT_UPDATED: 'secondary',
     };
-  });
+
+    return activities.map(activity => {
+      const userInitials = activity.user.fullName
+        .split(' ')
+        .map(part => part.charAt(0))
+        .join('')
+        .toUpperCase();
+
+      // Déterminer la couleur basée sur le type d'activité
+      const activityType = activity.type as keyof typeof colorMap;
+      const userColor = colorMap[activityType] || 'primary';
+
+      return {
+        id: activity.id,
+        userInitials,
+        userName: activity.user.fullName,
+        content: activity.content,
+        timeAgo: formatDistanceToNow(activity.createdAt, { addSuffix: true, locale: fr }),
+        userColor,
+      };
+    });
+  } catch (error) {
+    console.error('Erreur lors de la récupération des activités:', error);
+    return [];
+  }
 } 
