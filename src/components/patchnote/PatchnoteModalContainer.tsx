@@ -9,7 +9,10 @@ interface PatchnoteModalContainerProps {
   markAsReadAction: (patchnoteId: number) => Promise<void>;
 }
 
-export default function PatchnoteModalContainer({ patchnote, markAsReadAction }: PatchnoteModalContainerProps) {
+export default function PatchnoteModalContainer({
+  patchnote,
+  markAsReadAction,
+}: PatchnoteModalContainerProps) {
   const [showModal, setShowModal] = useState(false);
   const [currentPatchnoteIndex, setCurrentPatchnoteIndex] = useState(0);
 

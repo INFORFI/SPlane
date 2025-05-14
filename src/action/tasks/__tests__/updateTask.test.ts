@@ -237,4 +237,4 @@ describe('updateTask', () => {
     expect(result.error).toBe('Failed to update task');
     expect(console.error).toHaveBeenCalled();
   });
-}); 
+});

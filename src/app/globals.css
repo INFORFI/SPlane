@@ -150,22 +150,18 @@ button {
   --accent-muted: rgba(147, 51, 234, 0.15);
 }
 
-/* Thème Dracula */
 .dracula {
   /* Couleurs de base */
   --background: rgb(40, 42, 54);
   --background-secondary: rgb(68, 71, 90);
-  --background-tertiary: rgb(68, 71, 90);
-
+  --background-tertiary: rgb(62, 65, 82); /* Changé de (68, 71, 90) */
   --foreground: rgb(248, 248, 242);
   --foreground-secondary: rgba(248, 248, 242, 0.7);
   --foreground-tertiary: rgb(98, 114, 164);
-  --foreground-muted: rgb(98, 114, 164);
-
+  --foreground-muted: rgb(120, 130, 174); /* Changé de (98, 114, 164) */
   /* Bordures */
   --border: rgb(80, 83, 122);
   --border-secondary: rgb(98, 114, 164);
-
   /* Couleurs primaires */
   --primary: rgb(189, 147, 249);
   --primary-foreground: rgb(248, 248, 242);
@@ -173,26 +169,21 @@ button {
   --primary-active: rgba(189, 147, 249, 0.7);
   --primary-muted: rgba(189, 147, 249, 0.2);
   --primary-focus: rgba(189, 147, 249, 0.3);
-
   /* États sémantiques */
   --success: rgb(80, 250, 123);
   --success-foreground: rgb(40, 42, 54);
   --success-muted: rgba(80, 250, 123, 0.2);
-
   --warning: rgb(255, 184, 108);
   --warning-foreground: rgb(40, 42, 54);
   --warning-muted: rgba(255, 184, 108, 0.2);
-
   --error: rgb(255, 85, 85);
   --error-foreground: rgb(248, 248, 242);
   --error-muted: rgba(255, 85, 85, 0.2);
-
   /* Inputs & Controls */
   --input: rgb(68, 71, 90);
   --input-hover: rgba(68, 71, 90, 0.9);
-  --input-focus: rgb(68, 71, 90);
+  --input-focus: rgb(75, 78, 95); /* Changé de (68, 71, 90) */
   --ring: rgb(255, 121, 198);
-
   /* Misc */
   --accent: rgb(139, 233, 253);
   --accent-foreground: rgb(40, 42, 54);

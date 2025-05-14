@@ -53,4 +53,4 @@ export default async function updateTask(taskId: string | number, data: UpdateTa
     console.error('Failed to update task:', error);
     return { success: false, error: 'Failed to update task' };
   }
-} 
+}

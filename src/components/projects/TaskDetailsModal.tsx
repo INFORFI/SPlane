@@ -14,7 +14,7 @@ type TaskDetailsModalProps = {
   onClose: () => void;
   projectTeam: UserType[];
   formatDate: (date: Date | null) => string;
-}
+};
 
 export default function TaskDetailsModal({
   task,
@@ -82,7 +82,7 @@ export default function TaskDetailsModal({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     try {
       // Prepare data for the update
       const updateData = {
@@ -93,10 +93,10 @@ export default function TaskDetailsModal({
         priority: Number(taskForm.priority),
         assigneeId: taskForm.assigneeId.toString() || undefined,
       };
-      
+
       // Call the server action to update the task
       const result = await updateTask(task.id, updateData);
-      
+
       if (result.success) {
         // Update the local state to reflect changes
         setCurrentStatus(updateData.status);
@@ -113,9 +113,9 @@ export default function TaskDetailsModal({
 
   const handleStatusChange = async (newStatus: TaskStatus) => {
     setCurrentStatus(newStatus);
-    
+
     const result = await changeTaskStatus(task.id, newStatus);
-    
+
     if (!result.success) {
       setCurrentStatus(task.status);
     }
