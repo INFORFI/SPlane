@@ -49,6 +49,11 @@
         "name": "lightmode",
         "description": "Ajout de plusieurs thèmes pour le panel",
         "pr_number": "74"
+      },
+      {
+        "name": "task",
+        "description": "Ajout d'un tracker de tâches dans la page des projets avec la possibilité de marquer les tâches comme terminées",
+        "pr_number": "80"
       }
     ],
     "corrections": [
