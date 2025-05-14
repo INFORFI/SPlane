@@ -66,28 +66,31 @@ export const useTour = () => {
         element: '#dashboard-header',
         popover: {
           title: 'Tableau de bord',
-          description: 'Bienvenue sur votre tableau de bord Splane. Vous pouvez voir ici une vue d\'ensemble de vos projets et tâches.',
+          description:
+            "Bienvenue sur votre tableau de bord Splane. Vous pouvez voir ici une vue d'ensemble de vos projets et tâches.",
           side: 'bottom',
           align: 'start',
-        }
+        },
       },
       {
         element: '#dashboard-stats',
         popover: {
           title: 'Statistiques',
-          description: 'Consultez rapidement les statistiques clés de votre équipe: projets actifs, tâches terminées, tâches en attente et membres d\'équipe.',
+          description:
+            "Consultez rapidement les statistiques clés de votre équipe: projets actifs, tâches terminées, tâches en attente et membres d'équipe.",
           side: 'bottom',
           align: 'center',
-        }
+        },
       },
       {
         element: '#dashboard-projects',
         popover: {
           title: 'Projets en cours',
-          description: 'Visualisez vos projets actifs avec leur progression et les membres qui y travaillent.',
+          description:
+            'Visualisez vos projets actifs avec leur progression et les membres qui y travaillent.',
           side: 'bottom',
           align: 'start',
-        }
+        },
       },
       {
         element: '#dashboard-tasks',
@@ -96,7 +99,7 @@ export const useTour = () => {
           description: 'Consultez les tâches à venir avec leur priorité, date limite et statut.',
           side: 'left',
           align: 'center',
-        }
+        },
       },
       {
         element: '#dashboard-calendar',
@@ -105,16 +108,16 @@ export const useTour = () => {
           description: 'Visualisez vos événements et échéances sur ce calendrier.',
           side: 'left',
           align: 'start',
-        }
+        },
       },
       {
         element: '#dashboard-activity',
         popover: {
           title: 'Activité récente',
-          description: 'Suivez l\'activité récente de votre équipe.',
+          description: "Suivez l'activité récente de votre équipe.",
           side: 'left',
           align: 'start',
-        }
+        },
       },
       {
         element: '#new-project-button',
@@ -123,13 +126,13 @@ export const useTour = () => {
           description: 'Cliquez ici pour créer un nouveau projet.',
           side: 'bottom',
           align: 'end',
-        }
-      }
+        },
+      },
     ];
 
     driverObj.setSteps(steps);
     driverObj.drive();
-    
+
     // Mark tour as seen
     localStorage.setItem('dashboard_tour_seen', 'true');
     setHasSeenTour(true);
@@ -141,4 +144,4 @@ export const useTour = () => {
   };
 
   return { startTour, resetTour, hasSeenTour };
-}; 
+};

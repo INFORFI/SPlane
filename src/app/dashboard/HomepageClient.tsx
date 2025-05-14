@@ -2,7 +2,15 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Users, Layers, CheckCircle, AlertCircle, Plus, ArrowRight, HelpCircle } from 'lucide-react';
+import {
+  Users,
+  Layers,
+  CheckCircle,
+  AlertCircle,
+  Plus,
+  ArrowRight,
+  HelpCircle,
+} from 'lucide-react';
 
 import StatCard from '@/components/dashboard/StatCard';
 import ProjectCard from '@/components/dashboard/ProjectCard';
@@ -66,7 +74,7 @@ type DashboardProps = {
 };
 
 export default function HomepageClient({ dashboardData, calendarData }: DashboardProps) {
-  const { startTour, hasSeenTour } = useTour();
+  const { startTour } = useTour();
 
   // Mapper les icônes textuelles à des composants réels
   const getIcon = (iconName: string) => {
@@ -104,14 +112,14 @@ export default function HomepageClient({ dashboardData, calendarData }: Dashboar
         </div>
 
         <div className="flex items-center gap-2">
-          <button 
+          <button
             onClick={startTour}
             className="flex items-center gap-2 px-3 py-2 bg-[var(--background-secondary)] hover:bg-[var(--background-tertiary)] border border-[var(--border)] rounded-lg text-sm font-medium transition-colors text-[var(--foreground-tertiary)]"
           >
             <HelpCircle className="h-4 w-4" />
             Guide
           </button>
-          
+
           <Link
             href="/dashboard/projects/create"
             id="new-project-button"
