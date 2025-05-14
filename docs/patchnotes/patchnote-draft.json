@@ -52,7 +52,7 @@
       },
       {
         "name": "task",
-        "description": "✨ Add task tracker in project page",
+        "description": "Ajout d'un tracker de tâches dans la page des projets avec la possibilité de marquer les tâches comme terminées",
         "pr_number": "80"
       }
     ],
