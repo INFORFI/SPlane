@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Users, Layers, CheckCircle, AlertCircle, Plus, ArrowRight } from 'lucide-react';
+import { Users, Layers, CheckCircle, AlertCircle, Plus, ArrowRight, HelpCircle } from 'lucide-react';
 
 import StatCard from '@/components/dashboard/StatCard';
 import ProjectCard from '@/components/dashboard/ProjectCard';
@@ -12,6 +12,7 @@ import Link from 'next/link';
 
 import { itemVariants } from '@/utils/ItemVariants';
 import type { CalendarData } from '@/app/dashboard/CalendarEvents';
+import { useTour } from '@/hook/useTour';
 
 // Animation variants
 const containerVariants = {
@@ -65,6 +66,8 @@ type DashboardProps = {
 };
 
 export default function HomepageClient({ dashboardData, calendarData }: DashboardProps) {
+  const { startTour, hasSeenTour } = useTour();
+
   // Mapper les icônes textuelles à des composants réels
   const getIcon = (iconName: string) => {
     switch (iconName) {
@@ -94,23 +97,34 @@ export default function HomepageClient({ dashboardData, calendarData }: Dashboar
       variants={containerVariants}
       className="space-y-6"
     >
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between" id="dashboard-header">
         <div>
           <h1 className="text-2xl font-bold text-[var(--foreground)]">Tableau de bord</h1>
           <p className="text-[var(--foreground-tertiary)]">Bienvenue, Admin User</p>
         </div>
 
-        <Link
-          href="/dashboard/projects/create"
-          className="flex items-center gap-2 px-3 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-lg text-sm font-medium text-[var(--primary-foreground)] transition-colors"
-        >
-          <Plus className="h-4 w-4" />
-          Nouveau projet
-        </Link>
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={startTour}
+            className="flex items-center gap-2 px-3 py-2 bg-[var(--background-secondary)] hover:bg-[var(--background-tertiary)] border border-[var(--border)] rounded-lg text-sm font-medium transition-colors"
+          >
+            <HelpCircle className="h-4 w-4" />
+            Guide
+          </button>
+          
+          <Link
+            href="/dashboard/projects/create"
+            id="new-project-button"
+            className="flex items-center gap-2 px-3 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-lg text-sm font-medium text-[var(--primary-foreground)] transition-colors"
+          >
+            <Plus className="h-4 w-4" />
+            Nouveau projet
+          </Link>
+        </div>
       </div>
 
       {/* Stats row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="dashboard-stats">
         {statsWithIcons.map((stat, index) => (
           <StatCard key={index} {...stat} />
         ))}
@@ -124,6 +138,7 @@ export default function HomepageClient({ dashboardData, calendarData }: Dashboar
           <motion.div
             variants={itemVariants}
             className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-5"
+            id="dashboard-projects"
           >
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-[var(--foreground)]">Projets en cours</h2>
@@ -146,6 +161,7 @@ export default function HomepageClient({ dashboardData, calendarData }: Dashboar
           <motion.div
             variants={itemVariants}
             className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-5"
+            id="dashboard-tasks"
           >
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-[var(--foreground)]">Tâches à venir</h2>
@@ -166,12 +182,13 @@ export default function HomepageClient({ dashboardData, calendarData }: Dashboar
         {/* Calendar and Activity section */}
         <div className="space-y-6">
           {/* Calendar */}
-          <MiniCalendar calendarData={calendarData} />
+          <MiniCalendar calendarData={calendarData} id="dashboard-calendar" />
 
           {/* Activity Feed */}
           <motion.div
             variants={itemVariants}
             className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-5"
+            id="dashboard-activity"
           >
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-semibold text-[var(--foreground)]">Activité récente</h2>

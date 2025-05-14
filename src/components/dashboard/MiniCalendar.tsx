@@ -10,9 +10,10 @@ import { getRelativeDay } from '@/utils/dateFormatter';
 
 type MiniCalendarProps = {
   calendarData: CalendarData;
+  id?: string;
 };
 
-export default function MiniCalendar({ calendarData }: MiniCalendarProps) {
+export default function MiniCalendar({ calendarData, id }: MiniCalendarProps) {
   const [calData, setCalData] = useState<CalendarData>(calendarData);
   const [activeMonth, setActiveMonth] = useState<number>(calendarData.currentMonthIndex);
   const [activeYear, setActiveYear] = useState<number>(calendarData.currentYear);
@@ -123,6 +124,7 @@ export default function MiniCalendar({ calendarData }: MiniCalendarProps) {
     <motion.div
       variants={itemVariants}
       className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-5"
+      id={id}
     >
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-2">
