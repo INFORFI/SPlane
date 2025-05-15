@@ -76,6 +76,11 @@
         "name": "button-style",
         "description": "Ajout d'un curseur cliquable pour tous les boutons",
         "pr_number": "72"
+      },
+      {
+        "name": "task",
+        "description": "Correction du bug de la gestion des tâches",
+        "pr_number": "86"
       }
     ],
     "technical-improvements": [
@@ -95,12 +100,7 @@
         "name": "patchnotes",
         "description": "Ajout de la documentation de la feature des `patchnotes`",
         "pr_number": "50"
-      },
-      {
-        "name": "task",
-        "description": "🩹 Fix task management",
-        "pr_number": "86"
-      }
+      } 
     ]
   }
 }
