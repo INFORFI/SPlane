@@ -58,9 +58,7 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
   const calculateProgress = () => {
     if (tasks.length === 0) return 0;
 
-    const completedTasks = tasks.filter(
-      task => task.status === TaskStatus.COMPLETED
-    ).length;
+    const completedTasks = tasks.filter(task => task.status === TaskStatus.COMPLETED).length;
     return Math.round((completedTasks / tasks.length) * 100);
   };
 
@@ -81,10 +79,8 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
 
   // Handle task update from TaskDetailsModal
   const handleTaskUpdate = (updatedTask: TaskWithProject) => {
-    setTasks(currentTasks => 
-      currentTasks.map(task => 
-        task.id === updatedTask.id ? updatedTask : task
-      )
+    setTasks(currentTasks =>
+      currentTasks.map(task => (task.id === updatedTask.id ? updatedTask : task))
     );
   };
 
