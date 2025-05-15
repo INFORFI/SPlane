@@ -102,15 +102,23 @@ export default function TaskDetailsModal({
         
         // Call onUpdate with the updated task data
         if (onUpdate) {
+          // Create a deep clone of the task object
           const updatedTask: TaskWithProject = {
-            ...task,
+            ...JSON.parse(JSON.stringify(task)),
             title: updateData.title,
             description: updateData.description,
             deadline: updateData.deadline,
             status: updateData.status,
             priority: updateData.priority,
-            userTasks: [...task.userTasks]
           };
+          
+          // Deep clone userTasks to avoid reference issues
+          updatedTask.userTasks = task.userTasks
+            .filter(userTask => userTask.user !== undefined)
+            .map(userTask => ({
+              ...userTask,
+              user: { ...userTask.user! }
+            }));
           
           // Update assignee if changed
           if (updateData.assigneeId) {
@@ -121,7 +129,7 @@ export default function TaskDetailsModal({
                 userId: parseInt(updateData.assigneeId),
                 taskId: task.id,
                 assignedAt: new Date(),
-                user: assignee
+                user: { ...assignee } // Clone the assignee object
               }];
             }
           } else if (updateData.assigneeId === '') {
@@ -150,11 +158,9 @@ export default function TaskDetailsModal({
     if (!result || !result.success) {
       setCurrentStatus(task.status);
     } else if (result.success && onUpdate) {
-      // Call onUpdate with the updated task data
-      const updatedTask: TaskWithProject = {
-        ...task,
-        status: newStatus
-      };
+      // Create a deep clone of the task with updated status
+      const updatedTask: TaskWithProject = JSON.parse(JSON.stringify(task));
+      updatedTask.status = newStatus;
       onUpdate(updatedTask);
     }
   };
