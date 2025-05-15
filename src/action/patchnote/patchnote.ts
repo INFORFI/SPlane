@@ -3,6 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { PatchNote } from '@prisma/client';
+import { requireAuth } from '@/lib/auth';
 
 interface PatchNoteContent {
   changes: Array<{
@@ -113,5 +114,77 @@ export async function getAllPatchnotes(): Promise<PatchNoteParsed[]> {
   } catch (error) {
     console.error('Error fetching patchnotes:', error);
     return [];
+  }
+}
+
+// Mark all unread patchnotes as read for a specific user
+export async function markAllPatchnotesAsRead(): Promise<boolean> {
+  try {
+    const userId = await requireAuth();
+
+    if (!userId) {
+      return false;
+    }
+
+    // Get all unread patchnotes for this user
+    const unreadPatchnotes = await prisma.patchNote.findMany({
+      where: {
+        published: true,
+        userViews: {
+          none: {
+            userId: userId,
+          },
+        },
+      },
+      select: {
+        id: true,
+      },
+    });
+
+    if (!unreadPatchnotes.length) {
+      return true;
+    }
+
+    // Create view records for all unread patchnotes
+    await prisma.patchNoteView.createMany({
+      data: unreadPatchnotes.map(note => ({
+        userId: userId,
+        patchNoteId: note.id,
+      })),
+    });
+
+    // Revalidate the dashboard page to update any UI that depends on patchnote status
+    revalidatePath('/dashboard');
+
+    return true;
+  } catch (error) {
+    console.error('Error marking all patchnotes as read:', error);
+    return false;
+  }
+}
+
+// Mark all patchnotes as unread for a specific user
+export async function markAllPatchnotesAsUnread(): Promise<boolean> {
+  try {
+    const userId = await requireAuth();
+
+    if (!userId) {
+      return false;
+    }
+
+    // Delete all view records for this user
+    await prisma.patchNoteView.deleteMany({
+      where: {
+        userId: userId,
+      },
+    });
+
+    // Revalidate the dashboard page to update any UI that depends on patchnote status
+    revalidatePath('/dashboard');
+
+    return true;
+  } catch (error) {
+    console.error('Error marking all patchnotes as unread:', error);
+    return false;
   }
 }
