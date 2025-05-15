@@ -1,17 +1,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { XCircle, Clock, Calendar, CheckCircle2, Edit, Trash2, Plus } from 'lucide-react';
-import { TaskStatus, Task, User as UserType, UserTask } from '@prisma/client';
+import { TaskStatus, User as UserType } from '@prisma/client';
 import changeTaskStatus from '@/action/tasks/changeTaskStatus';
 import updateTask from '@/action/tasks/updateTask';
+import { TaskWithProject } from '@/action/tasks/getTasks';
 
 type TaskDetailsModalProps = {
-  task: Task & {
-    userTasks: (UserTask & {
-      user: UserType;
-    })[];
-  };
+  task: TaskWithProject;
   onClose: () => void;
+  onUpdate?: (updatedTask: TaskWithProject) => void;
   projectTeam: UserType[];
   formatDate: (date: Date | null) => string;
 };
@@ -19,6 +17,7 @@ type TaskDetailsModalProps = {
 export default function TaskDetailsModal({
   task,
   onClose,
+  onUpdate,
   projectTeam,
   formatDate,
 }: TaskDetailsModalProps) {
@@ -100,6 +99,50 @@ export default function TaskDetailsModal({
       if (result.success) {
         // Update the local state to reflect changes
         setCurrentStatus(updateData.status);
+
+        // Call onUpdate with the updated task data
+        if (onUpdate) {
+          // Create a deep clone of the task object
+          const updatedTask: TaskWithProject = {
+            ...JSON.parse(JSON.stringify(task)),
+            title: updateData.title,
+            description: updateData.description,
+            deadline: updateData.deadline,
+            status: updateData.status,
+            priority: updateData.priority,
+          };
+
+          // Deep clone userTasks to avoid reference issues
+          updatedTask.userTasks = task.userTasks
+            .filter(userTask => userTask.user !== undefined)
+            .map(userTask => ({
+              ...userTask,
+              user: { ...userTask.user! },
+            }));
+
+          // Update assignee if changed
+          if (updateData.assigneeId) {
+            const assignee = projectTeam.find(
+              member => member.id.toString() === updateData.assigneeId
+            );
+            if (assignee) {
+              updatedTask.userTasks = [
+                {
+                  id: task.userTasks[0]?.id || 0,
+                  userId: parseInt(updateData.assigneeId),
+                  taskId: task.id,
+                  assignedAt: new Date(),
+                  user: { ...assignee }, // Clone the assignee object
+                },
+              ];
+            }
+          } else if (updateData.assigneeId === '') {
+            updatedTask.userTasks = [];
+          }
+
+          onUpdate(updatedTask);
+        }
+
         // Exit edit mode
         setIsEditing(false);
       } else {
@@ -116,8 +159,13 @@ export default function TaskDetailsModal({
 
     const result = await changeTaskStatus(task.id, newStatus);
 
-    if (!result.success) {
+    if (!result || !result.success) {
       setCurrentStatus(task.status);
+    } else if (result.success && onUpdate) {
+      // Create a deep clone of the task with updated status
+      const updatedTask: TaskWithProject = JSON.parse(JSON.stringify(task));
+      updatedTask.status = newStatus;
+      onUpdate(updatedTask);
     }
   };
 

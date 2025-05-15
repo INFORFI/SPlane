@@ -31,6 +31,7 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
   const [showAddTask, setShowAddTask] = useState(false);
   const [selectedTask, setSelectedTask] = useState<TaskWithProject | null>(null);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [tasks, setTasks] = useState<TaskWithProject[]>(project.tasks as TaskWithProject[]);
 
   // Format dates for display
   const formatDate = (date: Date | null) => {
@@ -55,18 +56,16 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
 
   // Calculate project progress
   const calculateProgress = () => {
-    if (project.tasks.length === 0) return 0;
+    if (tasks.length === 0) return 0;
 
-    const completedTasks = project.tasks.filter(
-      task => task.status === TaskStatus.COMPLETED
-    ).length;
-    return Math.round((completedTasks / project.tasks.length) * 100);
+    const completedTasks = tasks.filter(task => task.status === TaskStatus.COMPLETED).length;
+    return Math.round((completedTasks / tasks.length) * 100);
   };
 
   const progress = calculateProgress();
 
   // Filter tasks based on active tab
-  const filteredTasks = project.tasks.filter(task => {
+  const filteredTasks = tasks.filter(task => {
     if (activeTab === 'all') return true;
     if (activeTab === 'todo') return task.status === TaskStatus.TODO;
     if (activeTab === 'in-progress') return task.status === TaskStatus.IN_PROGRESS;
@@ -76,6 +75,13 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
 
   const handleDeleteProject = () => {
     setOpenDeleteModal(true);
+  };
+
+  // Handle task update from TaskDetailsModal
+  const handleTaskUpdate = (updatedTask: TaskWithProject) => {
+    setTasks(currentTasks =>
+      currentTasks.map(task => (task.id === updatedTask.id ? updatedTask : task))
+    );
   };
 
   return (
@@ -359,7 +365,7 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
             </h2>
 
             <div className="space-y-4">
-              {project.tasks.length > 0 ? (
+              {tasks.length > 0 ? (
                 <>
                   <div className="flex gap-3">
                     <div className="h-8 w-8 rounded-full bg-[var(--success)] flex items-center justify-center text-[var(--success-foreground)] text-sm font-medium">
@@ -374,7 +380,7 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                           {project.teamMembers[0]?.fullName || 'Un utilisateur'}
                         </span>{' '}
                         a été assigné à la tâche{' '}
-                        <span className="font-medium">{project.tasks[0].title}</span>
+                        <span className="font-medium">{tasks[0]?.title || 'sans titre'}</span>
                       </p>
                       <p className="text-xs text-[var(--foreground-tertiary)] mt-1">
                         Il y a 2 jours
@@ -531,6 +537,7 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
           <TaskDetailsModal
             task={selectedTask}
             onClose={() => setSelectedTask(null)}
+            onUpdate={handleTaskUpdate}
             projectTeam={project.teamMembers}
             formatDate={formatDate}
           />
