@@ -24,7 +24,7 @@ jobs:
           # Check if any files outside docs/patchnotes were changed
           INVALID_FILES=$(echo "$CHANGED_FILES" | grep -v "^docs/patchnotes/")
           
-          if [ ! -z "$INVALID_FILES" ]; then
+          if [ -n "$INVALID_FILES" ]; then
             echo "Error: Pull request with 'patchnote/' prefix should only contain changes in docs/patchnotes folder"
             echo "The following files were changed outside the allowed directory:"
             echo "$INVALID_FILES"
