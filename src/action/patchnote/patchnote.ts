@@ -78,9 +78,6 @@ export async function markPatchnoteAsRead(patchNoteId: number, userId: number): 
       },
     });
 
-    // Revalidate the dashboard page to update any UI that depends on patchnote status
-    revalidatePath('/dashboard');
-
     return true;
   } catch (error) {
     console.error('Error marking patchnote as read:', error);
