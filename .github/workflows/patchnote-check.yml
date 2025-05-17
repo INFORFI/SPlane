@@ -8,7 +8,7 @@ jobs:
   check-patches:
     name: Check Patchnote Changes
     runs-on: ubuntu-latest
-    if: startsWith(github.event.pull_request.title, 'patchnote/')
+    if: startsWith(github.event.pull_request.head.ref, 'patchnote/')
 
     steps:
       - name: Checkout code

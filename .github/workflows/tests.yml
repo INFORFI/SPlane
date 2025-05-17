@@ -11,7 +11,7 @@ jobs:
   test:
     name: Run Jest Tests
     runs-on: ubuntu-latest
-    if: "!startsWith(github.event.pull_request.title, 'patchnote/')"
+    if: "!startsWith(github.event.pull_request.head.ref, 'patchnote/')"
 
     env:
       NODE_ENV: test
