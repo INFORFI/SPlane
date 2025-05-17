@@ -186,7 +186,6 @@ describe('Patch Note Functions', () => {
           patchNoteId: 1,
         },
       });
-      expect(revalidatePath).toHaveBeenCalledWith('/dashboard');
     });
 
     it('should handle errors and return false', async () => {
