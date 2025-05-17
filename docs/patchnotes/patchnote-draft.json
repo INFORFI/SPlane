@@ -93,6 +93,11 @@
         "name": "eslint",
         "description": "Ajout d'un workflow pour la validation du code avec ESLint et Prettier",
         "pr_number": "78"
+      },
+      {
+        "name": "patchnote-workflows",
+        "description": "👷 Fix patchnote CI",
+        "pr_number": "90"
       }
     ],
     "other-changes": [
