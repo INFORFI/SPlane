@@ -4,7 +4,10 @@ import { useState, useRef, useEffect } from 'react';
 import { Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PatchNote } from '@prisma/client';
-import { markAllPatchnotesAsRead, markPatchnoteAsRead } from '@/action/patchnote/patchnote';
+import {
+  markAllPatchnotesAsRead,
+  markPatchnoteAsRead,
+} from '@/action/patchnote/patchnote';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
