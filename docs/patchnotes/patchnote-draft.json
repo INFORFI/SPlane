@@ -96,7 +96,7 @@
       },
       {
         "name": "patchnote-workflows",
-        "description": "👷 Fix patchnote CI",
+        "description": "Ajout des workflows pour la validation des pull requests pour les branches de patchnotes",
         "pr_number": "90"
       }
     ],
