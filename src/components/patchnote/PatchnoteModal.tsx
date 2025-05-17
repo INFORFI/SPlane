@@ -138,13 +138,13 @@ export default function PatchNoteModal({
             <div className="sticky top-0 z-20 flex items-center justify-between border-b border-[var(--border)] bg-[var(--background-secondary)]/90 p-4 backdrop-blur-sm">
               <div className="flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--primary-muted)] text-[var(--primary)] border border-[var(--primary)]/30">
-                  <span className="text-2xl">{patchNote.emoji || '✨'}</span>
+                  <span className="text-2xl">{patchNote?.emoji || '✨'}</span>
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-[var(--foreground)]">{patchNote.title}</h3>
+                  <h3 className="text-xl font-bold text-[var(--foreground)]">{patchNote?.title}</h3>
                   <div className="flex items-center gap-2 mt-1">
                     <p className="text-sm text-[var(--foreground-tertiary)]">
-                      {new Date(patchNote.releaseDate).toLocaleDateString('fr-FR', {
+                      {new Date(patchNote?.releaseDate || '').toLocaleDateString('fr-FR', {
                         day: 'numeric',
                         month: 'long',
                         year: 'numeric',
