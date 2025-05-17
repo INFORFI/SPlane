@@ -10,6 +10,8 @@ async function main() {
     await prisma.task.deleteMany();
     await prisma.project.deleteMany();
     await prisma.userSettings.deleteMany();
+    await prisma.activity.deleteMany();
+    await prisma.patchNoteView.deleteMany();
     await prisma.user.deleteMany();
   }
 
