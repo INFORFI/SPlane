@@ -289,21 +289,21 @@ describe('Patch Note Functions', () => {
     it('should return false if authentication fails', async () => {
       // Mock auth failure
       (requireAuth as jest.Mock).mockResolvedValue(null);
-      
+
       const result = await markAllPatchnotesAsRead();
-      
+
       expect(result).toBe(false);
       expect(prisma.patchNote.findMany).not.toHaveBeenCalled();
     });
-    
+
     it('should return true if no unread patchnotes are found', async () => {
       // Mock successful auth
       (requireAuth as jest.Mock).mockResolvedValue(1);
       // Mock empty result
       (prisma.patchNote.findMany as jest.Mock).mockResolvedValue([]);
-      
+
       const result = await markAllPatchnotesAsRead();
-      
+
       expect(result).toBe(true);
       expect(prisma.patchNote.findMany).toHaveBeenCalledWith({
         where: {
@@ -320,20 +320,17 @@ describe('Patch Note Functions', () => {
       });
       expect(prisma.patchNoteView.createMany).not.toHaveBeenCalled();
     });
-    
+
     it('should mark all unread patchnotes as read', async () => {
       // Mock successful auth
       (requireAuth as jest.Mock).mockResolvedValue(1);
       // Mock unread patchnotes
-      (prisma.patchNote.findMany as jest.Mock).mockResolvedValue([
-        { id: 1 },
-        { id: 2 },
-      ]);
+      (prisma.patchNote.findMany as jest.Mock).mockResolvedValue([{ id: 1 }, { id: 2 }]);
       // Mock successful creation
       (prisma.patchNoteView.createMany as jest.Mock).mockResolvedValue({ count: 2 });
-      
+
       const result = await markAllPatchnotesAsRead();
-      
+
       expect(result).toBe(true);
       expect(prisma.patchNoteView.createMany).toHaveBeenCalledWith({
         data: [
@@ -343,15 +340,15 @@ describe('Patch Note Functions', () => {
       });
       expect(revalidatePath).toHaveBeenCalledWith('/dashboard');
     });
-    
+
     it('should handle errors and return false', async () => {
       // Mock successful auth
       (requireAuth as jest.Mock).mockResolvedValue(1);
       // Mock error
       (prisma.patchNote.findMany as jest.Mock).mockRejectedValue(new Error('Database error'));
-      
+
       const result = await markAllPatchnotesAsRead();
-      
+
       expect(result).toBe(false);
       expect(console.error).toHaveBeenCalledWith(
         'Error marking all patchnotes as read:',
@@ -359,26 +356,26 @@ describe('Patch Note Functions', () => {
       );
     });
   });
-  
+
   describe('markAllPatchnotesAsUnread', () => {
     it('should return false if authentication fails', async () => {
       // Mock auth failure
       (requireAuth as jest.Mock).mockResolvedValue(null);
-      
+
       const result = await markAllPatchnotesAsUnread();
-      
+
       expect(result).toBe(false);
       expect(prisma.patchNoteView.deleteMany).not.toHaveBeenCalled();
     });
-    
+
     it('should delete all view records for the user', async () => {
       // Mock successful auth
       (requireAuth as jest.Mock).mockResolvedValue(1);
       // Mock successful deletion
       (prisma.patchNoteView.deleteMany as jest.Mock).mockResolvedValue({ count: 5 });
-      
+
       const result = await markAllPatchnotesAsUnread();
-      
+
       expect(result).toBe(true);
       expect(prisma.patchNoteView.deleteMany).toHaveBeenCalledWith({
         where: {
@@ -387,15 +384,15 @@ describe('Patch Note Functions', () => {
       });
       expect(revalidatePath).toHaveBeenCalledWith('/dashboard');
     });
-    
+
     it('should handle errors and return false', async () => {
       // Mock successful auth
       (requireAuth as jest.Mock).mockResolvedValue(1);
       // Mock error
       (prisma.patchNoteView.deleteMany as jest.Mock).mockRejectedValue(new Error('Database error'));
-      
+
       const result = await markAllPatchnotesAsUnread();
-      
+
       expect(result).toBe(false);
       expect(console.error).toHaveBeenCalledWith(
         'Error marking all patchnotes as unread:',
