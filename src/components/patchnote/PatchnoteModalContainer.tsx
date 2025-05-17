@@ -3,11 +3,12 @@
 import { useState, useEffect } from 'react';
 import PatchNoteModal from './PatchnoteModal';
 import { PatchNote } from '@prisma/client';
+import { useRouter } from 'next/navigation';
 
-interface PatchnoteModalContainerProps {
+type PatchnoteModalContainerProps = {
   patchnote: PatchNote[];
   markAsReadAction: (patchnoteId: number) => Promise<void>;
-}
+};
 
 export default function PatchnoteModalContainer({
   patchnote,
@@ -15,6 +16,7 @@ export default function PatchnoteModalContainer({
 }: PatchnoteModalContainerProps) {
   const [showModal, setShowModal] = useState(false);
   const [currentPatchnoteIndex, setCurrentPatchnoteIndex] = useState(0);
+  const router = useRouter();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -31,6 +33,7 @@ export default function PatchnoteModalContainer({
       setCurrentPatchnoteIndex(currentPatchnoteIndex + 1);
     } else {
       setShowModal(false);
+      router.refresh();
     }
   };
 

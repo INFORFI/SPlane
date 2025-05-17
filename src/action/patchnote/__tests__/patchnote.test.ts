@@ -2,14 +2,19 @@ import {
   checkUnreadPatchnotes,
   markPatchnoteAsRead,
   getAllPatchnotes,
+  markAllPatchnotesAsRead,
+  markAllPatchnotesAsUnread,
 } from '@/action/patchnote/patchnote';
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
+import { requireAuth } from '@/lib/auth';
 
 // Mocks
 jest.mock('@/lib/prisma', () => {
   const mockFindMany = jest.fn();
   const mockCreate = jest.fn();
+  const mockCreateMany = jest.fn();
+  const mockDeleteMany = jest.fn();
 
   return {
     prisma: {
@@ -18,6 +23,8 @@ jest.mock('@/lib/prisma', () => {
       },
       patchNoteView: {
         create: mockCreate,
+        createMany: mockCreateMany,
+        deleteMany: mockDeleteMany,
       },
     },
   };
@@ -25,6 +32,10 @@ jest.mock('@/lib/prisma', () => {
 
 jest.mock('next/cache', () => ({
   revalidatePath: jest.fn(),
+}));
+
+jest.mock('@/lib/auth', () => ({
+  requireAuth: jest.fn(),
 }));
 
 describe('Patch Note Functions', () => {
@@ -175,7 +186,6 @@ describe('Patch Note Functions', () => {
           patchNoteId: 1,
         },
       });
-      expect(revalidatePath).toHaveBeenCalledWith('/dashboard');
     });
 
     it('should handle errors and return false', async () => {
@@ -271,6 +281,122 @@ describe('Patch Note Functions', () => {
 
       expect(result).toEqual([]);
       expect(console.error).toHaveBeenCalled();
+    });
+  });
+
+  describe('markAllPatchnotesAsRead', () => {
+    it('should return false if authentication fails', async () => {
+      // Mock auth failure
+      (requireAuth as jest.Mock).mockResolvedValue(null);
+
+      const result = await markAllPatchnotesAsRead();
+
+      expect(result).toBe(false);
+      expect(prisma.patchNote.findMany).not.toHaveBeenCalled();
+    });
+
+    it('should return true if no unread patchnotes are found', async () => {
+      // Mock successful auth
+      (requireAuth as jest.Mock).mockResolvedValue(1);
+      // Mock empty result
+      (prisma.patchNote.findMany as jest.Mock).mockResolvedValue([]);
+
+      const result = await markAllPatchnotesAsRead();
+
+      expect(result).toBe(true);
+      expect(prisma.patchNote.findMany).toHaveBeenCalledWith({
+        where: {
+          published: true,
+          userViews: {
+            none: {
+              userId: 1,
+            },
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+      expect(prisma.patchNoteView.createMany).not.toHaveBeenCalled();
+    });
+
+    it('should mark all unread patchnotes as read', async () => {
+      // Mock successful auth
+      (requireAuth as jest.Mock).mockResolvedValue(1);
+      // Mock unread patchnotes
+      (prisma.patchNote.findMany as jest.Mock).mockResolvedValue([{ id: 1 }, { id: 2 }]);
+      // Mock successful creation
+      (prisma.patchNoteView.createMany as jest.Mock).mockResolvedValue({ count: 2 });
+
+      const result = await markAllPatchnotesAsRead();
+
+      expect(result).toBe(true);
+      expect(prisma.patchNoteView.createMany).toHaveBeenCalledWith({
+        data: [
+          { userId: 1, patchNoteId: 1 },
+          { userId: 1, patchNoteId: 2 },
+        ],
+      });
+      expect(revalidatePath).toHaveBeenCalledWith('/dashboard');
+    });
+
+    it('should handle errors and return false', async () => {
+      // Mock successful auth
+      (requireAuth as jest.Mock).mockResolvedValue(1);
+      // Mock error
+      (prisma.patchNote.findMany as jest.Mock).mockRejectedValue(new Error('Database error'));
+
+      const result = await markAllPatchnotesAsRead();
+
+      expect(result).toBe(false);
+      expect(console.error).toHaveBeenCalledWith(
+        'Error marking all patchnotes as read:',
+        expect.any(Error)
+      );
+    });
+  });
+
+  describe('markAllPatchnotesAsUnread', () => {
+    it('should return false if authentication fails', async () => {
+      // Mock auth failure
+      (requireAuth as jest.Mock).mockResolvedValue(null);
+
+      const result = await markAllPatchnotesAsUnread();
+
+      expect(result).toBe(false);
+      expect(prisma.patchNoteView.deleteMany).not.toHaveBeenCalled();
+    });
+
+    it('should delete all view records for the user', async () => {
+      // Mock successful auth
+      (requireAuth as jest.Mock).mockResolvedValue(1);
+      // Mock successful deletion
+      (prisma.patchNoteView.deleteMany as jest.Mock).mockResolvedValue({ count: 5 });
+
+      const result = await markAllPatchnotesAsUnread();
+
+      expect(result).toBe(true);
+      expect(prisma.patchNoteView.deleteMany).toHaveBeenCalledWith({
+        where: {
+          userId: 1,
+        },
+      });
+      expect(revalidatePath).toHaveBeenCalledWith('/dashboard');
+    });
+
+    it('should handle errors and return false', async () => {
+      // Mock successful auth
+      (requireAuth as jest.Mock).mockResolvedValue(1);
+      // Mock error
+      (prisma.patchNoteView.deleteMany as jest.Mock).mockRejectedValue(new Error('Database error'));
+
+      const result = await markAllPatchnotesAsUnread();
+
+      expect(result).toBe(false);
+      expect(console.error).toHaveBeenCalledWith(
+        'Error marking all patchnotes as unread:',
+        expect.any(Error)
+      );
     });
   });
 });

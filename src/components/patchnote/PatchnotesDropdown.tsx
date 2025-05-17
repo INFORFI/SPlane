@@ -4,13 +4,13 @@ import { useState, useRef, useEffect } from 'react';
 import { Bell } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PatchNote } from '@prisma/client';
-import { markPatchnoteAsRead } from '@/action/patchnote/patchnote';
+import { markAllPatchnotesAsRead, markPatchnoteAsRead } from '@/action/patchnote/patchnote';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-interface PatchnotesDropdownProps {
+type PatchnotesDropdownProps = {
   patchnotes: PatchNote[];
-}
+};
 
 export default function PatchnotesDropdown({ patchnotes }: PatchnotesDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -41,6 +41,11 @@ export default function PatchnotesDropdown({ patchnotes }: PatchnotesDropdownPro
     } catch (error) {
       console.error('Error marking patchnote as read:', error);
     }
+  };
+
+  const handleMarkAllPatchnotesAsRead = async () => {
+    await markAllPatchnotesAsRead();
+    setIsOpen(false);
   };
 
   const hasUnreadPatchnotes = patchnotes?.length > 0;
@@ -130,7 +135,7 @@ export default function PatchnotesDropdown({ patchnotes }: PatchnotesDropdownPro
               <div className="p-2 border-t border-[var(--border)]">
                 <button
                   className="w-full py-2 px-3 bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-md text-sm font-medium text-[var(--primary-foreground)] transition-colors"
-                  onClick={() => setIsOpen(false)}
+                  onClick={handleMarkAllPatchnotesAsRead}
                 >
                   Marquer tout comme lu
                 </button>

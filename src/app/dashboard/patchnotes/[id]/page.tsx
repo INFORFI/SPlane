@@ -3,6 +3,8 @@ import { notFound } from 'next/navigation';
 import PatchnoteDetail from './PatchnoteDetails';
 import PatchnoteDetailSkeleton from './PatchnoteDetailSkeleton';
 import getPatchnote from '@/action/patchnote/getPatchnote';
+import { markPatchnoteAsRead } from '@/action/patchnote/patchnote';
+import { requireAuth } from '@/lib/auth';
 
 export default async function PatchnotePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -21,10 +23,13 @@ export default async function PatchnotePage({ params }: { params: Promise<{ id: 
 
 async function PatchnotePageContent({ id }: { id: number }) {
   const patchnote = await getPatchnote(id);
+  const userId = await requireAuth();
 
-  if (!patchnote) {
+  if (!patchnote || !userId) {
     return notFound();
   }
+
+  markPatchnoteAsRead(id, userId);
 
   return <PatchnoteDetail patchnote={patchnote} />;
 }
