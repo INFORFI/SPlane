@@ -81,6 +81,11 @@
         "name": "task",
         "description": "Correction du bug de la gestion des tâches",
         "pr_number": "86"
+      },
+      {
+        "name": "patchnote-workflows",
+        "description": "💚 Fix CI patchnote",
+        "pr_number": "92"
       }
     ],
     "technical-improvements": [
