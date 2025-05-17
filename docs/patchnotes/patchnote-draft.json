@@ -103,7 +103,7 @@
       },
       {
         "name": "patchnote",
-        "description": "🩹 Fix patchnote display",
+        "description": "Correction du bug de la gestion des patchnotes",
         "pr_number": "88"
       }
     ]
