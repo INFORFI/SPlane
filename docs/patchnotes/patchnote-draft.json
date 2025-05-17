@@ -100,6 +100,11 @@
         "name": "patchnotes",
         "description": "Ajout de la documentation de la feature des `patchnotes`",
         "pr_number": "50"
+      },
+      {
+        "name": "patchnote",
+        "description": "Correction du bug de la gestion des patchnotes",
+        "pr_number": "88"
       }
     ]
   }
