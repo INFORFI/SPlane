@@ -8,7 +8,7 @@ jobs:
   lint-format:
     name: ESLint & Prettier Check
     runs-on: ubuntu-latest
-    if: "!startsWith(github.event.pull_request.title, 'patchnote/')"
+    if: "!startsWith(github.event.pull_request.head.ref, 'patchnote/')"
 
     steps:
       - name: Checkout code
