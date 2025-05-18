@@ -1,0 +1,34 @@
+name: Patchnote PR Check
+
+on:
+  pull_request:
+    branches: [main, dev]
+
+jobs:
+  check-patches:
+    name: Check Patchnote Changes
+    runs-on: ubuntu-latest
+    if: startsWith(github.event.pull_request.head.ref, 'patchnote/')
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check changed files
+        run: |
+          # Get list of changed files
+          CHANGED_FILES=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }})
+
+          # Check if any files outside docs/patchnotes were changed
+          INVALID_FILES=$(echo "$CHANGED_FILES" | grep -v "^docs/patchnotes/")
+
+          if [ -n "$INVALID_FILES" ]; then
+            echo "Error: Pull request with 'patchnote/' prefix should only contain changes in docs/patchnotes folder"
+            echo "The following files were changed outside the allowed directory:"
+            echo "$INVALID_FILES"
+            exit 1
+          fi
+
+          echo "All changes are in the docs/patchnotes folder. ✅"

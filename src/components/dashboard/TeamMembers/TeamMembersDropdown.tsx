@@ -53,16 +53,16 @@ export default function TeamMembersDropdown({
   return (
     <div
       ref={dropdownRef}
-      className="dropdown-container z-[9999] bg-zinc-800 border border-zinc-700 rounded-lg shadow-2xl max-h-80 overflow-y-auto"
+      className="dropdown-container z-[9999] bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-lg shadow-2xl max-h-80 overflow-y-auto"
     >
-      <div className="sticky top-0 p-2 bg-zinc-800 border-b border-zinc-700 z-10">
+      <div className="sticky top-0 p-2 bg-[var(--background-tertiary)] border-b border-[var(--border-secondary)] z-10">
         <input
           ref={searchInputRef}
           type="text"
           value={searchTerm}
           onChange={e => setSearchTerm(e.target.value)}
           placeholder="Search team members..."
-          className="w-full px-3 py-2 bg-zinc-700 border border-zinc-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent text-sm"
+          className="w-full px-3 py-2 bg-[var(--input)] border border-[var(--border-secondary)] rounded-md text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent text-sm"
           onClick={e => e.stopPropagation()}
         />
       </div>
@@ -73,13 +73,13 @@ export default function TeamMembersDropdown({
               key={user.id}
               className={`flex items-center justify-between px-3 py-2 rounded-md cursor-pointer ${
                 selectedMembers.includes(user.id)
-                  ? 'bg-indigo-500/20 text-indigo-400'
-                  : 'hover:bg-zinc-700/50 text-zinc-300'
+                  ? 'bg-[var(--primary-muted)] text-[var(--primary)]'
+                  : 'hover:bg-[var(--background-tertiary)]/50 text-[var(--foreground-secondary)]'
               }`}
               onClick={() => toggleMember(user.id)}
             >
               <div className="flex items-center gap-2">
-                <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white text-sm">
+                <div className="h-8 w-8 rounded-full bg-[var(--primary)] flex items-center justify-center text-[var(--primary-foreground)] text-sm">
                   {user.fullName
                     .split(' ')
                     .map(n => n[0])
@@ -91,7 +91,7 @@ export default function TeamMembersDropdown({
             </div>
           ))
         ) : (
-          <div className="px-3 py-2 text-zinc-500 text-center">
+          <div className="px-3 py-2 text-[var(--foreground-muted)] text-center">
             Aucun membre trouvé correspondant à &quot;{searchTerm}&quot;
           </div>
         )}

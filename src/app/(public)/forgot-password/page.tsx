@@ -44,14 +44,14 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <motion.div
           initial="hidden"
           animate="visible"
           exit="exit"
           variants={containerVariants}
-          className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-xl"
+          className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-8 shadow-xl"
         >
           {/* Logo and Title */}
           <div className="text-center mb-8">
@@ -61,13 +61,13 @@ export default function ForgotPasswordPage() {
               animate={{ scale: 1 }}
               transition={{ duration: 0.3, delay: 0.2 }}
             >
-              <div className="flex items-center justify-center w-10 h-10 rounded-md bg-indigo-600 text-white font-bold text-xl">
+              <div className="flex items-center justify-center w-10 h-10 rounded-md bg-[var(--primary)] text-[var(--primary-foreground)] font-bold text-xl">
                 S
               </div>
-              <span className="font-bold text-2xl text-white">SPLANE</span>
+              <span className="font-bold text-2xl text-[var(--foreground)]">SPLANE</span>
             </motion.div>
-            <h1 className="text-2xl font-bold text-white">Mot de passe oublié</h1>
-            <p className="text-zinc-400 mt-2">
+            <h1 className="text-2xl font-bold text-[var(--foreground)]">Mot de passe oublié</h1>
+            <p className="text-[var(--foreground-tertiary)] mt-2">
               {!success
                 ? 'Saisissez votre email pour réinitialiser votre mot de passe'
                 : 'Instructions envoyées! Vérifiez votre boîte de réception'}
@@ -79,14 +79,14 @@ export default function ForgotPasswordPage() {
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-6 p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg flex flex-col items-center gap-3 text-emerald-400"
+              className="mb-6 p-4 bg-[var(--success-muted)] border border-[var(--success)]/20 rounded-lg flex flex-col items-center gap-3 text-[var(--success)]"
             >
-              <div className="bg-emerald-500/20 p-3 rounded-full">
+              <div className="bg-[var(--success-muted)] p-3 rounded-full">
                 <CheckCircle className="h-8 w-8" />
               </div>
               <div className="text-center">
                 <h3 className="font-medium text-lg mb-1">Email envoyé!</h3>
-                <p className="text-sm text-zinc-400">
+                <p className="text-sm text-[var(--foreground-tertiary)]">
                   Si un compte existe avec l&apos;adresse {email}, vous recevrez un email avec les
                   instructions pour réinitialiser votre mot de passe.
                 </p>
@@ -98,7 +98,7 @@ export default function ForgotPasswordPage() {
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="mb-6 p-3 bg-rose-500/10 border border-rose-500/20 rounded-lg flex items-center gap-3 text-rose-400"
+                className="mb-6 p-3 bg-[var(--error-muted)] border border-[var(--error)]/20 rounded-lg flex items-center gap-3 text-[var(--error)]"
               >
                 <AlertCircle className="h-5 w-5 flex-shrink-0" />
                 <span className="text-sm">{error}</span>
@@ -110,12 +110,15 @@ export default function ForgotPasswordPage() {
           {!success ? (
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="space-y-1">
-                <label htmlFor="email" className="block text-sm font-medium text-zinc-300">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-[var(--foreground-secondary)]"
+                >
                   Email
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <Mail className="h-5 w-5 text-zinc-500" />
+                    <Mail className="h-5 w-5 text-[var(--foreground-muted)]" />
                   </div>
                   <input
                     id="email"
@@ -126,8 +129,8 @@ export default function ForgotPasswordPage() {
                     onChange={e => setEmail(e.target.value)}
                     placeholder="votreemail@exemple.com"
                     required
-                    className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-md py-2.5 pl-10 pr-3 
-                              placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className="w-full bg-[var(--input)] border border-[var(--border-secondary)] text-[var(--foreground)] rounded-md py-2.5 pl-10 pr-3 
+                              placeholder:text-[var(--foreground-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
                   />
                 </div>
               </div>
@@ -136,14 +139,14 @@ export default function ForgotPasswordPage() {
                 <motion.button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-md font-medium flex items-center justify-center gap-2 
-                            transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-70"
+                  className="w-full bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-[var(--primary-foreground)] py-3 rounded-md font-medium flex items-center justify-center gap-2 
+                            transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--ring)] disabled:opacity-70"
                   whileTap={{ scale: 0.98 }}
                 >
                   {isSubmitting ? (
                     <>
                       <svg
-                        className="animate-spin h-5 w-5 text-white"
+                        className="animate-spin h-5 w-5 text-[var(--primary-foreground)]"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -174,8 +177,8 @@ export default function ForgotPasswordPage() {
             <div className="mt-6">
               <motion.button
                 onClick={() => (window.location.href = '/login')}
-                className="w-full bg-zinc-800 hover:bg-zinc-700 text-white py-3 rounded-md font-medium flex items-center justify-center gap-2
-                          transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-zinc-600"
+                className="w-full bg-[var(--background-tertiary)] hover:bg-[var(--border-secondary)] text-[var(--foreground)] py-3 rounded-md font-medium flex items-center justify-center gap-2
+                          transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--border-secondary)]"
                 whileTap={{ scale: 0.98 }}
               >
                 <span>Retour à la connexion</span>
@@ -187,7 +190,7 @@ export default function ForgotPasswordPage() {
           <div className="mt-8 text-center">
             <Link
               href="/login"
-              className="inline-flex items-center gap-2 text-sm font-medium text-indigo-400 hover:text-indigo-300"
+              className="inline-flex items-center gap-2 text-sm font-medium text-[var(--primary)] hover:text-[var(--primary-hover)]"
             >
               <ArrowLeft className="h-4 w-4" />
               Retour à la connexion

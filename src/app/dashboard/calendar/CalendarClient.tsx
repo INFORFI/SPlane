@@ -131,30 +131,30 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
     switch (status) {
       case TaskStatus.COMPLETED:
         return {
-          color: 'bg-emerald-500',
-          textColor: 'text-emerald-400',
-          bg: 'bg-emerald-500/10',
+          color: 'bg-[var(--success)]',
+          textColor: 'text-[var(--success)]',
+          bg: 'bg-[var(--success-muted)]',
           label: 'Terminée',
         };
       case TaskStatus.IN_PROGRESS:
         return {
-          color: 'bg-amber-500',
-          textColor: 'text-amber-400',
-          bg: 'bg-amber-500/10',
+          color: 'bg-[var(--warning)]',
+          textColor: 'text-[var(--warning)]',
+          bg: 'bg-[var(--warning-muted)]',
           label: 'En cours',
         };
       case TaskStatus.CANCELED:
         return {
-          color: 'bg-zinc-500',
-          textColor: 'text-zinc-400',
-          bg: 'bg-zinc-500/10',
+          color: 'bg-[var(--foreground-muted)]',
+          textColor: 'text-[var(--foreground-tertiary)]',
+          bg: 'bg-[var(--foreground-muted)]/10',
           label: 'Annulée',
         };
       default:
         return {
-          color: 'bg-indigo-500',
-          textColor: 'text-indigo-400',
-          bg: 'bg-indigo-500/10',
+          color: 'bg-[var(--primary)]',
+          textColor: 'text-[var(--primary)]',
+          bg: 'bg-[var(--primary-muted)]',
           label: 'À faire',
         };
     }
@@ -164,13 +164,13 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
   const getPriorityColor = (priority: number) => {
     switch (priority) {
       case 3:
-        return 'bg-rose-500';
+        return 'bg-[var(--error)]';
       case 2:
-        return 'bg-amber-500';
+        return 'bg-[var(--warning)]';
       case 1:
-        return 'bg-emerald-500';
+        return 'bg-[var(--success)]';
       default:
-        return 'bg-indigo-500';
+        return 'bg-[var(--primary)]';
     }
   };
 
@@ -216,15 +216,17 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <motion.div variants={itemVariants}>
-          <h1 className="text-2xl font-bold text-white">Calendrier</h1>
-          <p className="text-zinc-400">Gérez vos tâches et suivez les échéances</p>
+          <h1 className="text-2xl font-bold text-[var(--foreground)]">Calendrier</h1>
+          <p className="text-[var(--foreground-tertiary)]">
+            Gérez vos tâches et suivez les échéances
+          </p>
         </motion.div>
 
         <div className="flex gap-2">
           <Link href="/dashboard/tasks/create">
             <motion.button
               variants={itemVariants}
-              className="flex items-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors cursor-pointer"
+              className="flex items-center gap-2 px-3 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-lg text-sm font-medium text-[var(--primary-foreground)] transition-colors cursor-pointer"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
@@ -240,19 +242,19 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
         {/* Calendar Panel */}
         <motion.div
           variants={itemVariants}
-          className="lg:col-span-2 bg-zinc-900 border border-zinc-800 rounded-xl p-6"
+          className="lg:col-span-2 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6"
         >
           {/* Calendar Header */}
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-white flex items-center gap-2">
-              <CalendarIcon className="h-5 w-5 text-indigo-400" />
+            <h2 className="text-lg font-semibold text-[var(--foreground)] flex items-center gap-2">
+              <CalendarIcon className="h-5 w-5 text-[var(--primary)]" />
               <span>{currentMonthName}</span>
             </h2>
 
             <div className="flex items-center gap-2">
               <button
                 onClick={goToToday}
-                className="px-3 py-1 text-xs font-medium bg-zinc-800 hover:bg-zinc-700 text-zinc-200 rounded-md transition-colors"
+                className="px-3 py-1 text-xs font-medium bg-[var(--background-tertiary)] hover:bg-[var(--border-secondary)] text-[var(--foreground-secondary)] rounded-md transition-colors"
               >
                 Aujourd&apos;hui
               </button>
@@ -260,25 +262,25 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
               <div className="flex">
                 <button
                   onClick={prevMonth}
-                  className="p-1.5 rounded-l-md bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors"
+                  className="p-1.5 rounded-l-md bg-[var(--background-tertiary)] hover:bg-[var(--border-secondary)] text-[var(--foreground-tertiary)] hover:text-[var(--foreground)] transition-colors"
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </button>
                 <button
                   onClick={nextMonth}
-                  className="p-1.5 rounded-r-md bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white transition-colors"
+                  className="p-1.5 rounded-r-md bg-[var(--background-tertiary)] hover:bg-[var(--border-secondary)] text-[var(--foreground-tertiary)] hover:text-[var(--foreground)] transition-colors"
                 >
                   <ChevronRight className="h-4 w-4" />
                 </button>
               </div>
 
-              <div className="flex rounded-md overflow-hidden border border-zinc-800">
+              <div className="flex rounded-md overflow-hidden border border-[var(--border)]">
                 <button
                   onClick={() => setCurrentView('month')}
                   className={`px-3 py-1 text-xs font-medium ${
                     currentView === 'month'
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200'
+                      ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
+                      : 'bg-[var(--background-tertiary)] text-[var(--foreground-tertiary)] hover:bg-[var(--border-secondary)] hover:text-[var(--foreground-secondary)]'
                   } transition-colors`}
                 >
                   Mois
@@ -287,8 +289,8 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                   onClick={() => setCurrentView('week')}
                   className={`px-3 py-1 text-xs font-medium ${
                     currentView === 'week'
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200'
+                      ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
+                      : 'bg-[var(--background-tertiary)] text-[var(--foreground-tertiary)] hover:bg-[var(--border-secondary)] hover:text-[var(--foreground-secondary)]'
                   } transition-colors`}
                 >
                   Semaine
@@ -297,8 +299,8 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                   onClick={() => setCurrentView('day')}
                   className={`px-3 py-1 text-xs font-medium ${
                     currentView === 'day'
-                      ? 'bg-indigo-600 text-white'
-                      : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700 hover:text-zinc-200'
+                      ? 'bg-[var(--primary)] text-[var(--primary-foreground)]'
+                      : 'bg-[var(--background-tertiary)] text-[var(--foreground-tertiary)] hover:bg-[var(--border-secondary)] hover:text-[var(--foreground-secondary)]'
                   } transition-colors`}
                 >
                   Jour
@@ -313,7 +315,7 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
               {weekdays.map(day => (
                 <div
                   key={day}
-                  className="h-10 flex items-center justify-center text-sm font-medium text-zinc-400"
+                  className="h-10 flex items-center justify-center text-sm font-medium text-[var(--foreground-tertiary)]"
                 >
                   {day}
                 </div>
@@ -335,11 +337,11 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                     onClick={() => handleDayClick(date)}
                     className={`h-24 p-1 rounded-lg border relative cursor-pointer ${
                       isSelected
-                        ? 'border-indigo-500 bg-indigo-500/10'
+                        ? 'border-[var(--primary)] bg-[var(--primary-muted)]'
                         : isToday
-                          ? 'border-indigo-500/50 bg-zinc-800/80'
+                          ? 'border-[var(--primary)]/50 bg-[var(--background-tertiary)]/80'
                           : isCurrentMonth
-                            ? 'border-zinc-800 bg-zinc-800/50 hover:bg-zinc-800'
+                            ? 'border-[var(--border)] bg-[var(--background-tertiary)]/50 hover:bg-[var(--background-tertiary)]'
                             : 'border-transparent bg-transparent'
                     }`}
                   >
@@ -347,9 +349,9 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                       className={`text-sm font-medium ${
                         isCurrentMonth
                           ? isToday
-                            ? 'text-indigo-400'
-                            : 'text-zinc-200'
-                          : 'text-zinc-600'
+                            ? 'text-[var(--primary)]'
+                            : 'text-[var(--foreground-secondary)]'
+                          : 'text-[var(--foreground-muted)]'
                       }`}
                     >
                       {date.getDate()}
@@ -370,7 +372,7 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                           ))}
 
                         {taskCount > 2 && (
-                          <div className="text-xs text-zinc-400 px-1.5">
+                          <div className="text-xs text-[var(--foreground-tertiary)] px-1.5">
                             + {taskCount - 2} de plus
                           </div>
                         )}
@@ -391,9 +393,9 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.2 }}
-                className="mt-6 border-t border-zinc-800 pt-6"
+                className="mt-6 border-t border-[var(--border)] pt-6"
               >
-                <h3 className="text-white font-medium mb-4">
+                <h3 className="text-[var(--foreground)] font-medium mb-4">
                   Tâches pour le {formatDate(selectedDate)}
                 </h3>
 
@@ -402,15 +404,17 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                     {selectedDateTasks.map(task => (
                       <div
                         key={task.id}
-                        className="p-3 border border-zinc-800 hover:border-zinc-700 rounded-lg flex items-center justify-between gap-3 transition-colors"
+                        className="p-3 border border-[var(--border)] hover:border-[var(--border-secondary)] rounded-lg flex items-center justify-between gap-3 transition-colors"
                       >
                         <div className="flex items-start gap-3">
                           <div
                             className={`h-2 w-2 rounded-full mt-2 ${getPriorityColor(task.priority)}`}
                           ></div>
                           <div>
-                            <div className="font-medium text-white">{task.title}</div>
-                            <div className="text-sm text-zinc-400">{task.project.name}</div>
+                            <div className="font-medium text-[var(--foreground)]">{task.title}</div>
+                            <div className="text-sm text-[var(--foreground-tertiary)]">
+                              {task.project.name}
+                            </div>
                           </div>
                         </div>
 
@@ -423,7 +427,7 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
 
                           {task.userTasks && task.userTasks[0] && (
                             <div
-                              className="h-6 w-6 rounded-full bg-indigo-600 flex items-center justify-center text-white text-xs"
+                              className="h-6 w-6 rounded-full bg-[var(--primary)] flex items-center justify-center text-[var(--primary-foreground)] text-xs"
                               title={task.userTasks[0].user.fullName}
                             >
                               {task.userTasks[0].user.fullName
@@ -437,10 +441,10 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                     ))}
                   </div>
                 ) : (
-                  <div className="flex flex-col items-center justify-center py-8 text-zinc-500">
+                  <div className="flex flex-col items-center justify-center py-8 text-[var(--foreground-muted)]">
                     <CheckCircle2 className="h-12 w-12 mb-3 opacity-50" />
                     <p className="mb-1">Aucune tâche pour cette date</p>
-                    <button className="mt-3 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors flex items-center gap-2">
+                    <button className="mt-3 px-3 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-lg text-sm font-medium text-[var(--primary-foreground)] transition-colors flex items-center gap-2">
                       <Plus className="h-4 w-4" />
                       <span>Ajouter une tâche</span>
                     </button>
@@ -454,8 +458,8 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
         {/* Sidebar */}
         <motion.div variants={itemVariants} className="space-y-6">
           {/* Upcoming Tasks */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-            <h2 className="text-lg font-semibold text-white mb-4">Tâches à venir</h2>
+          <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
+            <h2 className="text-lg font-semibold text-[var(--foreground)] mb-4">Tâches à venir</h2>
 
             {upcomingTasks.length > 0 ? (
               <div className="space-y-3">
@@ -477,23 +481,27 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                       key={task.id}
                       className={`p-3 rounded-lg transition-colors ${
                         isUrgent
-                          ? 'bg-rose-500/10 border border-rose-500/20'
-                          : 'bg-zinc-800/50 hover:bg-zinc-800'
+                          ? 'bg-[var(--error-muted)] border border-[var(--error)]/20'
+                          : 'bg-[var(--background-tertiary)]/50 hover:bg-[var(--background-tertiary)]'
                       }`}
                     >
                       <div className="flex justify-between items-start mb-1">
-                        <h3 className={`font-medium ${isUrgent ? 'text-rose-400' : 'text-white'}`}>
+                        <h3
+                          className={`font-medium ${isUrgent ? 'text-[var(--error)]' : 'text-[var(--foreground)]'}`}
+                        >
                           {task.title}
                         </h3>
                         <div
-                          className={`flex items-center gap-1 text-xs font-medium ${isUrgent ? 'text-rose-400' : 'text-zinc-400'}`}
+                          className={`flex items-center gap-1 text-xs font-medium ${isUrgent ? 'text-[var(--error)]' : 'text-[var(--foreground-tertiary)]'}`}
                         >
                           <Clock className="h-3 w-3" />
                           <span>{timeInfo}</span>
                         </div>
                       </div>
 
-                      <p className="text-xs text-zinc-400 mb-2">{task.project.name}</p>
+                      <p className="text-xs text-[var(--foreground-tertiary)] mb-2">
+                        {task.project.name}
+                      </p>
 
                       <div className="flex justify-between items-center text-xs">
                         <div
@@ -503,7 +511,7 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                         </div>
 
                         {task.userTasks && task.userTasks[0] && (
-                          <div className="flex items-center gap-2 text-zinc-400">
+                          <div className="flex items-center gap-2 text-[var(--foreground-tertiary)]">
                             <User className="h-3 w-3" />
                             <span>{task.userTasks[0].user.fullName}</span>
                           </div>
@@ -514,7 +522,7 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                 })}
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center py-8 text-zinc-500">
+              <div className="flex flex-col items-center justify-center py-8 text-[var(--foreground-muted)]">
                 <CheckCircle2 className="h-12 w-12 mb-3 opacity-50" />
                 <p>Aucune tâche à venir</p>
               </div>
@@ -522,8 +530,10 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
           </div>
 
           {/* Project Progress */}
-          <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-6">
-            <h2 className="text-lg font-semibold text-white mb-4">Progression des projets</h2>
+          <div className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6">
+            <h2 className="text-lg font-semibold text-[var(--foreground)] mb-4">
+              Progression des projets
+            </h2>
 
             <div className="space-y-4">
               {/* Group tasks by project and calculate progress */}
@@ -543,34 +553,36 @@ export default function CalendarClient({ tasks }: CalendarClientProps) {
                 return (
                   <div key={projectId} className="space-y-2">
                     <div className="flex justify-between items-center">
-                      <h3 className="text-sm font-medium text-white">{project.name}</h3>
+                      <h3 className="text-sm font-medium text-[var(--foreground)]">
+                        {project.name}
+                      </h3>
                       <span
                         className={`text-xs font-medium ${
                           progress >= 75
-                            ? 'text-emerald-400'
+                            ? 'text-[var(--success)]'
                             : progress >= 25
-                              ? 'text-amber-400'
-                              : 'text-indigo-400'
+                              ? 'text-[var(--warning)]'
+                              : 'text-[var(--primary)]'
                         }`}
                       >
                         {progress}%
                       </span>
                     </div>
 
-                    <div className="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
+                    <div className="w-full h-2 bg-[var(--background-tertiary)] rounded-full overflow-hidden">
                       <div
                         className={`h-full rounded-full ${
                           progress >= 75
-                            ? 'bg-emerald-500'
+                            ? 'bg-[var(--success)]'
                             : progress >= 25
-                              ? 'bg-amber-500'
-                              : 'bg-indigo-500'
+                              ? 'bg-[var(--warning)]'
+                              : 'bg-[var(--primary)]'
                         }`}
                         style={{ width: `${progress}%` }}
                       ></div>
                     </div>
 
-                    <div className="flex justify-between text-xs text-zinc-500">
+                    <div className="flex justify-between text-xs text-[var(--foreground-muted)]">
                       <span>
                         {completedTasks} sur {totalTasks} tâches
                       </span>

@@ -174,11 +174,11 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
       <div className="flex items-center gap-4 mb-6">
         <Link
           href="/dashboard/projects"
-          className="text-zinc-400 hover:text-white transition-colors"
+          className="text-[var(--foreground-tertiary)] hover:text-[var(--foreground)] transition-colors"
         >
           <ArrowLeft className="h-5 w-5" />
         </Link>
-        <motion.h1 variants={itemVariants} className="text-2xl font-bold text-white">
+        <motion.h1 variants={itemVariants} className="text-2xl font-bold text-[var(--foreground)]">
           Create New Project
         </motion.h1>
       </div>
@@ -189,7 +189,7 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
-          className="mb-6 p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center gap-3 text-emerald-400"
+          className="mb-6 p-4 rounded-lg bg-[var(--success-muted)] border border-[var(--success)]/20 flex items-center gap-3 text-[var(--success)]"
         >
           <CheckCircle2 className="h-5 w-5 flex-shrink-0" />
           <span>Project created successfully!</span>
@@ -200,20 +200,25 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
       <motion.form
         variants={itemVariants}
         onSubmit={handleSubmit}
-        className="bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl overflow-hidden"
+        className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl shadow-xl overflow-hidden"
       >
         {/* Form header */}
-        <div className="bg-zinc-800/50 px-6 py-4 border-b border-zinc-800">
-          <h2 className="text-lg font-medium text-white">Project Information</h2>
-          <p className="text-sm text-zinc-400">Fill in the details to create a new project</p>
+        <div className="bg-[var(--background-tertiary)]/50 px-6 py-4 border-b border-[var(--border)]">
+          <h2 className="text-lg font-medium text-[var(--foreground)]">Project Information</h2>
+          <p className="text-sm text-[var(--foreground-tertiary)]">
+            Fill in the details to create a new project
+          </p>
         </div>
 
         {/* Form fields */}
         <div className="p-6 space-y-6">
           {/* Project name */}
           <div className="space-y-2">
-            <label htmlFor="name" className="block text-sm font-medium text-zinc-300">
-              Project Name <span className="text-rose-500">*</span>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-[var(--foreground-secondary)]"
+            >
+              Project Name <span className="text-[var(--error)]">*</span>
             </label>
             <input
               id="name"
@@ -222,14 +227,17 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
               value={formData.name}
               onChange={handleChange}
               placeholder="Enter project name"
-              className={`w-full px-4 py-2.5 bg-zinc-800 border ${errors.name ? 'border-rose-500' : 'border-zinc-700'} rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
+              className={`w-full px-4 py-2.5 bg-[var(--input)] border ${errors.name ? 'border-[var(--error)]' : 'border-[var(--border-secondary)]'} rounded-lg text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent`}
             />
-            {errors.name && <p className="text-rose-500 text-xs mt-1">{errors.name}</p>}
+            {errors.name && <p className="text-[var(--error)] text-xs mt-1">{errors.name}</p>}
           </div>
 
           {/* Project description */}
           <div className="space-y-2">
-            <label htmlFor="description" className="block text-sm font-medium text-zinc-300">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-[var(--foreground-secondary)]"
+            >
               Description
             </label>
             <textarea
@@ -239,7 +247,7 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
               onChange={handleChange}
               rows={5}
               placeholder="Describe your project"
-              className="w-full px-4 py-2.5 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+              className="w-full px-4 py-2.5 bg-[var(--input)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
             />
           </div>
 
@@ -247,12 +255,15 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Start date */}
             <div className="space-y-2">
-              <label htmlFor="startDate" className="block text-sm font-medium text-zinc-300">
-                Start Date <span className="text-rose-500">*</span>
+              <label
+                htmlFor="startDate"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
+                Start Date <span className="text-[var(--error)]">*</span>
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Calendar className="h-5 w-5 text-zinc-500" />
+                  <Calendar className="h-5 w-5 text-[var(--foreground-muted)]" />
                 </div>
                 <input
                   id="startDate"
@@ -260,22 +271,25 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
                   type="date"
                   value={formData.startDate}
                   onChange={handleChange}
-                  className={`w-full pl-10 pr-4 py-2.5 bg-zinc-800 border ${errors.startDate ? 'border-rose-500' : 'border-zinc-700'} rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
+                  className={`w-full pl-10 pr-4 py-2.5 bg-[var(--input)] border ${errors.startDate ? 'border-[var(--error)]' : 'border-[var(--border-secondary)]'} rounded-lg text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent`}
                 />
                 {errors.startDate && (
-                  <p className="text-rose-500 text-xs mt-1">{errors.startDate}</p>
+                  <p className="text-[var(--error)] text-xs mt-1">{errors.startDate}</p>
                 )}
               </div>
             </div>
 
             {/* End date */}
             <div className="space-y-2">
-              <label htmlFor="endDate" className="block text-sm font-medium text-zinc-300">
+              <label
+                htmlFor="endDate"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 End Date
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Calendar className="h-5 w-5 text-zinc-500" />
+                  <Calendar className="h-5 w-5 text-[var(--foreground-muted)]" />
                 </div>
                 <input
                   id="endDate"
@@ -283,9 +297,11 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
                   type="date"
                   value={formData.endDate}
                   onChange={handleChange}
-                  className={`w-full pl-10 pr-4 py-2.5 bg-zinc-800 border ${errors.endDate ? 'border-rose-500' : 'border-zinc-700'} rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
+                  className={`w-full pl-10 pr-4 py-2.5 bg-[var(--input)] border ${errors.endDate ? 'border-[var(--error)]' : 'border-[var(--border-secondary)]'} rounded-lg text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent`}
                 />
-                {errors.endDate && <p className="text-rose-500 text-xs mt-1">{errors.endDate}</p>}
+                {errors.endDate && (
+                  <p className="text-[var(--error)] text-xs mt-1">{errors.endDate}</p>
+                )}
               </div>
             </div>
           </div>
@@ -294,15 +310,18 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
           <div className="space-y-6">
             {/* Project owner */}
             <div className="space-y-2">
-              <label htmlFor="ownerId" className="block text-sm font-medium text-zinc-300">
-                Project Owner <span className="text-rose-500">*</span>
+              <label
+                htmlFor="ownerId"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
+                Project Owner <span className="text-[var(--error)]">*</span>
               </label>
               <select
                 id="ownerId"
                 name="ownerId"
                 value={formData.ownerId}
                 onChange={handleChange}
-                className={`w-full px-4 py-2.5 bg-zinc-800 border ${errors.ownerId ? 'border-rose-500' : 'border-zinc-700'} rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent`}
+                className={`w-full px-4 py-2.5 bg-[var(--input)] border ${errors.ownerId ? 'border-[var(--error)]' : 'border-[var(--border-secondary)]'} rounded-lg text-[var(--foreground)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent`}
               >
                 <option value="">Select project owner</option>
                 {users.map(user => (
@@ -311,7 +330,9 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
                   </option>
                 ))}
               </select>
-              {errors.ownerId && <p className="text-rose-500 text-xs mt-1">{errors.ownerId}</p>}
+              {errors.ownerId && (
+                <p className="text-[var(--error)] text-xs mt-1">{errors.ownerId}</p>
+              )}
             </div>
 
             {/* Team members */}
@@ -320,7 +341,7 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
 
           {/* General error message */}
           {errors.submit && (
-            <div className="p-3 bg-rose-500/10 border border-rose-500/20 rounded-lg flex items-center gap-3 text-rose-400">
+            <div className="p-3 bg-[var(--error-muted)] border border-[var(--error)]/20 rounded-lg flex items-center gap-3 text-[var(--error)]">
               <AlertCircle className="h-5 w-5 flex-shrink-0" />
               <span className="text-sm">{errors.submit}</span>
             </div>
@@ -328,10 +349,10 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
         </div>
 
         {/* Form actions */}
-        <div className="px-6 py-4 bg-zinc-800/50 border-t border-zinc-800 flex justify-end gap-3">
+        <div className="px-6 py-4 bg-[var(--background-tertiary)]/50 border-t border-[var(--border)] flex justify-end gap-3">
           <Link
             href="/dashboard/projects"
-            className="px-4 py-2.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium text-zinc-200 transition-colors"
+            className="px-4 py-2.5 bg-[var(--background-tertiary)] hover:bg-[var(--border-secondary)] rounded-lg text-sm font-medium text-[var(--foreground-secondary)] transition-colors"
           >
             Cancel
           </Link>
@@ -339,14 +360,14 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
           <motion.button
             type="submit"
             disabled={isSubmitting}
-            className="flex items-center gap-2 px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+            className="flex items-center gap-2 px-4 py-2.5 bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-lg text-sm font-medium text-[var(--primary-foreground)] transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
             whileHover={{ scale: isSubmitting ? 1 : 1.03 }}
             whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
           >
             {isSubmitting ? (
               <>
                 <svg
-                  className="animate-spin h-4 w-4 text-white"
+                  className="animate-spin h-4 w-4 text-[var(--primary-foreground)]"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
@@ -380,14 +401,16 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
       {/* Project Preview */}
       <motion.div
         variants={itemVariants}
-        className="mt-8 bg-zinc-900 border border-zinc-800 rounded-xl p-6"
+        className="mt-8 bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6"
       >
-        <h2 className="text-lg font-medium text-white mb-4">Project Preview</h2>
+        <h2 className="text-lg font-medium text-[var(--foreground)] mb-4">Project Preview</h2>
 
-        <div className="p-5 border border-zinc-800 rounded-lg bg-zinc-800/50">
+        <div className="p-5 border border-[var(--border)] rounded-lg bg-[var(--background-tertiary)]/50">
           <div className="mb-4">
-            <h3 className="text-xl font-semibold text-white">{formData.name || 'Project Name'}</h3>
-            <p className="text-zinc-400 mt-1">
+            <h3 className="text-xl font-semibold text-[var(--foreground)]">
+              {formData.name || 'Project Name'}
+            </h3>
+            <p className="text-[var(--foreground-tertiary)] mt-1">
               {formData.description || 'Project description will appear here'}
             </p>
           </div>
@@ -395,12 +418,12 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 text-sm">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="bg-indigo-500/10 p-2 rounded-lg">
-                  <Calendar className="h-5 w-5 text-indigo-400" />
+                <div className="bg-[var(--primary-muted)] p-2 rounded-lg">
+                  <Calendar className="h-5 w-5 text-[var(--primary)]" />
                 </div>
                 <div>
-                  <p className="text-zinc-400">Timeline</p>
-                  <p className="text-white">
+                  <p className="text-[var(--foreground-tertiary)]">Timeline</p>
+                  <p className="text-[var(--foreground)]">
                     {formData.startDate
                       ? new Date(formData.startDate).toLocaleDateString()
                       : 'Start date'}
@@ -412,12 +435,12 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="bg-emerald-500/10 p-2 rounded-lg">
-                  <Users className="h-5 w-5 text-emerald-400" />
+                <div className="bg-[var(--success-muted)] p-2 rounded-lg">
+                  <Users className="h-5 w-5 text-[var(--success)]" />
                 </div>
                 <div>
-                  <p className="text-zinc-400">Team</p>
-                  <p className="text-white">
+                  <p className="text-[var(--foreground-tertiary)]">Team</p>
+                  <p className="text-[var(--foreground)]">
                     {formData.teamMembers.length > 0
                       ? `${formData.teamMembers.length} members`
                       : 'No team members yet'}
@@ -434,7 +457,7 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
                     return user ? (
                       <div
                         key={user.id}
-                        className="h-8 w-8 rounded-full bg-indigo-600 border-2 border-zinc-900 flex items-center justify-center text-xs text-white"
+                        className="h-8 w-8 rounded-full bg-[var(--primary)] border-2 border-[var(--background)] flex items-center justify-center text-xs text-[var(--primary-foreground)]"
                         title={user.fullName}
                       >
                         {user.fullName
@@ -445,7 +468,7 @@ export default function CreateProjectPage({ users, currentUserId }: CreateProjec
                     ) : null;
                   })}
                   {formData.teamMembers.length > 3 && (
-                    <div className="h-8 w-8 rounded-full bg-zinc-700 border-2 border-zinc-900 flex items-center justify-center text-xs text-white">
+                    <div className="h-8 w-8 rounded-full bg-[var(--border-secondary)] border-2 border-[var(--background)] flex items-center justify-center text-xs text-[var(--foreground)]">
                       +{formData.teamMembers.length - 3}
                     </div>
                   )}

@@ -1,0 +1,116 @@
+{
+  "version": "1.2.0",
+  "title": "Modifications des patchnotes",
+  "description": "Ajout de la documentation de la feature des `patchnotes`",
+  "emoji": "📝",
+  "sections": {
+    "news": [
+      {
+        "name": "add-global-description",
+        "description": "Ajout d'une description globale pour les patchnotes",
+        "pr_number": "54"
+      },
+      {
+        "name": "add-pull-request-number-on-patchnotes",
+        "description": "Ajout du numéro de la pull request sur les patchnotes",
+        "pr_number": "56"
+      },
+      {
+        "name": "patchnote-modal",
+        "description": "Ajout du modal pour les patchnotes",
+        "pr_number": "58"
+      },
+      {
+        "name": "patchnote-indicator",
+        "description": "Ajout d'un indicateur pour les nouvelles mises à jour directement sur le dashboard",
+        "pr_number": "60"
+      },
+      {
+        "name": "patchnote-page",
+        "description": "Ajout de la page pour voir les détails d'un patchnote",
+        "pr_number": "62"
+      },
+      {
+        "name": "patchnotes-page",
+        "description": "Ajout de la page pour voir les patchnotes",
+        "pr_number": "66"
+      },
+      {
+        "name": "settings",
+        "description": "Ajout de la page pour les paramètres",
+        "pr_number": "68"
+      },
+      {
+        "name": "settings-patchnote",
+        "description": "Ajout de la possibilité de voir les patchnotes directement lors de la connexion sur le dashboard",
+        "pr_number": "70"
+      },
+      {
+        "name": "lightmode",
+        "description": "Ajout de plusieurs thèmes pour le panel",
+        "pr_number": "74"
+      },
+      {
+        "name": "task",
+        "description": "Ajout d'un tracker de tâches dans la page des projets avec la possibilité de marquer les tâches comme terminées",
+        "pr_number": "80"
+      },
+      {
+        "name": "guided-tour",
+        "description": "Ajout d'un tour guidé pour les nouveaux utilisateurs",
+        "pr_number": "82"
+      },
+      {
+        "name": "activity-feed",
+        "description": "Ajout des activités des utilisateurs dans la base de données et l'affichage dans le dashboard",
+        "pr_number": "84"
+      }
+    ],
+    "corrections": [
+      {
+        "name": "version-first-docs",
+        "description": "Changement de version pour le premier patchnote de 1.0.0 à 1.1.1",
+        "pr_number": "52"
+      },
+      {
+        "name": "button-style",
+        "description": "Ajout d'un curseur cliquable pour tous les boutons",
+        "pr_number": "72"
+      },
+      {
+        "name": "task",
+        "description": "Correction du bug de la gestion des tâches",
+        "pr_number": "86"
+      }
+    ],
+    "technical-improvements": [
+      {
+        "name": "testing",
+        "description": "Ajout de tests pour les actions server ainsi que d'un workflow de tests pour la validation des pull requests",
+        "pr_number": "76"
+      },
+      {
+        "name": "eslint",
+        "description": "Ajout d'un workflow pour la validation du code avec ESLint et Prettier",
+        "pr_number": "78"
+      },
+      {
+        "name": "patchnote-workflows",
+        "description": "Ajout des workflows pour la validation des pull requests pour les branches de patchnotes",
+        "pr_number": "90"
+      }
+    ],
+    "other-changes": [
+      {
+        "name": "patchnotes",
+        "description": "Ajout de la documentation de la feature des `patchnotes`",
+        "pr_number": "50"
+      },
+      {
+        "name": "patchnote",
+        "description": "Correction du bug de la gestion des patchnotes",
+        "pr_number": "88"
+      }
+    ]
+  }
+}

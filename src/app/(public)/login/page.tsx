@@ -41,13 +41,13 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-[var(--background)] flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="bg-zinc-900 border border-zinc-800 rounded-xl p-8 shadow-xl"
+          className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-8 shadow-xl"
         >
           {/* Logo and Title */}
           <div className="text-center mb-8">
@@ -57,13 +57,13 @@ export default function LoginPage() {
               animate={{ scale: 1 }}
               transition={{ duration: 0.3, delay: 0.2 }}
             >
-              <div className="flex items-center justify-center w-10 h-10 rounded-md bg-indigo-600 text-white font-bold text-xl">
+              <div className="flex items-center justify-center w-10 h-10 rounded-md bg-[var(--primary)] text-[var(--primary-foreground)] font-bold text-xl">
                 S
               </div>
-              <span className="font-bold text-2xl text-white">SPLANE</span>
+              <span className="font-bold text-2xl text-[var(--foreground)]">SPLANE</span>
             </motion.div>
-            <h1 className="text-2xl font-bold text-white">Connexion</h1>
-            <p className="text-zinc-400 mt-2">
+            <h1 className="text-2xl font-bold text-[var(--foreground)]">Connexion</h1>
+            <p className="text-[var(--foreground-tertiary)] mt-2">
               Bienvenue sur SPLANE, votre outil de gestion de projet
             </p>
           </div>
@@ -73,7 +73,7 @@ export default function LoginPage() {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-6 p-3 bg-rose-500/10 border border-rose-500/20 rounded-lg flex items-center gap-3 text-rose-400"
+              className="mb-6 p-3 bg-[var(--error-muted)] border border-[var(--error)] rounded-lg flex items-center gap-3 text-[var(--error)]"
             >
               <AlertCircle className="h-5 w-5 flex-shrink-0" />
               <span className="text-sm">{error}</span>
@@ -83,12 +83,15 @@ export default function LoginPage() {
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-1">
-              <label htmlFor="email" className="block text-sm font-medium text-zinc-300">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 Email
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Mail className="h-5 w-5 text-zinc-500" />
+                  <Mail className="h-5 w-5 text-[var(--foreground-muted)]" />
                 </div>
                 <input
                   id="email"
@@ -99,19 +102,22 @@ export default function LoginPage() {
                   onChange={e => setEmail(e.target.value)}
                   placeholder="admin@splane.com"
                   required
-                  className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-md py-2.5 pl-10 pr-3 
-                            placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full bg-[var(--input)] border border-[var(--border-secondary)] text-[var(--foreground)] rounded-md py-2.5 pl-10 pr-3 
+                            placeholder:text-[var(--foreground-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
                 />
               </div>
             </div>
 
             <div className="space-y-1">
-              <label htmlFor="password" className="block text-sm font-medium text-zinc-300">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-[var(--foreground-secondary)]"
+              >
                 Mot de passe
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-zinc-500" />
+                  <Lock className="h-5 w-5 text-[var(--foreground-muted)]" />
                 </div>
                 <input
                   id="password"
@@ -122,13 +128,13 @@ export default function LoginPage() {
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
                   required
-                  className="w-full bg-zinc-800 border border-zinc-700 text-white rounded-md py-2.5 pl-10 pr-10 
-                            placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="w-full bg-[var(--input)] border border-[var(--border-secondary)] text-[var(--foreground)] rounded-md py-2.5 pl-10 pr-10 
+                            placeholder:text-[var(--foreground-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-zinc-500 hover:text-zinc-300"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-[var(--foreground-muted)] hover:text-[var(--foreground-secondary)]"
                 >
                   {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
                 </button>
@@ -141,16 +147,19 @@ export default function LoginPage() {
                   id="remember-me"
                   name="remember-me"
                   type="checkbox"
-                  className="h-4 w-4 bg-zinc-800 border-zinc-700 rounded text-indigo-600 focus:ring-indigo-500"
+                  className="h-4 w-4 bg-[var(--input)] border-[var(--border-secondary)] rounded text-[var(--primary)] focus:ring-[var(--ring)]"
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-zinc-400">
+                <label
+                  htmlFor="remember-me"
+                  className="ml-2 block text-sm text-[var(--foreground-tertiary)]"
+                >
                   Se souvenir de moi
                 </label>
               </div>
 
               <Link
                 href="/forgot-password"
-                className="text-sm font-medium text-indigo-400 hover:text-indigo-300"
+                className="text-sm font-medium text-[var(--primary)] hover:text-[var(--primary-hover)]"
               >
                 Mot de passe oublié?
               </Link>
@@ -160,14 +169,14 @@ export default function LoginPage() {
               <motion.button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-md font-medium flex items-center justify-center gap-2 
-                          transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-70"
+                className="w-full bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-[var(--primary-foreground)] py-3 rounded-md font-medium flex items-center justify-center gap-2 
+                          transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--ring)] disabled:opacity-70"
                 whileTap={{ scale: 0.98 }}
               >
                 {isLoading ? (
                   <>
                     <svg
-                      className="animate-spin h-5 w-5 text-white"
+                      className="animate-spin h-5 w-5 text-[var(--primary-foreground)]"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
                       viewBox="0 0 24 24"

@@ -148,13 +148,13 @@ export default function TasksClient({ tasks }: TasksClientProps) {
   const getPriorityColor = (priority: number) => {
     switch (priority) {
       case 3:
-        return 'bg-rose-500';
+        return 'bg-[var(--error)]';
       case 2:
-        return 'bg-amber-500';
+        return 'bg-[var(--warning)]';
       case 1:
-        return 'bg-emerald-500';
+        return 'bg-[var(--success)]';
       default:
-        return 'bg-indigo-500';
+        return 'bg-[var(--primary)]';
     }
   };
 
@@ -176,13 +176,25 @@ export default function TasksClient({ tasks }: TasksClientProps) {
   const getStatusInfo = (status: TaskStatus) => {
     switch (status) {
       case TaskStatus.COMPLETED:
-        return { color: 'text-emerald-400', bg: 'bg-emerald-500/10', label: 'Completed' };
+        return {
+          color: 'text-[var(--success)]',
+          bg: 'bg-[var(--success-muted)]',
+          label: 'Completed',
+        };
       case TaskStatus.IN_PROGRESS:
-        return { color: 'text-amber-400', bg: 'bg-amber-500/10', label: 'In Progress' };
+        return {
+          color: 'text-[var(--warning)]',
+          bg: 'bg-[var(--warning-muted)]',
+          label: 'In Progress',
+        };
       case TaskStatus.CANCELED:
-        return { color: 'text-zinc-400', bg: 'bg-zinc-500/10', label: 'Canceled' };
+        return {
+          color: 'text-[var(--foreground-tertiary)]',
+          bg: 'bg-[var(--foreground-muted)]/10',
+          label: 'Canceled',
+        };
       default:
-        return { color: 'text-indigo-400', bg: 'bg-indigo-500/10', label: 'To Do' };
+        return { color: 'text-[var(--primary)]', bg: 'bg-[var(--primary-muted)]', label: 'To Do' };
     }
   };
 
@@ -196,8 +208,8 @@ export default function TasksClient({ tasks }: TasksClientProps) {
       {/* Page header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <motion.div variants={itemVariants}>
-          <h1 className="text-2xl font-bold text-white">My Tasks</h1>
-          <p className="text-zinc-400">Manage and track your assigned tasks</p>
+          <h1 className="text-2xl font-bold text-[var(--foreground)]">My Tasks</h1>
+          <p className="text-[var(--foreground-tertiary)]">Manage and track your assigned tasks</p>
         </motion.div>
 
         <Link href="/dashboard/tasks/create">
@@ -205,7 +217,7 @@ export default function TasksClient({ tasks }: TasksClientProps) {
             variants={itemVariants}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-lg text-sm font-medium text-white transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] rounded-lg text-sm font-medium text-[var(--primary-foreground)] transition-colors"
           >
             <Plus className="h-4 w-4" />
             Create Task
@@ -217,24 +229,24 @@ export default function TasksClient({ tasks }: TasksClientProps) {
       <motion.div variants={itemVariants} className="space-y-4">
         <div className="relative">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search className="h-5 w-5 text-zinc-500" />
+            <Search className="h-5 w-5 text-[var(--foreground-muted)]" />
           </div>
           <input
             type="text"
             placeholder="Search tasks..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-zinc-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 bg-[var(--input)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent"
           />
         </div>
 
-        <div className="flex overflow-x-auto pb-2 gap-1 border-b border-zinc-800">
+        <div className="flex overflow-x-auto pb-2 gap-1 border-b border-[var(--border)]">
           <button
             onClick={() => handleFilterChange('all')}
             className={`px-4 py-2 whitespace-nowrap text-sm font-medium rounded-md transition-colors ${
               activeFilter === 'all'
-                ? 'bg-zinc-800 text-white'
-                : 'text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800/50'
+                ? 'bg-[var(--background-tertiary)] text-[var(--foreground)]'
+                : 'text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)] hover:bg-[var(--background-tertiary)]/50'
             }`}
           >
             All Tasks
@@ -243,13 +255,13 @@ export default function TasksClient({ tasks }: TasksClientProps) {
             onClick={() => handleFilterChange('todo')}
             className={`px-4 py-2 whitespace-nowrap text-sm font-medium rounded-md transition-colors flex items-center gap-2 ${
               activeFilter === 'todo'
-                ? 'bg-zinc-800 text-white'
-                : 'text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800/50'
+                ? 'bg-[var(--background-tertiary)] text-[var(--foreground)]'
+                : 'text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)] hover:bg-[var(--background-tertiary)]/50'
             }`}
           >
             To Do
             {taskCounts.todo > 0 && (
-              <span className="ml-1 px-1.5 py-0.5 text-xs bg-indigo-500/20 text-indigo-400 rounded-full">
+              <span className="ml-1 px-1.5 py-0.5 text-xs bg-[var(--primary-muted)] text-[var(--primary)] rounded-full">
                 {taskCounts.todo}
               </span>
             )}
@@ -258,13 +270,13 @@ export default function TasksClient({ tasks }: TasksClientProps) {
             onClick={() => handleFilterChange('in-progress')}
             className={`px-4 py-2 whitespace-nowrap text-sm font-medium rounded-md transition-colors flex items-center gap-2 ${
               activeFilter === 'in-progress'
-                ? 'bg-zinc-800 text-white'
-                : 'text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800/50'
+                ? 'bg-[var(--background-tertiary)] text-[var(--foreground)]'
+                : 'text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)] hover:bg-[var(--background-tertiary)]/50'
             }`}
           >
             In Progress
             {taskCounts.inProgress > 0 && (
-              <span className="ml-1 px-1.5 py-0.5 text-xs bg-amber-500/20 text-amber-400 rounded-full">
+              <span className="ml-1 px-1.5 py-0.5 text-xs bg-[var(--warning-muted)] text-[var(--warning)] rounded-full">
                 {taskCounts.inProgress}
               </span>
             )}
@@ -273,13 +285,13 @@ export default function TasksClient({ tasks }: TasksClientProps) {
             onClick={() => handleFilterChange('completed')}
             className={`px-4 py-2 whitespace-nowrap text-sm font-medium rounded-md transition-colors flex items-center gap-2 ${
               activeFilter === 'completed'
-                ? 'bg-zinc-800 text-white'
-                : 'text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800/50'
+                ? 'bg-[var(--background-tertiary)] text-[var(--foreground)]'
+                : 'text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)] hover:bg-[var(--background-tertiary)]/50'
             }`}
           >
             Completed
             {taskCounts.completed > 0 && (
-              <span className="ml-1 px-1.5 py-0.5 text-xs bg-emerald-500/20 text-emerald-400 rounded-full">
+              <span className="ml-1 px-1.5 py-0.5 text-xs bg-[var(--success-muted)] text-[var(--success)] rounded-full">
                 {taskCounts.completed}
               </span>
             )}
@@ -288,13 +300,13 @@ export default function TasksClient({ tasks }: TasksClientProps) {
             onClick={() => handleFilterChange('upcoming')}
             className={`px-4 py-2 whitespace-nowrap text-sm font-medium rounded-md transition-colors flex items-center gap-2 ${
               activeFilter === 'upcoming'
-                ? 'bg-zinc-800 text-white'
-                : 'text-zinc-400 hover:text-zinc-300 hover:bg-zinc-800/50'
+                ? 'bg-[var(--background-tertiary)] text-[var(--foreground)]'
+                : 'text-[var(--foreground-tertiary)] hover:text-[var(--foreground-secondary)] hover:bg-[var(--background-tertiary)]/50'
             }`}
           >
             Upcoming
             {taskCounts.upcoming > 0 && (
-              <span className="ml-1 px-1.5 py-0.5 text-xs bg-rose-500/20 text-rose-400 rounded-full">
+              <span className="ml-1 px-1.5 py-0.5 text-xs bg-[var(--error-muted)] text-[var(--error)] rounded-full">
                 {taskCounts.upcoming}
               </span>
             )}
@@ -320,22 +332,24 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.2 }}
-                className="bg-zinc-900 border border-zinc-800 hover:border-zinc-700 rounded-lg p-4 transition-colors"
+                className="bg-[var(--background-secondary)] border border-[var(--border)] hover:border-[var(--border-secondary)] rounded-lg p-4 transition-colors"
                 onClick={() => setSelectedTask(task)}
               >
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div className="flex items-start gap-3">
                     <div
                       className={`h-5 w-5 mt-0.5 rounded-md flex-shrink-0 ${
-                        task.status === TaskStatus.COMPLETED ? 'bg-emerald-500/20' : 'bg-zinc-800'
+                        task.status === TaskStatus.COMPLETED
+                          ? 'bg-[var(--success-muted)]'
+                          : 'bg-[var(--background-tertiary)]'
                       } border ${
                         task.status === TaskStatus.COMPLETED
-                          ? 'border-emerald-500'
-                          : 'border-zinc-700'
+                          ? 'border-[var(--success)]'
+                          : 'border-[var(--border-secondary)]'
                       } flex items-center justify-center`}
                     >
                       {task.status === TaskStatus.COMPLETED && (
-                        <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                        <CheckCircle2 className="h-4 w-4 text-[var(--success)]" />
                       )}
                     </div>
 
@@ -344,30 +358,32 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                         <h3
                           className={`font-medium ${
                             task.status === TaskStatus.COMPLETED
-                              ? 'text-zinc-400 line-through'
-                              : 'text-white'
+                              ? 'text-[var(--foreground-tertiary)] line-through'
+                              : 'text-[var(--foreground)]'
                           }`}
                         >
                           {task.title}
                         </h3>
 
                         {/* Priority indicator */}
-                        <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs bg-zinc-800">
+                        <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-full text-xs bg-[var(--background-tertiary)]">
                           <div
                             className={`h-1.5 w-1.5 rounded-full ${getPriorityColor(task.priority)}`}
                           ></div>
-                          <span className="text-zinc-400">{getPriorityLabel(task.priority)}</span>
+                          <span className="text-[var(--foreground-tertiary)]">
+                            {getPriorityLabel(task.priority)}
+                          </span>
                         </div>
                       </div>
 
                       {/* Project name */}
-                      <div className="flex items-center gap-1 text-xs text-zinc-500 mt-1">
+                      <div className="flex items-center gap-1 text-xs text-[var(--foreground-muted)] mt-1">
                         <Layers className="h-3 w-3" />
                         <span>{task.project.name}</span>
                       </div>
 
                       {task.description && (
-                        <p className="text-sm text-zinc-400 mt-2 line-clamp-2">
+                        <p className="text-sm text-[var(--foreground-tertiary)] mt-2 line-clamp-2">
                           {task.description}
                         </p>
                       )}
@@ -380,8 +396,8 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                       <div
                         className={`flex items-center gap-1 text-xs ${
                           isOverdue(task.deadline) && task.status !== TaskStatus.COMPLETED
-                            ? 'text-rose-400'
-                            : 'text-zinc-400'
+                            ? 'text-[var(--error)]'
+                            : 'text-[var(--foreground-tertiary)]'
                         }`}
                       >
                         <Clock className="h-3.5 w-3.5" />
@@ -397,7 +413,7 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                     </div>
 
                     {/* Task actions */}
-                    <button className="p-1.5 rounded-md text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 transition-colors">
+                    <button className="p-1.5 rounded-md text-[var(--foreground-muted)] hover:text-[var(--foreground-secondary)] hover:bg-[var(--background-tertiary)] transition-colors">
                       <MoreHorizontal className="h-4 w-4" />
                     </button>
                   </div>
@@ -416,26 +432,28 @@ export default function TasksClient({ tasks }: TasksClientProps) {
           >
             {searchQuery ? (
               <>
-                <Search className="h-12 w-12 text-zinc-700 mb-4" />
-                <h3 className="text-xl font-medium text-zinc-400 mb-2">No matching tasks found</h3>
-                <p className="text-zinc-500 max-w-md mb-4">
+                <Search className="h-12 w-12 text-[var(--border-secondary)] mb-4" />
+                <h3 className="text-xl font-medium text-[var(--foreground-tertiary)] mb-2">
+                  No matching tasks found
+                </h3>
+                <p className="text-[var(--foreground-muted)] max-w-md mb-4">
                   Nous n&apos;avons pas trouvé de tâches correspondant à votre recherche &quot;
                   {searchQuery}&quot;.
                 </p>
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg text-sm transition-colors"
+                  className="px-4 py-2 bg-[var(--background-tertiary)] hover:bg-[var(--border-secondary)] text-[var(--foreground-secondary)] rounded-lg text-sm transition-colors"
                 >
                   Clear search
                 </button>
               </>
             ) : activeFilter !== 'all' ? (
               <>
-                <CheckCircle2 className="h-12 w-12 text-zinc-700 mb-4" />
-                <h3 className="text-xl font-medium text-zinc-400 mb-2">
+                <CheckCircle2 className="h-12 w-12 text-[var(--border-secondary)] mb-4" />
+                <h3 className="text-xl font-medium text-[var(--foreground-tertiary)] mb-2">
                   No {activeFilter.replace('-', ' ')} tasks
                 </h3>
-                <p className="text-zinc-500 max-w-md mb-4">
+                <p className="text-[var(--foreground-muted)] max-w-md mb-4">
                   {activeFilter === 'todo' &&
                     "You don't have any tasks to do yet. Create a new task to get started."}
                   {activeFilter === 'in-progress' &&
@@ -447,22 +465,24 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                 </p>
                 <button
                   onClick={() => handleFilterChange('all')}
-                  className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-300 rounded-lg text-sm transition-colors"
+                  className="px-4 py-2 bg-[var(--background-tertiary)] hover:bg-[var(--border-secondary)] text-[var(--foreground-secondary)] rounded-lg text-sm transition-colors"
                 >
                   View all tasks
                 </button>
               </>
             ) : (
               <>
-                <CheckCircle2 className="h-12 w-12 text-zinc-700 mb-4" />
-                <h3 className="text-xl font-medium text-zinc-400 mb-2">No tasks assigned to you</h3>
-                <p className="text-zinc-500 max-w-md mb-4">
+                <CheckCircle2 className="h-12 w-12 text-[var(--border-secondary)] mb-4" />
+                <h3 className="text-xl font-medium text-[var(--foreground-tertiary)] mb-2">
+                  No tasks assigned to you
+                </h3>
+                <p className="text-[var(--foreground-muted)] max-w-md mb-4">
                   Vous n&apos;avez pas de tâches assignées à vous. Créez une nouvelle tâche ou
                   demandez à votre équipe de vous assigner des tâches.
                 </p>
                 <Link
                   href="/dashboard/tasks/create"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm transition-colors flex items-center gap-2"
+                  className="px-4 py-2 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-[var(--primary-foreground)] rounded-lg text-sm transition-colors flex items-center gap-2"
                 >
                   <Plus className="h-4 w-4" />
                   Create new task
@@ -487,7 +507,7 @@ export default function TasksClient({ tasks }: TasksClientProps) {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-zinc-900 border border-zinc-800 rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
+              className="bg-[var(--background-secondary)] border border-[var(--border)] rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto"
               onClick={e => e.stopPropagation()}
             >
               <div className="flex items-center justify-between mb-4">
@@ -495,11 +515,13 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                   <div
                     className={`h-2 w-2 rounded-full ${getPriorityColor(selectedTask.priority)}`}
                   ></div>
-                  <h2 className="text-xl font-semibold text-white">{selectedTask.title}</h2>
+                  <h2 className="text-xl font-semibold text-[var(--foreground)]">
+                    {selectedTask.title}
+                  </h2>
                 </div>
                 <button
                   onClick={() => setSelectedTask(null)}
-                  className="p-1 rounded-full text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
+                  className="p-1 rounded-full text-[var(--foreground-tertiary)] hover:text-[var(--foreground)] hover:bg-[var(--background-tertiary)] transition-colors"
                 >
                   <AlertCircle className="h-5 w-5" />
                 </button>
@@ -509,23 +531,29 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                 <div className="md:col-span-2 space-y-6">
                   {/* Task description */}
                   <div>
-                    <h3 className="text-sm font-medium text-zinc-400 mb-2">Description</h3>
-                    <p className="text-white">
+                    <h3 className="text-sm font-medium text-[var(--foreground-tertiary)] mb-2">
+                      Description
+                    </h3>
+                    <p className="text-[var(--foreground)]">
                       {selectedTask.description || 'No description provided.'}
                     </p>
                   </div>
 
                   {/* Project info */}
                   <div>
-                    <h3 className="text-sm font-medium text-zinc-400 mb-2">Project</h3>
+                    <h3 className="text-sm font-medium text-[var(--foreground-tertiary)] mb-2">
+                      Project
+                    </h3>
                     <div className="flex items-center gap-2">
-                      <div className="p-2 bg-zinc-800 rounded-md">
-                        <Layers className="h-5 w-5 text-indigo-400" />
+                      <div className="p-2 bg-[var(--background-tertiary)] rounded-md">
+                        <Layers className="h-5 w-5 text-[var(--primary)]" />
                       </div>
                       <div>
-                        <p className="text-white font-medium">{selectedTask.project.name}</p>
+                        <p className="text-[var(--foreground)] font-medium">
+                          {selectedTask.project.name}
+                        </p>
                         {selectedTask.project.description && (
-                          <p className="text-sm text-zinc-400">
+                          <p className="text-sm text-[var(--foreground-tertiary)]">
                             {selectedTask.project.description}
                           </p>
                         )}
@@ -535,24 +563,28 @@ export default function TasksClient({ tasks }: TasksClientProps) {
 
                   {/* Task assignees */}
                   <div>
-                    <h3 className="text-sm font-medium text-zinc-400 mb-2">Assigned to</h3>
+                    <h3 className="text-sm font-medium text-[var(--foreground-tertiary)] mb-2">
+                      Assigned to
+                    </h3>
                     <div className="space-y-2">
                       {selectedTask.userTasks.map(userTask => (
                         <div
                           key={userTask.id}
-                          className="flex items-center gap-3 p-2 bg-zinc-800 rounded-lg"
+                          className="flex items-center gap-3 p-2 bg-[var(--background-tertiary)] rounded-lg"
                         >
-                          <div className="h-8 w-8 rounded-full bg-indigo-600 flex items-center justify-center text-white text-sm font-medium">
+                          <div className="h-8 w-8 rounded-full bg-[var(--primary)] flex items-center justify-center text-[var(--primary-foreground)] text-sm font-medium">
                             {userTask.user.fullName
                               .split(' ')
                               .map(n => n[0])
                               .join('')}
                           </div>
                           <div>
-                            <p className="text-sm font-medium text-white">
+                            <p className="text-sm font-medium text-[var(--foreground)]">
                               {userTask.user.fullName}
                             </p>
-                            <p className="text-xs text-zinc-400">{userTask.user.email}</p>
+                            <p className="text-xs text-[var(--foreground-tertiary)]">
+                              {userTask.user.email}
+                            </p>
                           </div>
                         </div>
                       ))}
@@ -563,8 +595,10 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                 {/* Task details sidebar */}
                 <div className="space-y-4">
                   {/* Status */}
-                  <div className="p-4 bg-zinc-800 rounded-lg">
-                    <h4 className="text-xs font-medium text-zinc-500 uppercase mb-3">Status</h4>
+                  <div className="p-4 bg-[var(--background-tertiary)] rounded-lg">
+                    <h4 className="text-xs font-medium text-[var(--foreground-muted)] uppercase mb-3">
+                      Status
+                    </h4>
                     <div
                       className={`inline-flex items-center px-2.5 py-1 rounded-full text-sm font-medium ${getStatusInfo(selectedTask.status).bg} ${getStatusInfo(selectedTask.status).color}`}
                     >
@@ -573,13 +607,15 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                   </div>
 
                   {/* Priority */}
-                  <div className="p-4 bg-zinc-800 rounded-lg">
-                    <h4 className="text-xs font-medium text-zinc-500 uppercase mb-3">Priority</h4>
+                  <div className="p-4 bg-[var(--background-tertiary)] rounded-lg">
+                    <h4 className="text-xs font-medium text-[var(--foreground-muted)] uppercase mb-3">
+                      Priority
+                    </h4>
                     <div className="flex items-center gap-2">
                       <div
                         className={`h-2 w-2 rounded-full ${getPriorityColor(selectedTask.priority)}`}
                       ></div>
-                      <span className="text-sm text-white">
+                      <span className="text-sm text-[var(--foreground)]">
                         {getPriorityLabel(selectedTask.priority)}
                       </span>
                     </div>
@@ -587,16 +623,18 @@ export default function TasksClient({ tasks }: TasksClientProps) {
 
                   {/* Deadline */}
                   {selectedTask.deadline && (
-                    <div className="p-4 bg-zinc-800 rounded-lg">
-                      <h4 className="text-xs font-medium text-zinc-500 uppercase mb-3">Deadline</h4>
+                    <div className="p-4 bg-[var(--background-tertiary)] rounded-lg">
+                      <h4 className="text-xs font-medium text-[var(--foreground-muted)] uppercase mb-3">
+                        Deadline
+                      </h4>
                       <div className="flex items-center gap-2">
-                        <CalendarClock className="h-4 w-4 text-zinc-400" />
+                        <CalendarClock className="h-4 w-4 text-[var(--foreground-tertiary)]" />
                         <span
                           className={`text-sm ${
                             isOverdue(selectedTask.deadline) &&
                             selectedTask.status !== TaskStatus.COMPLETED
-                              ? 'text-rose-400'
-                              : 'text-white'
+                              ? 'text-[var(--error)]'
+                              : 'text-[var(--foreground)]'
                           }`}
                         >
                           {new Date(selectedTask.deadline).toLocaleDateString('fr-FR', {
@@ -612,24 +650,24 @@ export default function TasksClient({ tasks }: TasksClientProps) {
                   {/* Action buttons */}
                   <div className="space-y-2">
                     {selectedTask.status !== TaskStatus.COMPLETED ? (
-                      <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-400 rounded-lg text-sm font-medium transition-colors">
+                      <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[var(--success-muted)] hover:bg-[var(--success-muted)]/80 text-[var(--success)] rounded-lg text-sm font-medium transition-colors">
                         <CheckCircle2 className="h-4 w-4" />
                         Mark as Completed
                       </button>
                     ) : (
-                      <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600/20 hover:bg-indigo-600/30 text-indigo-400 rounded-lg text-sm font-medium transition-colors">
+                      <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[var(--primary-muted)] hover:bg-[var(--primary-muted)]/80 text-[var(--primary)] rounded-lg text-sm font-medium transition-colors">
                         <AlertCircle className="h-4 w-4" />
                         Mark as Todo
                       </button>
                     )}
 
-                    <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded-lg text-sm font-medium transition-colors">
+                    <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[var(--border-secondary)] hover:bg-[var(--background-tertiary)] text-[var(--foreground)] rounded-lg text-sm font-medium transition-colors">
                       <User className="h-4 w-4" />
                       Reassign Task
                     </button>
 
                     {selectedTask.status !== TaskStatus.CANCELED && (
-                      <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-rose-600/20 hover:bg-rose-600/30 text-rose-400 rounded-lg text-sm font-medium transition-colors">
+                      <button className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-[var(--error-muted)] hover:bg-[var(--error-muted)]/80 text-[var(--error)] rounded-lg text-sm font-medium transition-colors">
                         <AlertCircle className="h-4 w-4" />
                         Cancel Task
                       </button>
