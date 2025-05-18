@@ -1,6 +1,6 @@
 {
-  "version": "0.1.0",
-  "title": "Mise à jour 0.1.0",
+  "version": "1.2.0",
+  "title": "Ajout des patchnotes",
   "description": "Ajout de la documentation de la feature des `patchnotes`",
   "emoji": "📝",
   "sections": {
