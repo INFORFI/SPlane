@@ -128,8 +128,8 @@ export default function KanbanPage({ project }: KanbanProps) {
     try {
       const result = await changeTaskStatus(draggingTask.id.toString(), destinationStatus);
 
-      if (!result.success) {
-        console.error('Failed to update task status:', result.error);
+      if (!result || !result.success) {
+        console.error('Failed to update task status:', result?.error);
       }
     } catch (error) {
       console.error('Error updating task status:', error);
