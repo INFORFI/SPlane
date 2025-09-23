@@ -6,7 +6,7 @@
     "news": [
       {
         "name": "project-automaticly-set",
-        "description": "✨Project automaticly set on create task from a project",
+        "description": "Project automaticly set on create task from a project",
         "pr_number": "101"
       }
     ],
