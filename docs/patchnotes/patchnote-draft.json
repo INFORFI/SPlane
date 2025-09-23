@@ -11,7 +11,13 @@
       }
     ],
     "corrections": [],
-    "technical-improvements": [],
+    "technical-improvements": [
+      {
+        "name": "update-dependencies",
+        "description": "Update dependencies",
+        "pr_number": "103"
+      }
+    ],
     "other-changes": []
   }
 }
