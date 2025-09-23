@@ -14,7 +14,7 @@
     "technical-improvements": [
       {
         "name": "update-dependencies",
-        "description": "🔧 Update dependencies",
+        "description": "Update dependencies",
         "pr_number": "103"
       }
     ],
