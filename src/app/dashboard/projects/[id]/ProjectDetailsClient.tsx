@@ -241,7 +241,7 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
               <h2 className="text-lg font-semibold text-[var(--foreground)]">Tâches</h2>
 
               <div className="flex gap-2">
-                <Link href={`/dashboard/tasks/create`}>
+                <Link href={`/dashboard/tasks/create?projectId=${project.id}`}>
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
@@ -340,7 +340,7 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                         }".`
                       : "Aucune tâche n'a été créée pour ce projet."}
                   </p>
-                  <Link href={`/dashboard/tasks/create`} className="cursor-default">
+                  <Link href={`/dashboard/tasks/create?projectId=${project.id}`} className="cursor-default">
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
