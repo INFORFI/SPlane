@@ -1,0 +1,17 @@
+{
+  "version": "",
+  "title": "Prochaine mise à jour",
+  "emoji": "✨",
+  "sections": {
+    "news": [
+      {
+        "name": "project-automaticly-set",
+        "description": "✨Project automaticly set on create task from a project",
+        "pr_number": "101"
+      }
+    ],
+    "corrections": [],
+    "technical-improvements": [],
+    "other-changes": []
+  }
+}
