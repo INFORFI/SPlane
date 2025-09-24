@@ -1,150 +1,197 @@
-import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { createComment } from '../createComment';
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth';
-import { User, Task, Project } from '@prisma/client';
+
+// Mock de Prisma
+jest.mock('@/lib/prisma', () => {
+  const mockCreate = jest.fn();
+  const mockFindUnique = jest.fn();
+
+  return {
+    prisma: {
+      comment: {
+        create: mockCreate,
+      },
+      task: {
+        findUnique: mockFindUnique,
+      },
+    },
+  };
+});
 
 // Mock requireAuth
 jest.mock('@/lib/auth');
 const mockRequireAuth = requireAuth as jest.MockedFunction<typeof requireAuth>;
 
 describe('createComment', () => {
-  let testUser: User;
-  let testProject: Project;
-  let testTask: Task;
-
-  beforeEach(async () => {
-    // Créer un utilisateur de test
-    testUser = await prisma.user.create({
-      data: {
-        email: `test-create-comment-${Date.now()}@example.com`,
-        passwordHash: 'hashedpassword',
-        fullName: 'Test User Create Comment',
-      },
-    });
-
-    // Créer un projet de test
-    testProject = await prisma.project.create({
-      data: {
-        name: 'Test Project Create Comment',
-        ownerId: testUser.id,
-      },
-    });
-
-    // Créer une tâche de test
-    testTask = await prisma.task.create({
-      data: {
-        title: 'Test Task Create Comment',
-        projectId: testProject.id,
-      },
-    });
-
-    // Mock de l'authentification
-    mockRequireAuth.mockResolvedValue(testUser.id);
-  });
-
-  afterEach(async () => {
-    // Nettoyer les données de test
-    await prisma.comment.deleteMany({
-      where: { taskId: testTask.id },
-    });
-    await prisma.task.deleteMany({
-      where: { projectId: testProject.id },
-    });
-    await prisma.project.deleteMany({
-      where: { ownerId: testUser.id },
-    });
-    await prisma.user.deleteMany({
-      where: { email: testUser.email },
-    });
-
+  beforeEach(() => {
     jest.clearAllMocks();
+    jest.spyOn(console, 'error').mockImplementation(() => {});
   });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  // Mock data
+  const mockUser = {
+    id: 1,
+    email: 'test@example.com',
+    fullName: 'Test User',
+    passwordHash: 'hash',
+    role: 'USER',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  const mockTask = { id: 1 };
+
+  const mockCreatedComment = {
+    id: 1,
+    content: 'Nouveau commentaire',
+    taskId: 1,
+    authorId: 1,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    author: mockUser,
+  };
+
+  const validCommentData = {
+    content: 'Nouveau commentaire',
+    taskId: 1,
+  };
 
   it('devrait créer un commentaire avec succès', async () => {
-    const commentData = {
-      content: 'Voici un nouveau commentaire',
-      taskId: testTask.id,
-    };
+    mockRequireAuth.mockResolvedValue(1);
+    (prisma.task.findUnique as jest.Mock).mockResolvedValue(mockTask);
+    (prisma.comment.create as jest.Mock).mockResolvedValue(mockCreatedComment);
 
-    const result = await createComment(commentData);
+    const result = await createComment(validCommentData);
 
     expect(result.success).toBe(true);
-    expect(result.comment).toBeDefined();
-    expect(result.comment!.content).toBe(commentData.content);
-    expect(result.comment!.taskId).toBe(testTask.id);
-    expect(result.comment!.authorId).toBe(testUser.id);
-    expect(result.comment!.author).toMatchObject({
-      id: testUser.id,
-      fullName: testUser.fullName,
-      email: testUser.email,
+    expect(result.comment).toEqual(mockCreatedComment);
+    expect(result.error).toBeUndefined();
+
+    expect(prisma.task.findUnique).toHaveBeenCalledWith({
+      where: { id: 1 },
+      select: { id: true },
+    });
+
+    expect(prisma.comment.create).toHaveBeenCalledWith({
+      data: {
+        content: 'Nouveau commentaire',
+        taskId: 1,
+        authorId: 1,
+      },
+      include: {
+        author: true,
+      },
     });
   });
 
   it('devrait échouer si l\'utilisateur n\'est pas authentifié', async () => {
-    mockRequireAuth.mockResolvedValueOnce(null);
+    mockRequireAuth.mockResolvedValue(null);
 
-    const commentData = {
-      content: 'Commentaire sans auth',
-      taskId: testTask.id,
-    };
-
-    const result = await createComment(commentData);
+    const result = await createComment(validCommentData);
 
     expect(result.success).toBe(false);
     expect(result.error).toBe('Authentification requise');
     expect(result.comment).toBeUndefined();
+
+    expect(prisma.comment.create).not.toHaveBeenCalled();
   });
 
   it('devrait échouer si le contenu est vide', async () => {
-    const commentData = {
+    mockRequireAuth.mockResolvedValue(1);
+
+    const emptyCommentData = {
       content: '   ', // Contenu vide avec espaces
-      taskId: testTask.id,
+      taskId: 1,
     };
 
-    const result = await createComment(commentData);
+    const result = await createComment(emptyCommentData);
 
     expect(result.success).toBe(false);
     expect(result.error).toBe('Le contenu du commentaire ne peut pas être vide');
     expect(result.comment).toBeUndefined();
+
+    expect(prisma.comment.create).not.toHaveBeenCalled();
   });
 
   it('devrait échouer si le contenu dépasse 1000 caractères', async () => {
-    const longContent = 'a'.repeat(1001);
-    const commentData = {
-      content: longContent,
-      taskId: testTask.id,
+    mockRequireAuth.mockResolvedValue(1);
+
+    const longCommentData = {
+      content: 'a'.repeat(1001),
+      taskId: 1,
     };
 
-    const result = await createComment(commentData);
+    const result = await createComment(longCommentData);
 
     expect(result.success).toBe(false);
     expect(result.error).toBe('Le commentaire ne peut pas dépasser 1000 caractères');
     expect(result.comment).toBeUndefined();
+
+    expect(prisma.comment.create).not.toHaveBeenCalled();
   });
 
   it('devrait échouer si la tâche n\'existe pas', async () => {
-    const commentData = {
-      content: 'Commentaire pour tâche inexistante',
-      taskId: 99999, // ID inexistant
-    };
+    mockRequireAuth.mockResolvedValue(1);
+    (prisma.task.findUnique as jest.Mock).mockResolvedValue(null);
 
-    const result = await createComment(commentData);
+    const result = await createComment(validCommentData);
 
     expect(result.success).toBe(false);
     expect(result.error).toBe('Tâche introuvable');
     expect(result.comment).toBeUndefined();
+
+    expect(prisma.comment.create).not.toHaveBeenCalled();
   });
 
   it('devrait nettoyer le contenu en supprimant les espaces en trop', async () => {
-    const commentData = {
+    mockRequireAuth.mockResolvedValue(1);
+    (prisma.task.findUnique as jest.Mock).mockResolvedValue(mockTask);
+
+    const trimmedComment = {
+      ...mockCreatedComment,
+      content: 'Commentaire avec espaces',
+    };
+    (prisma.comment.create as jest.Mock).mockResolvedValue(trimmedComment);
+
+    const commentDataWithSpaces = {
       content: '   Commentaire avec espaces   ',
-      taskId: testTask.id,
+      taskId: 1,
     };
 
-    const result = await createComment(commentData);
+    const result = await createComment(commentDataWithSpaces);
 
     expect(result.success).toBe(true);
-    expect(result.comment!.content).toBe('Commentaire avec espaces');
+    expect(prisma.comment.create).toHaveBeenCalledWith({
+      data: {
+        content: 'Commentaire avec espaces', // Contenu nettoyé
+        taskId: 1,
+        authorId: 1,
+      },
+      include: {
+        author: true,
+      },
+    });
+  });
+
+  it('devrait retourner une erreur en cas d\'échec de création', async () => {
+    mockRequireAuth.mockResolvedValue(1);
+    (prisma.task.findUnique as jest.Mock).mockResolvedValue(mockTask);
+    (prisma.comment.create as jest.Mock).mockRejectedValue(new Error('Database error'));
+
+    const result = await createComment(validCommentData);
+
+    expect(result.success).toBe(false);
+    expect(result.error).toBe('Une erreur est survenue lors de la création du commentaire');
+    expect(result.comment).toBeUndefined();
+
+    expect(console.error).toHaveBeenCalledWith(
+      'Erreur lors de la création du commentaire:',
+      expect.any(Error)
+    );
   });
 });

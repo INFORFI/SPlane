@@ -1,179 +1,212 @@
-import { describe, it, expect, beforeEach, afterEach, jest } from '@jest/globals';
 import { deleteComment } from '../deleteComment';
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth';
-import { User, Task, Project, Comment } from '@prisma/client';
+
+// Mock de Prisma
+jest.mock('@/lib/prisma', () => {
+  const mockFindUnique = jest.fn();
+  const mockDelete = jest.fn();
+
+  return {
+    prisma: {
+      comment: {
+        findUnique: mockFindUnique,
+        delete: mockDelete,
+      },
+      user: {
+        findUnique: mockFindUnique,
+      },
+    },
+  };
+});
 
 // Mock requireAuth
 jest.mock('@/lib/auth');
 const mockRequireAuth = requireAuth as jest.MockedFunction<typeof requireAuth>;
 
 describe('deleteComment', () => {
-  let testUser: User;
-  let otherUser: User;
-  let adminUser: User;
-  let testProject: Project;
-  let testTask: Task;
-  let testComment: Comment;
-
-  beforeEach(async () => {
-    // Créer utilisateurs de test
-    testUser = await prisma.user.create({
-      data: {
-        email: `test-delete-comment-${Date.now()}@example.com`,
-        passwordHash: 'hashedpassword',
-        fullName: 'Test User Delete Comment',
-      },
-    });
-
-    otherUser = await prisma.user.create({
-      data: {
-        email: `other-user-delete-${Date.now()}@example.com`,
-        passwordHash: 'hashedpassword',
-        fullName: 'Other User',
-      },
-    });
-
-    adminUser = await prisma.user.create({
-      data: {
-        email: `admin-user-delete-${Date.now()}@example.com`,
-        passwordHash: 'hashedpassword',
-        fullName: 'Admin User',
-        role: 'ADMIN',
-      },
-    });
-
-    // Créer un projet de test
-    testProject = await prisma.project.create({
-      data: {
-        name: 'Test Project Delete Comment',
-        ownerId: testUser.id,
-      },
-    });
-
-    // Créer une tâche de test
-    testTask = await prisma.task.create({
-      data: {
-        title: 'Test Task Delete Comment',
-        projectId: testProject.id,
-      },
-    });
-
-    // Créer un commentaire de test
-    testComment = await prisma.comment.create({
-      data: {
-        content: 'Commentaire à supprimer',
-        taskId: testTask.id,
-        authorId: testUser.id,
-      },
-    });
-  });
-
-  afterEach(async () => {
-    // Nettoyer les données de test
-    await prisma.comment.deleteMany({
-      where: { taskId: testTask.id },
-    });
-    await prisma.task.deleteMany({
-      where: { projectId: testProject.id },
-    });
-    await prisma.project.deleteMany({
-      where: { ownerId: testUser.id },
-    });
-    await prisma.user.deleteMany({
-      where: {
-        OR: [
-          { email: testUser.email },
-          { email: otherUser.email },
-          { email: adminUser.email }
-        ]
-      },
-    });
-
+  beforeEach(() => {
     jest.clearAllMocks();
+    jest.spyOn(console, 'error').mockImplementation(() => {});
   });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  // Mock data
+  const mockAuthor = {
+    id: 1,
+    email: 'author@example.com',
+    fullName: 'Comment Author',
+    passwordHash: 'hash',
+    role: 'USER',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  const mockOtherUser = {
+    id: 2,
+    email: 'other@example.com',
+    fullName: 'Other User',
+    passwordHash: 'hash',
+    role: 'USER',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  const mockAdminUser = {
+    id: 3,
+    email: 'admin@example.com',
+    fullName: 'Admin User',
+    passwordHash: 'hash',
+    role: 'ADMIN',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  const mockComment = {
+    id: 1,
+    content: 'Commentaire à supprimer',
+    taskId: 1,
+    authorId: 1,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    author: mockAuthor,
+  };
 
   it('devrait permettre à l\'auteur de supprimer son commentaire', async () => {
-    mockRequireAuth.mockResolvedValue(testUser.id);
+    mockRequireAuth.mockResolvedValue(1);
 
-    const result = await deleteComment(testComment.id);
+    // Mock pour trouver le commentaire
+    (prisma.comment.findUnique as jest.Mock).mockResolvedValue(mockComment);
+
+    // Mock pour trouver l'utilisateur actuel
+    const userFindUnique = jest.fn();
+    userFindUnique.mockResolvedValue(mockAuthor);
+    (prisma.user.findUnique as jest.Mock) = userFindUnique;
+
+    // Mock pour supprimer le commentaire
+    (prisma.comment.delete as jest.Mock).mockResolvedValue(mockComment);
+
+    const result = await deleteComment(1);
 
     expect(result.success).toBe(true);
     expect(result.error).toBeUndefined();
 
-    // Vérifier que le commentaire a été supprimé
-    const deletedComment = await prisma.comment.findUnique({
-      where: { id: testComment.id },
+    expect(prisma.comment.findUnique).toHaveBeenCalledWith({
+      where: { id: 1 },
+      include: { author: true },
     });
-    expect(deletedComment).toBeNull();
+
+    expect(prisma.user.findUnique).toHaveBeenCalledWith({
+      where: { id: 1 },
+      select: { role: true },
+    });
+
+    expect(prisma.comment.delete).toHaveBeenCalledWith({
+      where: { id: 1 },
+    });
   });
 
   it('devrait permettre à un administrateur de supprimer n\'importe quel commentaire', async () => {
-    mockRequireAuth.mockResolvedValue(adminUser.id);
+    mockRequireAuth.mockResolvedValue(3);
 
-    const result = await deleteComment(testComment.id);
+    (prisma.comment.findUnique as jest.Mock).mockResolvedValue(mockComment);
+
+    const userFindUnique = jest.fn();
+    userFindUnique.mockResolvedValue(mockAdminUser);
+    (prisma.user.findUnique as jest.Mock) = userFindUnique;
+
+    (prisma.comment.delete as jest.Mock).mockResolvedValue(mockComment);
+
+    const result = await deleteComment(1);
 
     expect(result.success).toBe(true);
     expect(result.error).toBeUndefined();
 
-    // Vérifier que le commentaire a été supprimé
-    const deletedComment = await prisma.comment.findUnique({
-      where: { id: testComment.id },
+    expect(prisma.comment.delete).toHaveBeenCalledWith({
+      where: { id: 1 },
     });
-    expect(deletedComment).toBeNull();
   });
 
   it('devrait empêcher un autre utilisateur de supprimer un commentaire', async () => {
-    mockRequireAuth.mockResolvedValue(otherUser.id);
+    mockRequireAuth.mockResolvedValue(2);
 
-    const result = await deleteComment(testComment.id);
+    (prisma.comment.findUnique as jest.Mock).mockResolvedValue(mockComment);
+
+    const userFindUnique = jest.fn();
+    userFindUnique.mockResolvedValue(mockOtherUser);
+    (prisma.user.findUnique as jest.Mock) = userFindUnique;
+
+    const result = await deleteComment(1);
 
     expect(result.success).toBe(false);
     expect(result.error).toBe('Vous n\'avez pas le droit de supprimer ce commentaire');
 
-    // Vérifier que le commentaire n'a pas été supprimé
-    const existingComment = await prisma.comment.findUnique({
-      where: { id: testComment.id },
-    });
-    expect(existingComment).not.toBeNull();
+    expect(prisma.comment.delete).not.toHaveBeenCalled();
   });
 
   it('devrait échouer si l\'utilisateur n\'est pas authentifié', async () => {
     mockRequireAuth.mockResolvedValue(null);
 
-    const result = await deleteComment(testComment.id);
+    const result = await deleteComment(1);
 
     expect(result.success).toBe(false);
     expect(result.error).toBe('Authentification requise');
 
-    // Vérifier que le commentaire n'a pas été supprimé
-    const existingComment = await prisma.comment.findUnique({
-      where: { id: testComment.id },
-    });
-    expect(existingComment).not.toBeNull();
+    expect(prisma.comment.findUnique).not.toHaveBeenCalled();
+    expect(prisma.comment.delete).not.toHaveBeenCalled();
   });
 
   it('devrait échouer si le commentaire n\'existe pas', async () => {
-    mockRequireAuth.mockResolvedValue(testUser.id);
+    mockRequireAuth.mockResolvedValue(1);
+    (prisma.comment.findUnique as jest.Mock).mockResolvedValue(null);
 
-    const result = await deleteComment(99999); // ID inexistant
+    const result = await deleteComment(1);
 
     expect(result.success).toBe(false);
     expect(result.error).toBe('Commentaire introuvable');
+
+    expect(prisma.comment.delete).not.toHaveBeenCalled();
   });
 
   it('devrait échouer si l\'utilisateur actuel n\'existe pas', async () => {
-    mockRequireAuth.mockResolvedValue(99999); // ID utilisateur inexistant
+    mockRequireAuth.mockResolvedValue(1);
 
-    const result = await deleteComment(testComment.id);
+    (prisma.comment.findUnique as jest.Mock).mockResolvedValue(mockComment);
+
+    const userFindUnique = jest.fn();
+    userFindUnique.mockResolvedValue(null);
+    (prisma.user.findUnique as jest.Mock) = userFindUnique;
+
+    const result = await deleteComment(1);
 
     expect(result.success).toBe(false);
     expect(result.error).toBe('Utilisateur introuvable');
 
-    // Vérifier que le commentaire n'a pas été supprimé
-    const existingComment = await prisma.comment.findUnique({
-      where: { id: testComment.id },
-    });
-    expect(existingComment).not.toBeNull();
+    expect(prisma.comment.delete).not.toHaveBeenCalled();
+  });
+
+  it('devrait retourner une erreur en cas d\'échec de suppression', async () => {
+    mockRequireAuth.mockResolvedValue(1);
+
+    (prisma.comment.findUnique as jest.Mock).mockResolvedValue(mockComment);
+
+    const userFindUnique = jest.fn();
+    userFindUnique.mockResolvedValue(mockAuthor);
+    (prisma.user.findUnique as jest.Mock) = userFindUnique;
+
+    (prisma.comment.delete as jest.Mock).mockRejectedValue(new Error('Database error'));
+
+    const result = await deleteComment(1);
+
+    expect(result.success).toBe(false);
+    expect(result.error).toBe('Une erreur est survenue lors de la suppression du commentaire');
+
+    expect(console.error).toHaveBeenCalledWith(
+      'Erreur lors de la suppression du commentaire:',
+      expect.any(Error)
+    );
   });
 });

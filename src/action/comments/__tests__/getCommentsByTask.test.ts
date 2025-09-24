@@ -1,128 +1,123 @@
-import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 import { getCommentsByTask } from '../getCommentsByTask';
 import { prisma } from '@/lib/prisma';
-import { User, Task, Project, Comment } from '@prisma/client';
+
+// Mock de Prisma
+jest.mock('@/lib/prisma', () => {
+  const mockFindMany = jest.fn();
+
+  return {
+    prisma: {
+      comment: {
+        findMany: mockFindMany,
+      },
+    },
+  };
+});
 
 describe('getCommentsByTask', () => {
-  let testUser: User;
-  let testProject: Project;
-  let testTask: Task;
-  let testComment: Comment;
-
-  beforeEach(async () => {
-    // Créer un utilisateur de test
-    testUser = await prisma.user.create({
-      data: {
-        email: `test-comments-${Date.now()}@example.com`,
-        passwordHash: 'hashedpassword',
-        fullName: 'Test User Comments',
-      },
-    });
-
-    // Créer un projet de test
-    testProject = await prisma.project.create({
-      data: {
-        name: 'Test Project Comments',
-        ownerId: testUser.id,
-      },
-    });
-
-    // Créer une tâche de test
-    testTask = await prisma.task.create({
-      data: {
-        title: 'Test Task Comments',
-        projectId: testProject.id,
-      },
-    });
-
-    // Créer un commentaire de test
-    testComment = await prisma.comment.create({
-      data: {
-        content: 'Commentaire de test',
-        taskId: testTask.id,
-        authorId: testUser.id,
-      },
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.spyOn(console, 'error').mockImplementation(() => {});
   });
 
-  afterEach(async () => {
-    // Nettoyer les données de test
-    await prisma.comment.deleteMany({
-      where: { taskId: testTask.id },
-    });
-    await prisma.task.deleteMany({
-      where: { projectId: testProject.id },
-    });
-    await prisma.project.deleteMany({
-      where: { ownerId: testUser.id },
-    });
-    await prisma.user.deleteMany({
-      where: { email: testUser.email },
-    });
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
+
+  // Mock data
+  const mockUser = {
+    id: 1,
+    email: 'test@example.com',
+    fullName: 'Test User',
+    passwordHash: 'hash',
+    role: 'USER',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+
+  const mockComments = [
+    {
+      id: 1,
+      content: 'Premier commentaire',
+      taskId: 1,
+      authorId: 1,
+      createdAt: new Date('2024-01-01T10:00:00Z'),
+      updatedAt: new Date('2024-01-01T10:00:00Z'),
+      author: mockUser,
+    },
+    {
+      id: 2,
+      content: 'Deuxième commentaire',
+      taskId: 1,
+      authorId: 1,
+      createdAt: new Date('2024-01-01T11:00:00Z'),
+      updatedAt: new Date('2024-01-01T11:00:00Z'),
+      author: mockUser,
+    },
+  ];
 
   it('devrait récupérer les commentaires d\'une tâche avec les informations de l\'auteur', async () => {
-    const comments = await getCommentsByTask(testTask.id);
+    (prisma.comment.findMany as jest.Mock).mockResolvedValue(mockComments);
 
-    expect(comments).toHaveLength(1);
-    expect(comments[0]).toMatchObject({
-      id: testComment.id,
-      content: 'Commentaire de test',
-      taskId: testTask.id,
-      authorId: testUser.id,
-      author: {
-        id: testUser.id,
-        fullName: 'Test User Comments',
-        email: testUser.email,
+    const result = await getCommentsByTask(1);
+
+    expect(result).toEqual(mockComments);
+    expect(prisma.comment.findMany).toHaveBeenCalledWith({
+      where: {
+        taskId: 1,
+      },
+      include: {
+        author: true,
+      },
+      orderBy: {
+        createdAt: 'asc',
       },
     });
   });
 
   it('devrait retourner une liste vide pour une tâche sans commentaires', async () => {
-    // Créer une nouvelle tâche sans commentaires
-    const taskWithoutComments = await prisma.task.create({
-      data: {
-        title: 'Task Without Comments',
-        projectId: testProject.id,
+    (prisma.comment.findMany as jest.Mock).mockResolvedValue([]);
+
+    const result = await getCommentsByTask(2);
+
+    expect(result).toEqual([]);
+    expect(prisma.comment.findMany).toHaveBeenCalledWith({
+      where: {
+        taskId: 2,
       },
-    });
-
-    const comments = await getCommentsByTask(taskWithoutComments.id);
-
-    expect(comments).toHaveLength(0);
-
-    // Nettoyer
-    await prisma.task.delete({
-      where: { id: taskWithoutComments.id },
+      include: {
+        author: true,
+      },
+      orderBy: {
+        createdAt: 'asc',
+      },
     });
   });
 
   it('devrait retourner les commentaires dans l\'ordre chronologique', async () => {
-    // Créer un deuxième commentaire
-    const secondComment = await prisma.comment.create({
-      data: {
-        content: 'Deuxième commentaire',
-        taskId: testTask.id,
-        authorId: testUser.id,
-      },
-    });
-
-    const comments = await getCommentsByTask(testTask.id);
-
-    expect(comments).toHaveLength(2);
-    expect(new Date(comments[0].createdAt).getTime()).toBeLessThanOrEqual(
-      new Date(comments[1].createdAt).getTime()
+    const orderedComments = [...mockComments].sort(
+      (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
     );
 
-    // Nettoyer
-    await prisma.comment.delete({
-      where: { id: secondComment.id },
-    });
+    (prisma.comment.findMany as jest.Mock).mockResolvedValue(orderedComments);
+
+    const result = await getCommentsByTask(1);
+
+    expect(result).toEqual(orderedComments);
+    expect(new Date(result[0].createdAt).getTime()).toBeLessThanOrEqual(
+      new Date(result[1].createdAt).getTime()
+    );
   });
 
-  it('devrait retourner une liste vide en cas d\'erreur avec une tâche inexistante', async () => {
-    const comments = await getCommentsByTask(99999); // ID inexistant
+  it('devrait retourner une liste vide en cas d\'erreur', async () => {
+    (prisma.comment.findMany as jest.Mock).mockRejectedValue(new Error('Database error'));
 
-    expect(comments).toHaveLength(0);
+    const result = await getCommentsByTask(1);
+
+    expect(result).toEqual([]);
+    expect(console.error).toHaveBeenCalledWith(
+      'Erreur lors de la récupération des commentaires pour la tâche 1:',
+      expect.any(Error)
+    );
   });
 });
