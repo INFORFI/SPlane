@@ -62,7 +62,7 @@ export default async function changeTaskStatus(taskId: string | number, status: 
     return {
       success: true,
       task: updatedTask,
-      notificationData // Renvoyer les données pour que le client puisse gérer la notification
+      notificationData, // Renvoyer les données pour que le client puisse gérer la notification
     };
   } catch (error) {
     console.error('Failed to update task status:', error);

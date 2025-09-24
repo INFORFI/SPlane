@@ -55,8 +55,8 @@ export default function NotificationPermission({
               Notifications de tâches
             </h3>
             <p className="text-xs text-[var(--foreground-secondary)] mb-3">
-              Autoriser les notifications pour être informé des changements de statut de vos
-              tâches directement sur votre bureau.
+              Autoriser les notifications pour être informé des changements de statut de vos tâches
+              directement sur votre bureau.
             </p>
             <div className="flex gap-2">
               <button

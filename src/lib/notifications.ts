@@ -142,7 +142,7 @@ export function sendTaskStatusNotification(options: TaskStatusNotificationOption
       notification.close();
     };
   } catch (error) {
-    console.error('Erreur lors de l\'envoi de la notification:', error);
+    console.error("Erreur lors de l'envoi de la notification:", error);
   }
 }
 

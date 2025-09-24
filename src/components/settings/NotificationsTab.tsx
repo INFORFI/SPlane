@@ -39,7 +39,9 @@ export default function NotificationsTab({ settings }: { settings: UserSettings 
 
   return (
     <div>
-      <h2 className="text-xl font-semibold text-[var(--foreground)] mb-6">Paramètres de notification</h2>
+      <h2 className="text-xl font-semibold text-[var(--foreground)] mb-6">
+        Paramètres de notification
+      </h2>
 
       {success && (
         <div className="mb-6 p-3 bg-[var(--success-muted)] border border-[var(--success)]/20 rounded-lg flex items-center gap-3 text-[var(--success)]">
@@ -115,7 +117,9 @@ export default function NotificationsTab({ settings }: { settings: UserSettings 
 
         {/* Notifications de bureau */}
         <div>
-          <h3 className="text-lg font-medium text-[var(--foreground)] mb-4">Notifications de bureau</h3>
+          <h3 className="text-lg font-medium text-[var(--foreground)] mb-4">
+            Notifications de bureau
+          </h3>
 
           {/* État des permissions */}
           <div className="mb-4 p-3 bg-[var(--background-tertiary)] rounded-lg border border-[var(--border-secondary)]">
@@ -175,7 +179,9 @@ export default function NotificationsTab({ settings }: { settings: UserSettings 
                   className="sr-only peer"
                   name="taskStatus"
                   defaultChecked={settings ? settings.notifications_task_status : false}
-                  disabled={!permissionState.isSupported || permissionState.permission !== 'granted'}
+                  disabled={
+                    !permissionState.isSupported || permissionState.permission !== 'granted'
+                  }
                 />
                 <div className="w-11 h-6 bg-[var(--background-tertiary)] rounded-full peer peer-checked:bg-[var(--primary)] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-[var(--foreground)] after:rounded-full after:h-5 after:w-5 after:transition-all peer-disabled:opacity-50"></div>
               </label>
@@ -184,7 +190,9 @@ export default function NotificationsTab({ settings }: { settings: UserSettings 
         </div>
 
         <div>
-          <h3 className="text-lg font-medium text-[var(--foreground)] mb-4">Mises à jour de l'application</h3>
+          <h3 className="text-lg font-medium text-[var(--foreground)] mb-4">
+            Mises à jour de l'application
+          </h3>
           <div className="space-y-3">
             {/*
                       <div className="flex items-center justify-between p-3 bg-zinc-800 rounded-lg border border-zinc-700">

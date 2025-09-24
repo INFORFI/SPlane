@@ -65,9 +65,7 @@ export async function getTaskOwnerNotificationData(
 
     // Vérifier si le propriétaire a activé les notifications de tâches
     if (!taskOwner.settings?.notifications_task_status) {
-      console.info(
-        `Propriétaire de la tâche ${taskId} n'a pas activé les notifications de statut`
-      );
+      console.info(`Propriétaire de la tâche ${taskId} n'a pas activé les notifications de statut`);
       return {
         taskTitle: task.title,
         newStatus,
@@ -89,4 +87,3 @@ export async function getTaskOwnerNotificationData(
     return null;
   }
 }
-

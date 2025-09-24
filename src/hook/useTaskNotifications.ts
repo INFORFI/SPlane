@@ -5,7 +5,7 @@ import {
   getNotificationPermission,
   requestNotificationPermission,
   sendTaskStatusNotification,
-  canSendNotifications
+  canSendNotifications,
 } from '@/lib/notifications';
 import type { NotificationPermissionState } from '@/lib/notifications';
 
@@ -57,7 +57,7 @@ export function useTaskNotifications(): UseTaskNotificationsReturn {
     projectName?: string;
   }) => {
     if (!canSendNotifications()) {
-      console.warn('Impossible d\'envoyer la notification: permissions insuffisantes');
+      console.warn("Impossible d'envoyer la notification: permissions insuffisantes");
       return;
     }
 
