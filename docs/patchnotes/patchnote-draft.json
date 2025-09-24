@@ -11,7 +11,7 @@
       },
       {
         "name": "task-api",
-        "description": "✨ Implement user authentication and task retrieval in POST /api/user-tasks route",
+        "description": "Implement user authentication and task retrieval in POST /api/user-tasks route",
         "pr_number": "105"
       }
     ],
