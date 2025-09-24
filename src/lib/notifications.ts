@@ -165,3 +165,34 @@ export function canSendNotifications(): boolean {
   const { permission, isSupported } = getNotificationPermission();
   return isSupported && permission === 'granted';
 }
+
+/**
+ * Interface pour les données de notification du propriétaire de tâche
+ */
+export interface TaskOwnerNotificationData {
+  taskTitle: string;
+  newStatus: TaskStatus;
+  projectName: string;
+  ownerSettings: {
+    notifications_task_status: boolean;
+  } | null;
+  isOwner: boolean; // true si le propriétaire est celui qui a fait le changement
+}
+
+/**
+ * Vérifie si une notification doit être envoyée pour ce changement de statut
+ */
+export function shouldNotifyTaskOwner(data: TaskOwnerNotificationData): boolean {
+  // Ne pas notifier si c'est le propriétaire qui a fait le changement
+  if (data.isOwner) {
+    return false;
+  }
+
+  // Ne pas notifier si les notifications sont désactivées
+  if (!data.ownerSettings?.notifications_task_status) {
+    return false;
+  }
+
+  // Notifier pour tous les changements de statut significatifs
+  return true;
+}

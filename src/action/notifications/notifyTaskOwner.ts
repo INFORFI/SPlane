@@ -9,7 +9,7 @@ interface NotifyTaskOwnerOptions {
   changedBy: number; // ID de l'utilisateur qui a fait le changement
 }
 
-interface TaskOwnerNotificationData {
+export interface TaskOwnerNotificationData {
   taskTitle: string;
   newStatus: TaskStatus;
   projectName: string;
@@ -90,20 +90,3 @@ export async function getTaskOwnerNotificationData(
   }
 }
 
-/**
- * Vérifie si une notification doit être envoyée pour ce changement de statut
- */
-export function shouldNotifyTaskOwner(data: TaskOwnerNotificationData): boolean {
-  // Ne pas notifier si c'est le propriétaire qui a fait le changement
-  if (data.isOwner) {
-    return false;
-  }
-
-  // Ne pas notifier si les notifications sont désactivées
-  if (!data.ownerSettings?.notifications_task_status) {
-    return false;
-  }
-
-  // Notifier pour tous les changements de statut significatifs
-  return true;
-}

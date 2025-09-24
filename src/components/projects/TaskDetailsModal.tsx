@@ -21,7 +21,7 @@ import { createComment } from '@/action/comments/createComment';
 import { deleteComment } from '@/action/comments/deleteComment';
 import { getUserLoggedIn } from '@/action/users/getUserLoggedIn';
 import { useTaskNotifications } from '@/hook/useTaskNotifications';
-import { shouldNotifyTaskOwner } from '@/action/notifications/notifyTaskOwner';
+import { shouldNotifyTaskOwner } from '@/lib/notifications';
 
 type TaskDetailsModalProps = {
   task: TaskWithProject;
