@@ -73,6 +73,10 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
     return true;
   });
 
+  // Limit displayed tasks to 10
+  const displayedTasks = filteredTasks.slice(0, 10);
+  const hasMoreTasks = filteredTasks.length > 10;
+
   const handleDeleteProject = () => {
     setOpenDeleteModal(true);
   };
@@ -308,7 +312,7 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                   exit={{ opacity: 0 }}
                   className="space-y-2"
                 >
-                  {filteredTasks.map(task => (
+                  {displayedTasks.map(task => (
                     <TaskItem
                       key={task.id}
                       task={task as TaskWithProject}
@@ -316,6 +320,24 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                       onClick={() => setSelectedTask(task as TaskWithProject)}
                     />
                   ))}
+
+                  {/* Show "Voir plus" button if there are more tasks */}
+                  {hasMoreTasks && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="flex justify-center pt-4"
+                    >
+                      <Link
+                        href={`/dashboard/projects/${project.id}/tasks${
+                          activeTab !== 'all' ? `?filter=${activeTab}` : ''
+                        }`}
+                        className="flex items-center gap-2 px-4 py-2 bg-[var(--background-tertiary)] hover:bg-[var(--border-secondary)] text-[var(--foreground-secondary)] rounded-lg text-sm font-medium transition-colors"
+                      >
+                        Voir plus ({filteredTasks.length - 10} tâches restantes)
+                      </Link>
+                    </motion.div>
+                  )}
                 </motion.div>
               ) : (
                 <motion.div

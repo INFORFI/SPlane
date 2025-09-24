@@ -1,40 +1,50 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle2, Edit, Save } from 'lucide-react';
+import { CheckCircle2, Edit, Save, Bell } from 'lucide-react';
 import type { UserSettings } from '@prisma/client';
 import { updateSettings } from '@/action/settings/updateSettings';
+import { useTaskNotifications } from '@/hook/useTaskNotifications';
+import { sendTestNotification } from '@/lib/notifications';
 
 export default function NotificationsTab({ settings }: { settings: UserSettings }) {
   const [success, setSuccess] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { permissionState, requestPermission } = useTaskNotifications();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     const formData = new FormData(e.target as HTMLFormElement);
-    console.log(formData);
     const patchNotes = formData.get('patchNotes') === 'on';
-
-    console.log(patchNotes);
+    const taskStatus = formData.get('taskStatus') === 'on';
 
     await updateSettings({
       notifications_patch_notes: patchNotes,
+      notifications_task_status: taskStatus,
     });
 
     setIsSubmitting(false);
     setSuccess(true);
   };
 
+  const handleTestNotification = () => {
+    sendTestNotification();
+  };
+
+  const handleRequestPermission = async () => {
+    await requestPermission();
+  };
+
   return (
     <div>
-      <h2 className="text-xl font-semibold text-[var(--foreground)] mb-6">Notification Settings</h2>
+      <h2 className="text-xl font-semibold text-[var(--foreground)] mb-6">Paramètres de notification</h2>
 
       {success && (
         <div className="mb-6 p-3 bg-[var(--success-muted)] border border-[var(--success)]/20 rounded-lg flex items-center gap-3 text-[var(--success)]">
           <CheckCircle2 className="h-5 w-5 flex-shrink-0" />
-          <span className="text-sm">Notification settings updated successfully!</span>
+          <span className="text-sm">Paramètres de notification mis à jour avec succès !</span>
         </div>
       )}
 
@@ -103,8 +113,78 @@ export default function NotificationsTab({ settings }: { settings: UserSettings 
                   </div>
                     */}
 
+        {/* Notifications de bureau */}
         <div>
-          <h3 className="text-lg font-medium text-[var(--foreground)] mb-4">Application Updates</h3>
+          <h3 className="text-lg font-medium text-[var(--foreground)] mb-4">Notifications de bureau</h3>
+
+          {/* État des permissions */}
+          <div className="mb-4 p-3 bg-[var(--background-tertiary)] rounded-lg border border-[var(--border-secondary)]">
+            <div className="flex items-center justify-between">
+              <div>
+                <h4 className="text-sm font-medium text-[var(--foreground)]">
+                  État des permissions
+                </h4>
+                <p className="text-xs text-[var(--foreground-tertiary)]">
+                  {permissionState.permission === 'granted' && 'Notifications autorisées ✅'}
+                  {permissionState.permission === 'denied' && 'Notifications refusées ❌'}
+                  {permissionState.permission === 'default' && 'Permissions non demandées ⏳'}
+                  {!permissionState.isSupported && 'Navigateur non compatible ⚠️'}
+                </p>
+              </div>
+              <div className="flex gap-2">
+                {permissionState.permission !== 'granted' && permissionState.isSupported && (
+                  <button
+                    type="button"
+                    onClick={handleRequestPermission}
+                    className="px-3 py-1.5 bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-[var(--primary-foreground)] rounded text-xs font-medium transition-colors"
+                  >
+                    Autoriser
+                  </button>
+                )}
+                {permissionState.permission === 'granted' && (
+                  <button
+                    type="button"
+                    onClick={handleTestNotification}
+                    className="px-3 py-1.5 bg-[var(--background-secondary)] hover:bg-[var(--border-secondary)] text-[var(--foreground-secondary)] rounded text-xs font-medium transition-colors"
+                  >
+                    Tester
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between p-3 bg-[var(--background-tertiary)] rounded-lg border border-[var(--border-secondary)]">
+              <div className="flex items-center gap-3">
+                <div className="flex-shrink-0 h-8 w-8 bg-[var(--background-tertiary)] rounded-lg flex items-center justify-center">
+                  <Bell className="h-5 w-5 text-[var(--foreground-tertiary)]" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-medium text-[var(--foreground)]">
+                    Changements de statut des tâches
+                  </h4>
+                  <p className="text-xs text-[var(--foreground-tertiary)]">
+                    Recevoir une notification lorsque vos tâches changent de statut
+                  </p>
+                </div>
+              </div>
+              <label className="relative inline-flex items-center cursor-pointer">
+                <input
+                  type="checkbox"
+                  className="sr-only peer"
+                  name="taskStatus"
+                  defaultChecked={settings ? settings.notifications_task_status : false}
+                  disabled={!permissionState.isSupported || permissionState.permission !== 'granted'}
+                />
+                <div className="w-11 h-6 bg-[var(--background-tertiary)] rounded-full peer peer-checked:bg-[var(--primary)] peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-[var(--foreground)] after:rounded-full after:h-5 after:w-5 after:transition-all peer-disabled:opacity-50"></div>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-medium text-[var(--foreground)] mb-4">Mises à jour de l'application</h3>
           <div className="space-y-3">
             {/*
                       <div className="flex items-center justify-between p-3 bg-zinc-800 rounded-lg border border-zinc-700">
@@ -181,12 +261,12 @@ export default function NotificationsTab({ settings }: { settings: UserSettings 
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                <span>Saving...</span>
+                <span>Enregistrement...</span>
               </>
             ) : (
               <>
                 <Save className="h-5 w-5" />
-                <span>Save Notification Settings</span>
+                <span>Enregistrer les paramètres</span>
               </>
             )}
           </button>

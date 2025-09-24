@@ -31,6 +31,7 @@ export async function updateSettings(settings: Settings) {
       data: {
         userId: userId,
         notifications_patch_notes: settings.notifications_patch_notes,
+        notifications_task_status: settings.notifications_task_status || false,
       },
     });
   }
@@ -43,6 +44,7 @@ export async function updateSettings(settings: Settings) {
       settings: {
         update: {
           notifications_patch_notes: settings.notifications_patch_notes,
+          notifications_task_status: settings.notifications_task_status,
         },
       },
     },
