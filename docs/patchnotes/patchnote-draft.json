@@ -13,6 +13,11 @@
         "name": "task-comments",
         "description": "Add task comments",
         "pr_number": "113"
+      },
+      {
+        "name": "desktop-notifications",
+        "description": "🔧 Desktop notifications intro",
+        "pr_number": "115"
       }
     ],
     "corrections": [],
