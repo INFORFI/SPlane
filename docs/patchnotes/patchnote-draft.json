@@ -8,6 +8,11 @@
         "name": "project-task-pagination",
         "description": "Project task pagination for the project page",
         "pr_number": "109"
+      },
+      {
+        "name": "task-comments",
+        "description": "Add task comments",
+        "pr_number": "113"
       }
     ],
     "corrections": [],
