@@ -49,6 +49,11 @@ async function Homepage() {
   });
 
   const tasks = await prisma.task.findMany({
+    where: {
+      status: {
+        not: TaskStatus.COMPLETED,
+      },
+    },
     include: {
       project: true,
       userTasks: {
@@ -60,6 +65,7 @@ async function Homepage() {
     orderBy: {
       deadline: 'asc',
     },
+    take: 5,
   });
 
   // Récupérer les données du calendrier
