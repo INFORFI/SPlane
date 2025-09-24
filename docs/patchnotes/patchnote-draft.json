@@ -1,0 +1,17 @@
+{
+  "version": "1.2.2",
+  "title": "Mise à jour 1.2.2",
+  "emoji": "✨",
+  "sections": {
+    "news": [
+      {
+        "name": "project-task-pagination",
+        "description": "Project task pagination for the project page",
+        "pr_number": "109"
+      }
+    ],
+    "corrections": [],
+    "technical-improvements": [],
+    "other-changes": []
+  }
+}
