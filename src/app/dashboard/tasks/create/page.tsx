@@ -4,13 +4,15 @@ import { getUsers } from '@/action/users/getUsers';
 import { Suspense } from 'react';
 
 interface PageProps {
-  searchParams: { projectId?: string };
+  searchParams: Promise<{ projectId?: string }>;
 }
 
-export default function Page({ searchParams }: PageProps) {
+export default async function Page({ searchParams }: PageProps) {
+  const resolvedSearchParams = await searchParams;
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <TaskAddPage searchParams={searchParams} />
+      <TaskAddPage searchParams={resolvedSearchParams} />
     </Suspense>
   );
 }
