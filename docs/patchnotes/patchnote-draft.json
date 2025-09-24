@@ -1,0 +1,17 @@
+{
+  "version": "",
+  "title": "Prochaine mise à jour",
+  "emoji": "✨",
+  "sections": {
+    "news": [
+      {
+        "name": "project-task-pagination",
+        "description": "✨ Project task pagination",
+        "pr_number": "109"
+      }
+    ],
+    "corrections": [],
+    "technical-improvements": [],
+    "other-changes": []
+  }
+}
