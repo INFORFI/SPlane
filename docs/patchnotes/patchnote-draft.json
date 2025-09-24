@@ -12,6 +12,12 @@
     ],
     "corrections": [],
     "technical-improvements": [],
-    "other-changes": []
+    "other-changes": [
+      {
+        "name": "prettier/project",
+        "description": "💄 Refactor ProjectTasksPage and ProjectTasksClient",
+        "pr_number": "111"
+      }
+    ]
   }
 }
