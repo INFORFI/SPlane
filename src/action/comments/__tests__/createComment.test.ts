@@ -1,3 +1,8 @@
+// Mock @/lib/auth avant les autres imports pour éviter les erreurs avec jose
+jest.mock('@/lib/auth', () => ({
+  requireAuth: jest.fn(),
+}));
+
 import { createComment } from '../createComment';
 import { prisma } from '@/lib/prisma';
 import { requireAuth } from '@/lib/auth';
@@ -19,9 +24,7 @@ jest.mock('@/lib/prisma', () => {
   };
 });
 
-// Mock requireAuth
-jest.mock('@/lib/auth');
-const mockRequireAuth = requireAuth as jest.MockedFunction<typeof requireAuth>;
+const mockRequireAuth = jest.mocked(requireAuth);
 
 describe('createComment', () => {
   beforeEach(() => {
