@@ -3,6 +3,7 @@
 import { requireAuth } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { ActivityType, TaskStatus } from '@prisma/client';
+import { getTaskOwnerNotificationData } from '@/action/notifications/notifyTaskOwner';
 
 export default async function changeTaskStatus(taskId: string | number, status: string) {
   try {
@@ -51,7 +52,18 @@ export default async function changeTaskStatus(taskId: string | number, status: 
       });
     }
 
-    return { success: true, task: updatedTask };
+    // Récupérer les données pour notification du propriétaire
+    const notificationData = await getTaskOwnerNotificationData({
+      taskId: taskIdNumber,
+      newStatus: taskStatus,
+      changedBy: userId,
+    });
+
+    return {
+      success: true,
+      task: updatedTask,
+      notificationData // Renvoyer les données pour que le client puisse gérer la notification
+    };
   } catch (error) {
     console.error('Failed to update task status:', error);
     return { success: false, error: 'Failed to update task status' };
