@@ -59,6 +59,7 @@ model User {
   patchNoteViews PatchNoteView[]
   settings     UserSettings?
   activities   Activity[]
+  comments     Comment[]
 
   @@map("users")
 }
@@ -109,6 +110,7 @@ model Task {
   updatedAt   DateTime    @updatedAt @map("updated_at")
   project     Project     @relation(fields: [projectId], references: [id])
   userTasks   UserTask[]
+  comments    Comment[]
 
   @@map("tasks")
 }
@@ -145,4 +147,18 @@ model Activity {
   user        User        @relation(fields: [userId], references: [id])
 
   @@map("activities")
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  taskId    Int      @map("task_id")
+  authorId  Int      @map("author_id")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  author    User     @relation(fields: [authorId], references: [id])
+
+  @@map("comments")
 }
