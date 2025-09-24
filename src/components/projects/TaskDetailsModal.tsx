@@ -20,6 +20,8 @@ import { getCommentsByTask, CommentWithAuthor } from '@/action/comments/getComme
 import { createComment } from '@/action/comments/createComment';
 import { deleteComment } from '@/action/comments/deleteComment';
 import { getUserLoggedIn } from '@/action/users/getUserLoggedIn';
+import { useTaskNotifications } from '@/hook/useTaskNotifications';
+import { shouldNotifyTaskOwner } from '@/lib/notifications';
 
 type TaskDetailsModalProps = {
   task: TaskWithProject;
@@ -53,6 +55,9 @@ export default function TaskDetailsModal({
   const [isLoadingComments, setIsLoadingComments] = useState(true);
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
   const [currentUser, setCurrentUser] = useState<UserType | null>(null);
+
+  // Hook pour les notifications
+  const { notifyTaskStatusChange } = useTaskNotifications();
 
   // Charger les commentaires et l'utilisateur actuel au montage du composant
   useEffect(() => {
@@ -264,11 +269,22 @@ export default function TaskDetailsModal({
 
     if (!result || !result.success) {
       setCurrentStatus(task.status);
-    } else if (result.success && onUpdate) {
-      // Create a deep clone of the task with updated status
-      const updatedTask: TaskWithProject = JSON.parse(JSON.stringify(task));
-      updatedTask.status = newStatus;
-      onUpdate(updatedTask);
+    } else if (result.success) {
+      // Gérer les notifications si des données sont retournées
+      if (result.notificationData && shouldNotifyTaskOwner(result.notificationData)) {
+        notifyTaskStatusChange(
+          result.notificationData.taskTitle,
+          result.notificationData.newStatus,
+          result.notificationData.projectName
+        );
+      }
+
+      // Mettre à jour la tâche si un callback est fourni
+      if (onUpdate) {
+        const updatedTask: TaskWithProject = JSON.parse(JSON.stringify(task));
+        updatedTask.status = newStatus;
+        onUpdate(updatedTask);
+      }
     }
   };
 

@@ -70,6 +70,7 @@ model UserSettings {
   user User @relation(fields: [userId], references: [id])
 
   notifications_patch_notes Boolean @default(false)
+  notifications_task_status Boolean @default(false)
 
   @@map("user_settings")
 }
