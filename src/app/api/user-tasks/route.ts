@@ -71,7 +71,6 @@ export async function POST(request: NextRequest) {
       tasks: formattedTasks,
       totalTasks: formattedTasks.length,
     });
-
   } catch (error) {
     console.error('Erreur lors de la récupération des tâches:', error);
     return NextResponse.json(
@@ -85,7 +84,7 @@ export async function GET() {
   return NextResponse.json(
     {
       success: false,
-      error: 'Méthode GET non supportée. Utilisez POST avec email et password dans le body.'
+      error: 'Méthode GET non supportée. Utilisez POST avec email et password dans le body.',
     },
     { status: 405 }
   );

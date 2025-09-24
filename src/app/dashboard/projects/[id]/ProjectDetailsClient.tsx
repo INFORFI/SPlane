@@ -340,7 +340,10 @@ export default function ProjectDetailsClient({ project }: ProjectDetailsClientPr
                         }".`
                       : "Aucune tâche n'a été créée pour ce projet."}
                   </p>
-                  <Link href={`/dashboard/tasks/create?projectId=${project.id}`} className="cursor-default">
+                  <Link
+                    href={`/dashboard/tasks/create?projectId=${project.id}`}
+                    className="cursor-default"
+                  >
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}

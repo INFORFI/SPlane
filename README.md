@@ -5,6 +5,7 @@ Splane est une application de gestion de projets construite avec Next.js 15, Typ
 ## 📝 Système de Patchnote Automatisé
 
 ### Vue d'ensemble
+
 Le système de patchnote automatise la génération et la diffusion des notes de mise à jour basées sur les pull requests fusionnées. Il utilise les conventions de nommage des branches pour catégoriser automatiquement les changements.
 
 ### Flux de fonctionnement
@@ -21,6 +22,7 @@ Le système de patchnote automatise la génération et la diffusion des notes de
 ```
 
 ### Conventions de branches
+
 - `feature/nom-feature` → Section "Nouveautés"
 - `fix/nom-fix` ou `bugfix/nom-fix` → Section "Corrections"
 - `chore/nom-chore` → Section "Améliorations techniques"
@@ -48,9 +50,7 @@ Les patchnotes sont stockés en JSON dans `docs/patchnotes/vX.Y.Z.json` :
   "title": "Mise à jour 1.2.0",
   "emoji": "✨",
   "sections": {
-    "news": [
-      {"name": "feature-name", "description": "Description", "pr_number": "42"}
-    ],
+    "news": [{ "name": "feature-name", "description": "Description", "pr_number": "42" }],
     "corrections": [],
     "technical-improvements": [],
     "other-changes": []
@@ -61,6 +61,7 @@ Les patchnotes sont stockés en JSON dans `docs/patchnotes/vX.Y.Z.json` :
 ## 🚀 Développement
 
 ### Commandes essentielles
+
 ```bash
 npm run dev      # Serveur de développement
 npm run build    # Build de production
@@ -70,6 +71,7 @@ make up-build    # Docker avec rebuild
 ```
 
 ### Structure du projet
+
 ```
 src/
 ├── app/          # Pages Next.js App Router
