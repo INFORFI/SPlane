@@ -18,7 +18,7 @@ import { TaskWithProject } from '@/action/tasks/getTasks';
 import { getCommentsByTask, CommentWithAuthor } from '@/action/comments/getCommentsByTask';
 import { createComment } from '@/action/comments/createComment';
 import { deleteComment } from '@/action/comments/deleteComment';
-import { getUserLoggedIn } from '@/action/users/getUserLoggedIn';
+import { getUserLoggedIn, UserLoggedIn } from '@/action/users/getUserLoggedIn';
 import { useTaskNotifications } from '@/hook/useTaskNotifications';
 import { shouldNotifyTaskOwner } from '@/lib/notifications';
 
@@ -53,7 +53,7 @@ export default function TaskDetailsModal({
   const [newComment, setNewComment] = useState('');
   const [isLoadingComments, setIsLoadingComments] = useState(true);
   const [isSubmittingComment, setIsSubmittingComment] = useState(false);
-  const [currentUser, setCurrentUser] = useState<UserType | null>(null);
+  const [currentUser, setCurrentUser] = useState<UserLoggedIn | null>(null);
 
   // Hook pour les notifications
   const { notifyTaskStatusChange } = useTaskNotifications();

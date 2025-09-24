@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Bell, X } from 'lucide-react';
 import { useTaskNotifications } from '@/hook/useTaskNotifications';
 
@@ -23,10 +23,10 @@ export default function NotificationPermission({
     }
   };
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setIsVisible(false);
     setTimeout(onClose, 300); // Attendre la fin de l'animation
-  };
+  }, [onClose]);
 
   // Si les permissions sont déjà accordées, ne pas afficher le composant
   useEffect(() => {
