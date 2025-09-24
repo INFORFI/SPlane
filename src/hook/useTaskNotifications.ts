@@ -8,6 +8,7 @@ import {
   canSendNotifications,
 } from '@/lib/notifications';
 import type { NotificationPermissionState } from '@/lib/notifications';
+import { TaskStatus } from '@prisma/client';
 
 export interface UseTaskNotificationsReturn {
   // État des permissions
@@ -62,8 +63,8 @@ export function useTaskNotifications(): UseTaskNotificationsReturn {
     }
 
     // Convertir les statuts string en TaskStatus enum
-    const oldTaskStatus = options.oldStatus as any;
-    const newTaskStatus = options.newStatus as any;
+    const oldTaskStatus = options.oldStatus as TaskStatus;
+    const newTaskStatus = options.newStatus as TaskStatus;
 
     sendTaskStatusNotification({
       taskTitle: options.taskTitle,

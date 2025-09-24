@@ -191,7 +191,7 @@ export default function NotificationsTab({ settings }: { settings: UserSettings 
 
         <div>
           <h3 className="text-lg font-medium text-[var(--foreground)] mb-4">
-            Mises à jour de l'application
+            Mises à jour de l&apos;application
           </h3>
           <div className="space-y-3">
             {/*

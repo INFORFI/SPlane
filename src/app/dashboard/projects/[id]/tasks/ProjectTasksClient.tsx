@@ -7,10 +7,8 @@ import {
   Clock,
   CheckCircle2,
   Search,
-  Layers,
   Plus,
   User,
-  CalendarClock,
   MoreHorizontal,
 } from 'lucide-react';
 import Link from 'next/link';
@@ -433,7 +431,7 @@ export default function ProjectTasksClient({
                   Aucune tâche trouvée
                 </h3>
                 <p className="text-[var(--foreground-muted)] max-w-md mb-4">
-                  Nous n'avons pas trouvé de tâches correspondant à votre recherche "{searchQuery}".
+                  Nous n&apos;avons pas trouvé de tâches correspondant à votre recherche &quot;{searchQuery}&quot;.
                 </p>
                 <button
                   onClick={() => setSearchQuery('')}
@@ -473,7 +471,7 @@ export default function ProjectTasksClient({
                   Aucune tâche dans ce projet
                 </h3>
                 <p className="text-[var(--foreground-muted)] max-w-md mb-4">
-                  Ce projet n'a pas encore de tâches. Créez une nouvelle tâche pour commencer.
+                  Ce projet n&apos;a pas encore de tâches. Créez une nouvelle tâche pour commencer.
                 </p>
                 <Link
                   href={`/dashboard/tasks/create?projectId=${project.id}`}

@@ -7,7 +7,6 @@ import {
   CheckCircle2,
   Edit,
   Trash2,
-  Plus,
   Send,
   MessageCircle,
   X,
@@ -515,7 +514,7 @@ export default function TaskDetailsModal({
                         <div className="text-center py-4">
                           <MessageCircle className="h-8 w-8 text-[var(--border-secondary)] mx-auto mb-2" />
                           <p className="text-sm text-[var(--foreground-muted)]">
-                            Aucun commentaire pour l'instant
+                            Aucun commentaire pour l&apos;instant
                           </p>
                           <p className="text-xs text-[var(--foreground-muted)] mt-1">
                             Soyez le premier à commenter cette tâche

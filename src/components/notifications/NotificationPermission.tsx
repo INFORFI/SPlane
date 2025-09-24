@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bell, X, CheckCircle2 } from 'lucide-react';
+import { Bell, X } from 'lucide-react';
 import { useTaskNotifications } from '@/hook/useTaskNotifications';
 
 interface NotificationPermissionProps {
@@ -33,7 +33,7 @@ export default function NotificationPermission({
     if (permissionState.permission === 'granted') {
       handleClose();
     }
-  }, [permissionState.permission]);
+  }, [permissionState.permission, handleClose]);
 
   if (!permissionState.isSupported || permissionState.permission === 'granted') {
     return null;
