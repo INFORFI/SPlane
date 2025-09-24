@@ -15,7 +15,7 @@
     "other-changes": [
       {
         "name": "prettier/project",
-        "description": "💄 Refactor ProjectTasksPage and ProjectTasksClient",
+        "description": "Refactor ProjectTasksPage and ProjectTasksClient",
         "pr_number": "111"
       }
     ]
