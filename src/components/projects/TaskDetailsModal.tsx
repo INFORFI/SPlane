@@ -1,6 +1,17 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { XCircle, Clock, Calendar, CheckCircle2, Edit, Trash2, Plus, Send, MessageCircle, X } from 'lucide-react';
+import {
+  XCircle,
+  Clock,
+  Calendar,
+  CheckCircle2,
+  Edit,
+  Trash2,
+  Plus,
+  Send,
+  MessageCircle,
+  X,
+} from 'lucide-react';
 import { TaskStatus, User as UserType } from '@prisma/client';
 import changeTaskStatus from '@/action/tasks/changeTaskStatus';
 import updateTask from '@/action/tasks/updateTask';
@@ -50,7 +61,7 @@ export default function TaskDetailsModal({
       try {
         const [commentsData, userData] = await Promise.all([
           getCommentsByTask(task.id),
-          getUserLoggedIn()
+          getUserLoggedIn(),
         ]);
         setComments(commentsData);
         setCurrentUser(userData);
@@ -112,7 +123,7 @@ export default function TaskDetailsModal({
     const diffInHours = Math.floor(diffInMs / (1000 * 60 * 60));
     const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
 
-    if (diffInMinutes < 1) return 'À l\'instant';
+    if (diffInMinutes < 1) return "À l'instant";
     if (diffInMinutes < 60) return `Il y a ${diffInMinutes} minute${diffInMinutes > 1 ? 's' : ''}`;
     if (diffInHours < 24) return `Il y a ${diffInHours} heure${diffInHours > 1 ? 's' : ''}`;
     if (diffInDays < 7) return `Il y a ${diffInDays} jour${diffInDays > 1 ? 's' : ''}`;
@@ -120,7 +131,7 @@ export default function TaskDetailsModal({
     return date.toLocaleDateString('fr-FR', {
       day: '2-digit',
       month: 'short',
-      year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined
+      year: date.getFullYear() !== now.getFullYear() ? 'numeric' : undefined,
     });
   };
 
@@ -480,17 +491,23 @@ export default function TaskDetailsModal({
                       {isLoadingComments ? (
                         <div className="text-center py-4">
                           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-[var(--primary)] mx-auto"></div>
-                          <p className="text-sm text-[var(--foreground-muted)] mt-2">Chargement des commentaires...</p>
+                          <p className="text-sm text-[var(--foreground-muted)] mt-2">
+                            Chargement des commentaires...
+                          </p>
                         </div>
                       ) : comments.length === 0 ? (
                         <div className="text-center py-4">
                           <MessageCircle className="h-8 w-8 text-[var(--border-secondary)] mx-auto mb-2" />
-                          <p className="text-sm text-[var(--foreground-muted)]">Aucun commentaire pour l'instant</p>
-                          <p className="text-xs text-[var(--foreground-muted)] mt-1">Soyez le premier à commenter cette tâche</p>
+                          <p className="text-sm text-[var(--foreground-muted)]">
+                            Aucun commentaire pour l'instant
+                          </p>
+                          <p className="text-xs text-[var(--foreground-muted)] mt-1">
+                            Soyez le premier à commenter cette tâche
+                          </p>
                         </div>
                       ) : (
                         <div className="space-y-3 max-h-64 overflow-y-auto">
-                          {comments.map((comment) => (
+                          {comments.map(comment => (
                             <div key={comment.id} className="flex gap-3 group">
                               <div className="h-8 w-8 rounded-full bg-[var(--primary)] flex items-center justify-center text-[var(--primary-foreground)] text-sm flex-shrink-0">
                                 {comment.author.fullName
@@ -501,15 +518,17 @@ export default function TaskDetailsModal({
                               <div className="flex-1">
                                 <div className="p-3 bg-[var(--background-tertiary)] rounded-lg relative">
                                   {/* Bouton de suppression (visible au survol pour l'auteur) */}
-                                  {currentUser && (comment.authorId === currentUser.id || currentUser.role === 'ADMIN') && (
-                                    <button
-                                      onClick={() => handleDeleteComment(comment.id)}
-                                      className="absolute top-2 right-2 p-1 rounded-md text-[var(--foreground-muted)] hover:text-[var(--error)] hover:bg-[var(--error-muted)] opacity-0 group-hover:opacity-100 transition-all"
-                                      title="Supprimer le commentaire"
-                                    >
-                                      <X className="h-3 w-3" />
-                                    </button>
-                                  )}
+                                  {currentUser &&
+                                    (comment.authorId === currentUser.id ||
+                                      currentUser.role === 'ADMIN') && (
+                                      <button
+                                        onClick={() => handleDeleteComment(comment.id)}
+                                        className="absolute top-2 right-2 p-1 rounded-md text-[var(--foreground-muted)] hover:text-[var(--error)] hover:bg-[var(--error-muted)] opacity-0 group-hover:opacity-100 transition-all"
+                                        title="Supprimer le commentaire"
+                                      >
+                                        <X className="h-3 w-3" />
+                                      </button>
+                                    )}
 
                                   <div className="flex items-center gap-2 mb-1">
                                     <span className="text-xs font-medium text-[var(--foreground)]">
@@ -543,7 +562,7 @@ export default function TaskDetailsModal({
                           <input
                             type="text"
                             value={newComment}
-                            onChange={(e) => setNewComment(e.target.value)}
+                            onChange={e => setNewComment(e.target.value)}
                             placeholder="Ajouter un commentaire..."
                             className="w-full px-4 py-2 bg-[var(--background-tertiary)] border border-[var(--border-secondary)] rounded-lg text-[var(--foreground-secondary)] focus:outline-none focus:ring-2 focus:ring-[var(--ring)] focus:border-transparent pr-10"
                             maxLength={1000}

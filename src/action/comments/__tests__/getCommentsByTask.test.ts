@@ -56,7 +56,7 @@ describe('getCommentsByTask', () => {
     },
   ];
 
-  it('devrait récupérer les commentaires d\'une tâche avec les informations de l\'auteur', async () => {
+  it("devrait récupérer les commentaires d'une tâche avec les informations de l'auteur", async () => {
     (prisma.comment.findMany as jest.Mock).mockResolvedValue(mockComments);
 
     const result = await getCommentsByTask(1);
@@ -94,7 +94,7 @@ describe('getCommentsByTask', () => {
     });
   });
 
-  it('devrait retourner les commentaires dans l\'ordre chronologique', async () => {
+  it("devrait retourner les commentaires dans l'ordre chronologique", async () => {
     const orderedComments = [...mockComments].sort(
       (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
     );
@@ -109,7 +109,7 @@ describe('getCommentsByTask', () => {
     );
   });
 
-  it('devrait retourner une liste vide en cas d\'erreur', async () => {
+  it("devrait retourner une liste vide en cas d'erreur", async () => {
     (prisma.comment.findMany as jest.Mock).mockRejectedValue(new Error('Database error'));
 
     const result = await getCommentsByTask(1);

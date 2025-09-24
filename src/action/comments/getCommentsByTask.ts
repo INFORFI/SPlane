@@ -27,7 +27,10 @@ export async function getCommentsByTask(taskId: number): Promise<CommentWithAuth
 
     return comments;
   } catch (error) {
-    console.error(`Erreur lors de la récupération des commentaires pour la tâche ${taskId}:`, error);
+    console.error(
+      `Erreur lors de la récupération des commentaires pour la tâche ${taskId}:`,
+      error
+    );
     return [];
   }
 }

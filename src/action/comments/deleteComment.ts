@@ -54,7 +54,7 @@ export async function deleteComment(commentId: number): Promise<DeleteCommentRes
     if (!canDelete) {
       return {
         success: false,
-        error: 'Vous n\'avez pas le droit de supprimer ce commentaire',
+        error: "Vous n'avez pas le droit de supprimer ce commentaire",
       };
     }
 

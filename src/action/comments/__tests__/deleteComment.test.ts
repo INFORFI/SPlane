@@ -78,7 +78,7 @@ describe('deleteComment', () => {
     author: mockAuthor,
   };
 
-  it('devrait permettre à l\'auteur de supprimer son commentaire', async () => {
+  it("devrait permettre à l'auteur de supprimer son commentaire", async () => {
     mockRequireAuth.mockResolvedValue(1);
 
     // Mock pour trouver le commentaire
@@ -112,7 +112,7 @@ describe('deleteComment', () => {
     });
   });
 
-  it('devrait permettre à un administrateur de supprimer n\'importe quel commentaire', async () => {
+  it("devrait permettre à un administrateur de supprimer n'importe quel commentaire", async () => {
     mockRequireAuth.mockResolvedValue(3);
 
     (prisma.comment.findUnique as jest.Mock).mockResolvedValue(mockComment);
@@ -145,12 +145,12 @@ describe('deleteComment', () => {
     const result = await deleteComment(1);
 
     expect(result.success).toBe(false);
-    expect(result.error).toBe('Vous n\'avez pas le droit de supprimer ce commentaire');
+    expect(result.error).toBe("Vous n'avez pas le droit de supprimer ce commentaire");
 
     expect(prisma.comment.delete).not.toHaveBeenCalled();
   });
 
-  it('devrait échouer si l\'utilisateur n\'est pas authentifié', async () => {
+  it("devrait échouer si l'utilisateur n'est pas authentifié", async () => {
     mockRequireAuth.mockResolvedValue(null);
 
     const result = await deleteComment(1);
@@ -162,7 +162,7 @@ describe('deleteComment', () => {
     expect(prisma.comment.delete).not.toHaveBeenCalled();
   });
 
-  it('devrait échouer si le commentaire n\'existe pas', async () => {
+  it("devrait échouer si le commentaire n'existe pas", async () => {
     mockRequireAuth.mockResolvedValue(1);
     (prisma.comment.findUnique as jest.Mock).mockResolvedValue(null);
 
@@ -174,7 +174,7 @@ describe('deleteComment', () => {
     expect(prisma.comment.delete).not.toHaveBeenCalled();
   });
 
-  it('devrait échouer si l\'utilisateur actuel n\'existe pas', async () => {
+  it("devrait échouer si l'utilisateur actuel n'existe pas", async () => {
     mockRequireAuth.mockResolvedValue(1);
 
     (prisma.comment.findUnique as jest.Mock).mockResolvedValue(mockComment);
@@ -191,7 +191,7 @@ describe('deleteComment', () => {
     expect(prisma.comment.delete).not.toHaveBeenCalled();
   });
 
-  it('devrait retourner une erreur en cas d\'échec de suppression', async () => {
+  it("devrait retourner une erreur en cas d'échec de suppression", async () => {
     mockRequireAuth.mockResolvedValue(1);
 
     (prisma.comment.findUnique as jest.Mock).mockResolvedValue(mockComment);

@@ -92,7 +92,7 @@ describe('createComment', () => {
     });
   });
 
-  it('devrait échouer si l\'utilisateur n\'est pas authentifié', async () => {
+  it("devrait échouer si l'utilisateur n'est pas authentifié", async () => {
     mockRequireAuth.mockResolvedValue(null);
 
     const result = await createComment(validCommentData);
@@ -138,7 +138,7 @@ describe('createComment', () => {
     expect(prisma.comment.create).not.toHaveBeenCalled();
   });
 
-  it('devrait échouer si la tâche n\'existe pas', async () => {
+  it("devrait échouer si la tâche n'existe pas", async () => {
     mockRequireAuth.mockResolvedValue(1);
     (prisma.task.findUnique as jest.Mock).mockResolvedValue(null);
 
@@ -181,7 +181,7 @@ describe('createComment', () => {
     });
   });
 
-  it('devrait retourner une erreur en cas d\'échec de création', async () => {
+  it("devrait retourner une erreur en cas d'échec de création", async () => {
     mockRequireAuth.mockResolvedValue(1);
     (prisma.task.findUnique as jest.Mock).mockResolvedValue(mockTask);
     (prisma.comment.create as jest.Mock).mockRejectedValue(new Error('Database error'));
