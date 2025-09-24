@@ -7,7 +7,7 @@ import TasksLoading from '@/app/dashboard/tasks/TasksLoading';
 
 export default async function ProjectTasksPage({
   params,
-  searchParams
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ filter?: string }>;
@@ -21,7 +21,7 @@ export default async function ProjectTasksPage({
 
 async function ProjectTasksPageContent({
   params,
-  searchParams
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ filter?: string }>;
@@ -41,11 +41,5 @@ async function ProjectTasksPageContent({
 
   const tasks = await getTasksByProject(projectId);
 
-  return (
-    <ProjectTasksClient
-      project={project}
-      tasks={tasks}
-      initialFilter={filter}
-    />
-  );
+  return <ProjectTasksClient project={project} tasks={tasks} initialFilter={filter} />;
 }

@@ -31,7 +31,7 @@ interface ProjectTasksClientProps {
 export default function ProjectTasksClient({
   project,
   tasks,
-  initialFilter
+  initialFilter,
 }: ProjectTasksClientProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState<TaskFilter>(() => {
@@ -182,7 +182,11 @@ export default function ProjectTasksClient({
           label: 'Annulée',
         };
       default:
-        return { color: 'text-[var(--primary)]', bg: 'bg-[var(--primary-muted)]', label: 'À faire' };
+        return {
+          color: 'text-[var(--primary)]',
+          bg: 'bg-[var(--primary-muted)]',
+          label: 'À faire',
+        };
     }
   };
 
@@ -210,9 +214,7 @@ export default function ProjectTasksClient({
             <ArrowLeft className="h-5 w-5" />
           </Link>
           <div>
-            <h1 className="text-2xl font-bold text-[var(--foreground)]">
-              Tâches - {project.name}
-            </h1>
+            <h1 className="text-2xl font-bold text-[var(--foreground)]">Tâches - {project.name}</h1>
             <p className="text-[var(--foreground-tertiary)]">
               Toutes les tâches du projet {project.name}
             </p>
@@ -372,9 +374,7 @@ export default function ProjectTasksClient({
                       {task.userTasks.length > 0 && (
                         <div className="flex items-center gap-1 text-xs text-[var(--foreground-muted)] mt-1">
                           <User className="h-3 w-3" />
-                          <span>
-                            {task.userTasks.map(ut => ut.user.fullName).join(', ')}
-                          </span>
+                          <span>{task.userTasks.map(ut => ut.user.fullName).join(', ')}</span>
                         </div>
                       )}
 
@@ -446,15 +446,18 @@ export default function ProjectTasksClient({
               <>
                 <CheckCircle2 className="h-12 w-12 text-[var(--border-secondary)] mb-4" />
                 <h3 className="text-xl font-medium text-[var(--foreground-tertiary)] mb-2">
-                  Aucune tâche {activeFilter === 'todo' ? 'à faire' : activeFilter === 'in-progress' ? 'en cours' : 'terminée'}
+                  Aucune tâche{' '}
+                  {activeFilter === 'todo'
+                    ? 'à faire'
+                    : activeFilter === 'in-progress'
+                      ? 'en cours'
+                      : 'terminée'}
                 </h3>
                 <p className="text-[var(--foreground-muted)] max-w-md mb-4">
-                  {activeFilter === 'todo' &&
-                    "Il n'y a pas de tâches à faire dans ce projet."}
+                  {activeFilter === 'todo' && "Il n'y a pas de tâches à faire dans ce projet."}
                   {activeFilter === 'in-progress' &&
                     "Il n'y a pas de tâches en cours dans ce projet."}
-                  {activeFilter === 'completed' &&
-                    "Aucune tâche n'a été terminée dans ce projet."}
+                  {activeFilter === 'completed' && "Aucune tâche n'a été terminée dans ce projet."}
                 </p>
                 <button
                   onClick={() => handleFilterChange('all')}
@@ -493,11 +496,15 @@ export default function ProjectTasksClient({
             onClose={() => setSelectedTask(null)}
             onUpdate={handleTaskUpdate}
             projectTeam={project.teamMembers}
-            formatDate={(date) => date ? new Date(date).toLocaleDateString('fr-FR', {
-              day: '2-digit',
-              month: 'short',
-              year: 'numeric',
-            }) : 'Non définie'}
+            formatDate={date =>
+              date
+                ? new Date(date).toLocaleDateString('fr-FR', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                  })
+                : 'Non définie'
+            }
           />
         )}
       </AnimatePresence>
