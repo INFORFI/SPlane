@@ -271,11 +271,12 @@ export default function TaskDetailsModal({
     } else if (result.success) {
       // Gérer les notifications si des données sont retournées
       if (result.notificationData && shouldNotifyTaskOwner(result.notificationData)) {
-        notifyTaskStatusChange(
-          result.notificationData.taskTitle,
-          result.notificationData.newStatus,
-          result.notificationData.projectName
-        );
+        notifyTaskStatusChange({
+          taskTitle: result.notificationData.taskTitle,
+          oldStatus: task.status,
+          newStatus: result.notificationData.newStatus,
+          projectName: result.notificationData.projectName
+        });
       }
 
       // Mettre à jour la tâche si un callback est fourni
